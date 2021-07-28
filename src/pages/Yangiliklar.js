@@ -76,9 +76,11 @@ formData.append(
   document.getElementById("formBasictext").value ?? ""
 );
 formData.append(
-  "chool",
-  id ?? ""
+  "school",
+  Number(id)
 );
+
+console.log(formData.get('school'),formData.get('image'),formData.get('title'),formData.get('text'),)
 
 
 
