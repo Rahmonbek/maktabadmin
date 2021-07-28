@@ -13,7 +13,8 @@ export const createNew=(config)=>{
     var config={
         url:`${url}/new`,
         method:'post',
-        data:config
+        data:config,
+        headers: { "Content-Type": "multipart/form-data" },
 
     }
     return(httpRequest(config))

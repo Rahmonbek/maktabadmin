@@ -13,6 +13,7 @@ export default class Yangiliklar extends Component {
       text:'',
       show:false,
       showMatn:false,
+      image:''
   }
 
   matnKorish=(text)=>{
@@ -43,28 +44,50 @@ text:text
     document.getElementById('formBasictext').value=""
     document.getElementById('formBasictitle').value=""
 }
-
+customRequest = (e) => {
+  let image = e.target.files[0];
+  this.setState({
+    image:image
+  })
+};
 createNew=()=>{
-    var image=document.getElementById('formBasicimage').value
-    var text=document.getElementById('formBasictext').value
-    var title=document.getElementById('formBasictitle').value
+//     var image=document.getElementById('formBasicimage').value
+//     var text=document.getElementById('formBasictext').value
+//     var title=document.getElementById('formBasictitle').value
 
-    var config={
-        image,
-text,
-title,
-school:id,
-published_time:'21-03-2021'
-    }
+//     var config={
+//         image,
+// text,
+// title,
+// school:id,
+// published_time:'21-03-2021'
+//     }
 
-    console.log(config)
-    createNew(config).then(res=>{
-        console.log(res)
-        this.getNews()
-    }).catch(err=>{
-        console.log(err)
-    })
+//     console.log(config)
+  
+let formData = new FormData();
+formData.append("image", this.state.image ?? "");
+formData.append(
+  "title",
+  document.getElementById("formBasictitle").value ?? ""
+);
+formData.append(
+  "text",
+  document.getElementById("formBasictext").value ?? ""
+);
+formData.append(
+  "chool",
+  id ?? ""
+);
 
+
+
+createNew(formData).then(res=>{
+  console.log(res)
+  this.getNews()
+}).catch(err=>{
+  console.log(err)
+})
 }
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -221,7 +244,8 @@ deleteNew=(id)=>{
              
           ];
         return (
-            <div><br/>
+          <div>
+    <br/>
 
             <Button type="primary" onClick={this.openModal}>Yangilik yaratish</Button><br/><br/>
  <Table columns={columns} dataSource={this.state.news} />              
@@ -240,20 +264,22 @@ deleteNew=(id)=>{
      footer={false}
       >
         <Form>
-        <Form.Group className="mb-3" controlId="formBasictitle">
+        <Form.Group className="mb-3" controlId="formBasictitle"> 
     <Form.Label>Yanigilik sarlavhasi</Form.Label><br/>
-    <Form.Control required type="text" placeholder="Yangilik sarlavhasi" />
+    <Form.Control  name="title" required type="text" placeholder="Yangilik sarlavhasi" />
     </Form.Group>
     
     <Form.Group className="mb-3" controlId="formBasicimage">
     <Form.Label>Yanigilik rasmi</Form.Label><br/>
-    <Form.Control required type="file"/>
+    <Form.Control      accept=".jpg, .jpeg, .png"
+                      onChange={this.customRequest} name="image" required type="file"/>
     </Form.Group>
     
     <Form.Group controlId="formBasictext" className="mb-3" style={{width:"100%"}}>
     <Form.Label>Yanigilik matni</Form.Label>
     <br/><Form.Control
       as="textarea"
+      name="text"
       placeholder="Yangilik matnini yozing"
       style={{ height: '200px'}}
 
@@ -264,7 +290,9 @@ deleteNew=(id)=>{
         
     Bekor qilish
   </Button>
-  <Button type="primary" htmlType="button" onClick={this.createNew}>
+  <Button type="primary" htmlType="button"
+   onClick={this.createNew}
+   >
     Yaratish
   </Button>
 </Form>
