@@ -51,20 +51,7 @@ customRequest = (e) => {
   })
 };
 createNew=()=>{
-//     var image=document.getElementById('formBasicimage').value
-//     var text=document.getElementById('formBasictext').value
-//     var title=document.getElementById('formBasictitle').value
 
-//     var config={
-//         image,
-// text,
-// title,
-// school:id,
-// published_time:'21-03-2021'
-//     }
-
-//     console.log(config)
-  
 let formData = new FormData();
 formData.append("image", this.state.image ?? "");
 formData.append(
@@ -80,7 +67,7 @@ formData.append(
   Number(id)
 );
 
-console.log(formData.get('school'),formData.get('image'),formData.get('title'),formData.get('text'),)
+console.log(formData.get('school'),formData.get('image'), formData.get('title'),formData.get('text'),)
 
 
 

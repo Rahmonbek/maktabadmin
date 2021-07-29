@@ -11,11 +11,14 @@ export const getNews=()=>{
 
 export const createNew=(config)=>{
     var config={
-        url:`${url}/new`,
+        url:`${url}/new/`,
         method:'post',
         data:config,
-        headers: { "Content-Type": "multipart/form-data" },
-
+        
+            headers: {
+              "content-type": "multipart/form-data",
+            },
+        
     }
     return(httpRequest(config))
 }
