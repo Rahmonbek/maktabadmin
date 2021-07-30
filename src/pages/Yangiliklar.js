@@ -57,6 +57,7 @@ editNew=(key)=>{
   axios.get(`${url}/new/${id}`).then((res)=>{ 
     document.getElementById('formBasictext').value = res.data[key].text; 
     document.getElementById('formBasictitle').value = res.data[key].title;
+    console.log(res.data[key].image)
     this.setState({
       edit: res.data[key].id,
       image: res.data[key].image
@@ -86,9 +87,8 @@ formData.append(
   Number(id)
 );
 
-console.log(formData.get('school'), formData.get('image'), formData.get('title'), formData.get('text'),)
-console.log(this.state.edit);
 if(this.state.edit!==null) {
+  
   editNew(formData, this.state.edit).then(res=>{console.log(res); this.getNews()}).catch(err=>{console.log(err);})
 } else {
 createNew(formData).then(res=>{
