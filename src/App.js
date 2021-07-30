@@ -33,7 +33,7 @@ export default class App extends Component {
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
          <BrowserRouter>
             <Menu.Item style={{paddingLeft:'20px'}} key="1" icon={<PieChartOutlined />}>
-              Option 1
+            <Link style={{textDecoration:'none'}} to="/option1">Option 1</Link> 
             </Menu.Item>
             <Menu.Item style={{paddingLeft:'20px'}} key="2" icon={<DesktopOutlined />}>
             <Link style={{textDecoration:'none'}} to="/yangiliklar">Yangiliklar</Link> 
@@ -52,8 +52,10 @@ export default class App extends Component {
             <div className="site-layout-background" style={{ padding: 24, height:'530px', overflowY:"auto" }}>
             <BrowserRouter>
             <Switch>
+              <Route path="/option1"> 
+              </Route>
               <Route path="/yangiliklar"> 
-<Yangiliklar/>
+                <Yangiliklar/>
               </Route>
             </Switch>
             </BrowserRouter> 

@@ -32,3 +32,11 @@ export const deleteNew=(idD)=>{
     }
     return(httpRequest(config))
 }
+export const editNew=(configs, idT)=>{
+    var config= {
+        url: `${url}/new/${idT}/`,
+        method: 'put',
+        data: configs
+    }
+    return (httpRequest(config))
+}

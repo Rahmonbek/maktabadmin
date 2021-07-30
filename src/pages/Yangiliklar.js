@@ -1,19 +1,26 @@
 import React, { Component } from 'react'
-import { createNew, deleteNew, getNews } from '../host/Config'
+import { createNew, deleteNew, editNew, getNew, getNews } from '../host/Config'
 import { Table, Input, Modal, Button, Space,  } from 'antd';
 import Highlighter from 'react-highlight-words';
 import {Form} from 'react-bootstrap'
 import { SearchOutlined } from '@ant-design/icons';
-import { id } from '../host/Host';
+import { id, url } from '../host/Host';
+import axios from 'axios';
+import ImageDemo from './ImageDemo';
 export default class Yangiliklar extends Component {
-  state={
-      news:[],
-      searchText: '',
-      searchedColumn: '',
-      text:'',
-      show:false,
-      showMatn:false,
-      image:''
+  constructor(){
+    super();
+    this.state={
+        news:[],
+        searchText: '',
+        searchedColumn: '',
+        textF:'',
+        show:false,
+        showMatn:false,
+        image:'',
+        edit: null,
+        new:{}
+    }
   }
 
   matnKorish=(text)=>{
@@ -26,6 +33,7 @@ text:text
     this.setState({
         show:true,
        })  
+       console.log(this.state.edit);
   }
 
   closeMatn=()=>{
@@ -44,6 +52,18 @@ text:text
     document.getElementById('formBasictext').value=""
     document.getElementById('formBasictitle').value=""
 }
+editNew=(key)=>{
+  console.log(key);
+  axios.get(`${url}/new/${id}`).then((res)=>{ 
+    document.getElementById('formBasictext').value = res.data[key].text; 
+    document.getElementById('formBasictitle').value = res.data[key].title;
+    this.setState({
+      edit: res.data[key].id,
+      image: res.data[key].image
+    }) 
+  }).catch(err=>console.log(err))
+  this.openModal()
+}
 customRequest = (e) => {
   let image = e.target.files[0];
   this.setState({
@@ -51,7 +71,6 @@ customRequest = (e) => {
   })
 };
 createNew=()=>{
-
 let formData = new FormData();
 formData.append("image", this.state.image ?? "");
 formData.append(
@@ -67,16 +86,23 @@ formData.append(
   Number(id)
 );
 
-console.log(formData.get('school'),formData.get('image'), formData.get('title'),formData.get('text'),)
-
-
-
+console.log(formData.get('school'), formData.get('image'), formData.get('title'), formData.get('text'),)
+console.log(this.state.edit);
+if(this.state.edit!==null) {
+  editNew(formData, this.state.edit).then(res=>{console.log(res); this.getNews()}).catch(err=>{console.log(err);})
+} else {
 createNew(formData).then(res=>{
   console.log(res)
   this.getNews()
 }).catch(err=>{
   console.log(err)
 })
+}
+  this.setState({
+    edit: null,
+    image: ''
+  })
+  this.closeModal()
 }
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -212,10 +238,10 @@ deleteNew=(id)=>{
               },
               {
                 title: 'O\'zgartirish',
-                dataIndex: 'id',
-                key: 'id',
+                dataIndex: 'key',
+                key: 'key',
                 render:(key)=>{
-                    return( <Button type="primary" onClick={()=>{this.deleteNew(key)}}>O'zgartirish</Button>
+                    return( <Button type="primary" onClick={()=>{this.editNew(Number(key)-1)}}>O'zgartirish</Button>
                     )
                 }
 
@@ -255,23 +281,25 @@ deleteNew=(id)=>{
         <Form>
         <Form.Group className="mb-3" controlId="formBasictitle"> 
     <Form.Label>Yanigilik sarlavhasi</Form.Label><br/>
-    <Form.Control  name="title" required type="text" placeholder="Yangilik sarlavhasi" />
+    <Form.Control defaultValue={this.state.title} name="title" required type="text" placeholder="Yangilik sarlavhasi"/>
     </Form.Group>
     
     <Form.Group className="mb-3" controlId="formBasicimage">
     <Form.Label>Yanigilik rasmi</Form.Label><br/>
     <Form.Control      accept=".jpg, .jpeg, .png"
                       onChange={this.customRequest} name="image" required type="file"/>
+    <br/>
+    {ImageDemo(this.state.image)}
     </Form.Group>
     
     <Form.Group controlId="formBasictext" className="mb-3" style={{width:"100%"}}>
     <Form.Label>Yanigilik matni</Form.Label>
     <br/><Form.Control
+    defaultValue={this.state.textF}
       as="textarea"
       name="text"
       placeholder="Yangilik matnini yozing"
       style={{ height: '200px'}}
-
     />
   </Form.Group>
   <br/><br/>
