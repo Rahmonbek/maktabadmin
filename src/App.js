@@ -3,15 +3,16 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 import {
   DesktopOutlined,
   PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
+  // FileOutlined,
+  // TeamOutlined,
+  // UserOutlined,
 } from '@ant-design/icons';
 import "./App.css"
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import Yangiliklar from './pages/Yangiliklar';
+import Tadbirlar from './pages/Tadbirlar';
 const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
+// const { SubMenu } = Menu;
 
 export default class App extends Component {
   state = {
@@ -33,7 +34,7 @@ export default class App extends Component {
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
          <BrowserRouter>
             <Menu.Item style={{paddingLeft:'20px'}} key="1" icon={<PieChartOutlined />}>
-            <Link style={{textDecoration:'none'}} to="/option1">Option 1</Link> 
+            <Link style={{textDecoration:'none'}} to="/tadbirlar">Tadbirlar</Link> 
             </Menu.Item>
             <Menu.Item style={{paddingLeft:'20px'}} key="2" icon={<DesktopOutlined />}>
             <Link style={{textDecoration:'none'}} to="/yangiliklar">Yangiliklar</Link> 
@@ -52,7 +53,8 @@ export default class App extends Component {
             <div className="site-layout-background" style={{ padding: 24, height:'530px', overflowY:"auto" }}>
             <BrowserRouter>
             <Switch>
-              <Route path="/option1"> 
+              <Route path="/tadbirlar">
+                <Tadbirlar/> 
               </Route>
               <Route path="/yangiliklar"> 
                 <Yangiliklar/>
