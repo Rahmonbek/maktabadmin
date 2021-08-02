@@ -2,7 +2,6 @@ import Home from './Home';
 import Login from './pages/Login';
 import Maktaboshxonasi from './pages/Maktaboshxonasi';
 import Oqituvchilar from './pages/Oqituvchilar';
-import News from './pages/News'
 import DarsJadvali from './pages/DarsJadvali';
 import Rahbariyat from './pages/Rahbariyat';
 import Admin from './pages/Admin'
@@ -15,6 +14,7 @@ import Xavfsizlik from './pages/Xavfsizlik';
 import Salomatlik from './pages/Salomatlik'
 import Dashboard from './pages/Dashboard'
 import Yutuqlar from './pages/Yutuqlar'
+import Yangiliklar from './pages/Yangiliklar';
 const routes = [
 	{
 		path: '/login',
@@ -46,7 +46,7 @@ const routes = [
 			},
 			{
 				path: '/home/yangiliklar/uz',
-				component: News,
+				component: Yangiliklar,
 			},
 			{
 				path: '/home/rahbariyat/uz',
