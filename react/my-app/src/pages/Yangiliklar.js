@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { createEvent, deleteEvent, editEvent, getEvents } from '../host/Config'
+import { createNew, deleteNew, editNew, getNews } from '../host/Config'
 import { Table, Input, Modal, Button, Space,  } from 'antd';
 import Highlighter from 'react-highlight-words';
 import {Form} from 'react-bootstrap'
@@ -7,11 +7,11 @@ import { SearchOutlined } from '@ant-design/icons';
 import { id, url } from '../host/Host';
 import axios from 'axios';
 import ImageDemo from './ImageDemo';
-export default class Tadbirlar extends Component {
+export default class Yangiliklar extends Component {
   constructor(){
     super();
     this.state={
-        events:[],
+        news:[],
         searchText: '',
         searchedColumn: '',
         textF:'',
@@ -20,7 +20,7 @@ export default class Tadbirlar extends Component {
         image: null,
         imageUrl: '',
         edit: null,
-        previewImage: true,
+        previewImage: true
     }
   }
 
@@ -47,22 +47,21 @@ text:text
   closeModal=()=>{
     this.setState({
         show:false,
-        edit: null,
-        image: null,
+        image:null,
         imageUrl: null,
-        previewImage: true
+        edit:null,
+        previewImage: true,   
     })
     document.getElementById('formBasicimage').value=""
     document.getElementById('formBasictext').value=""
     document.getElementById('formBasictitle').value=""
 }
-editEvent=(key)=>{
-  axios.get(`${url}/event/${id}`).then((res)=>{ 
+editNew=(key)=>{
+  console.log(key);
+  axios.get(`${url}/new/${id}`).then((res)=>{ 
     document.getElementById('formBasictext').value = res.data[key].text; 
     document.getElementById('formBasictitle').value = res.data[key].title;
-    document.getElementById('formBasicaddress').value = res.data[key].address;
-    document.getElementById('formBasicdate').value = res.data[key].date;
-    document.getElementById('formBasictime').value = res.data[key].time;
+    console.log(res.data[key].image)
     this.setState({
       edit: res.data[key].id,
       imageUrl: res.data[key].image
@@ -71,32 +70,19 @@ editEvent=(key)=>{
   this.openModal()
 }
 customRequest = (e) => {
-  console.log(e);
   let image = e.target.files[0];
-  console.log(image);
   this.setState({
     image:image,
-    imageUrl: image, 
-    previewImage: false
+    imageUrl: image,
+    previewImage: false,
   })
 };
-createEvent=()=>{
+createNew=()=>{
 let formData = new FormData();
+
 formData.append(
   "title",
   document.getElementById("formBasictitle").value ?? ""
-);
-formData.append(
-    "address",
-    document.getElementById("formBasicaddress").value ?? ""
-);
-formData.append(
-    "date",
-    document.getElementById("formBasicdate").value ?? ""
-);
-formData.append(
-    "time",
-    document.getElementById("formBasictime").value ?? ""
 );
 formData.append(
   "text",
@@ -107,20 +93,21 @@ formData.append(
   Number(id)
 );
 
-console.log(formData.get('school'), formData.get('image'), formData.get('title'), formData.get('text'),)
 if(this.state.edit!==null) {
-    if(this.state.image!==null){
-        formData.append("image", this.state.image ?? "");
-    }
-  editEvent(formData, this.state.edit).then(res=>{console.log(res); this.getEvent()}).catch(err=>{console.log(err);})
+if(this.state.image!==null){
+  formData.append("image", this.state.image ?? "");
+}
+  
+  editNew(formData, this.state.edit).then(res=>{console.log(res); this.getNews()}).catch(err=>{console.log(err);})
 } else {
-    formData.append("image", this.state.image ?? "");
-    createEvent(formData).then(res=>{
-        console.log(res)
-        this.getEvent()
-        }).catch(err=>{
-        console.log(err)
-        })
+  formData.append("image", this.state.image ?? "");
+
+  createNew(formData).then(res=>{
+  console.log(res)
+  this.getNews()
+}).catch(err=>{
+  console.log(err)
+})
 }
   this.closeModal()
 }
@@ -202,24 +189,25 @@ if(this.state.edit!==null) {
     this.setState({ searchText: '' });
   };
 
-  getEvent=()=>{
-      getEvents().then(res=>{
-        var events=res.data
-        for(let i=0; i<events.length; i++){
-            events[i].key=i+1
-        }
+  getNews=()=>{
+      getNews().then(res=>{
+var news=res.data
+for(let i=0; i<news.length; i++){
+    news[i].key=i+1
+}
         this.setState({ 
-            events:res.data
-        })
+    news:res.data
+})
+
       }).catch(err=>{
           console.log(err)
       })
   }
-deleteEvent=(id)=>{
-    deleteEvent(id).then(res=>{console.log('Ochdi'); this.getEvent()}).catch(err=>{console.log('Ochmadi')})
+deleteNew=(id)=>{
+    deleteNew(id).then(res=>{console.log('Ochdi'); this.getNews()}).catch(err=>{console.log('Ochmadi')})
 }
   componentDidMount(){
-      this.getEvent()
+      this.getNews()
   }
     render() {
         const columns = [
@@ -236,7 +224,7 @@ deleteEvent=(id)=>{
                 width: '20%',
                 
                 render:(image)=>{
-                    return(<img src={image} style={{width:'100%'}} alt='rasm'/>)
+                    return(<img src={image} style={{width:'100%'}} alt='img'/>)
                 }
               },
               {
@@ -244,24 +232,6 @@ deleteEvent=(id)=>{
                 dataIndex: 'title',
                 key: 'title',
                 ...this.getColumnSearchProps('title'),
-              },
-              {
-                title: 'Manzili',
-                dataIndex: 'address',
-                key: 'address',
-                ...this.getColumnSearchProps('address'),
-              },
-              {
-                title: 'Sanasi',
-                dataIndex: 'date',
-                key: 'date',
-                ...this.getColumnSearchProps('date'),
-              },
-              {
-                title: 'Vaqti',
-                dataIndex: 'time',
-                key: 'time',
-                ...this.getColumnSearchProps('time'),
               },
               {
                 title: 'Yangilik matni',
@@ -278,7 +248,7 @@ deleteEvent=(id)=>{
                 dataIndex: 'key',
                 key: 'key',
                 render:(key)=>{
-                    return( <Button type="primary" onClick={()=>{this.editEvent(Number(key)-1)}}>O'zgartirish</Button>
+                    return( <Button type="primary" onClick={()=>{this.editNew(Number(key)-1)}}>O'zgartirish</Button>
                     )
                 }
 
@@ -288,7 +258,7 @@ deleteEvent=(id)=>{
                 dataIndex: 'id',
                 key: 'keyId',
                 render:(key)=>{
-                    return( <Button type="danger" onClick={()=>{this.deleteEvent(key)}}>O'chirish</Button>
+                    return( <Button type="danger" onClick={()=>{this.deleteNew(key)}}>O'chirish</Button>
                     )
                 }
 
@@ -300,7 +270,7 @@ deleteEvent=(id)=>{
     <br/>
 
             <Button type="primary" onClick={this.openModal}>Yangilik yaratish</Button><br/><br/>
- <Table columns={columns} dataSource={this.state.events} />              
+ <Table columns={columns} dataSource={this.state.news} />              
  <Modal
         title="Yangilik matni"
         visible={this.state.showMatn}
@@ -317,40 +287,25 @@ deleteEvent=(id)=>{
       >
         <Form>
         <Form.Group className="mb-3" controlId="formBasictitle"> 
-    <Form.Label>Tadbir sarlavhasi</Form.Label><br/>
-    <Form.Control defaultValue={this.state.title} name="title" required type="text" placeholder="Tadbir sarlavhasi"/>
-    </Form.Group>
-
-    <Form.Group className="mb-3" controlId="formBasicaddress"> 
-        <Form.Label>Tadbir manzili</Form.Label><br/>
-        <Form.Control defaultValue={this.state.address} name="address" required type="text" placeholder="Tadbir manzili"/>
-    </Form.Group>
-
-    <Form.Group className="mb-3" controlId="formBasicdate"> 
-        <Form.Label>Tadbir sanasi</Form.Label><br/>
-        <Form.Control defaultValue={this.state.date} name="date" required type="date" placeholder="mm/dd/yy"/>
-    </Form.Group>
-
-    <Form.Group className="mb-3" controlId="formBasictime"> 
-        <Form.Label>Tadbir vaqti</Form.Label><br/>
-        <Form.Control defaultValue={this.state.time} name="time" required type="time"/>
+    <Form.Label>Yangilik sarlavhasi</Form.Label><br/>
+    <Form.Control defaultValue={this.state.title} name="title" required type="text" placeholder="Yangilik sarlavhasi"/>
     </Form.Group>
     
     <Form.Group className="mb-3" controlId="formBasicimage">
-    <Form.Label>Tadbir rasmi</Form.Label><br/>
+    <Form.Label>Yangilik rasmi</Form.Label><br/>
     <Form.Control      accept=".jpg, .jpeg, .png"
                       onChange={this.customRequest} name="image" required type="file"/>
     <br/><br/>
     {(this.state.previewImage) ? ImageDemo(this.state.imageUrl) : ''}
     </Form.Group>
-
+    
     <Form.Group controlId="formBasictext" className="mb-3" style={{width:"100%"}}>
-    <Form.Label>Tadbir matni</Form.Label>
+    <Form.Label>Yangilik matni</Form.Label>
     <br/><Form.Control
     defaultValue={this.state.textF}
       as="textarea"
       name="text"
-      placeholder="Tadbir matnini yozing"
+      placeholder="Yangilik matnini yozing"
       style={{ height: '200px'}}
     />
   </Form.Group>
@@ -360,7 +315,7 @@ deleteEvent=(id)=>{
     Bekor qilish
   </Button>
   <Button type="primary" htmlType="button"
-   onClick={this.createEvent}
+   onClick={this.createNew}
    >
     Yaratish
   </Button>
