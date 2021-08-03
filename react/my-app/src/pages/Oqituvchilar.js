@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import styles from '../css/sport.module.css'
 import { Container,Row,Col,Button,Form,Table} from 'react-bootstrap'
 import new1 from '../img/new1.jpg'
-import { Modal,Select} from 'antd';
+import { Modal, Select} from 'antd'
+import { getXodim } from '../host/Config'
 
-import MUIDataTable from "mui-datatables";
 export default class DarsJadvali extends Component {
     state = {
         mutaxassislik:[],
@@ -24,16 +24,16 @@ export default class DarsJadvali extends Component {
         },
         teachers: [
             {
-                name: 'Zohidova O.',
-                tugilgansana: '04.06.2021',
-                rasm: <img src={new1} style={{width:'100px'}}/>,
-                malumot: 'Oliy',
-                mutaxassislik:'iqtisod',
-                qabulsoati:'har kuni 11:00 dan 13:00 gacha',
-                email:'zahidova@gmail.com',
-                telefon:'+982376571',
-                login:'zohidova',
-                parol:'6733726'
+                // name: 'Zohidova O.',
+                // tugilgansana: '04.06.2021',
+                // rasm: <img src={new1} style={{width:'100px'}}/>,
+                // malumot: 'Oliy',
+                // mutaxassislik:'iqtisod',
+                // qabulsoati:'har kuni 11:00 dan 13:00 gacha',
+                // email:'zahidova@gmail.com',
+                // telefon:'+982376571',
+                // login:'zohidova',
+                // parol:'6733726'
             }
         ]
     }
@@ -48,7 +48,9 @@ export default class DarsJadvali extends Component {
           visible: false,
         })
       }
-
+      getXodim=()=>{
+        getXodim().then(res=>this.setState({teachers: res.data})).catch(err=>console.log(err))
+      }
       saveTeacher = () => {
         var name = document.getElementById('name').value
         var tugilgansana = document.getElementById('tugilgansana').value
@@ -132,6 +134,9 @@ export default class DarsJadvali extends Component {
         mutaxassislik:newmutax
       })
     }
+    componentDidMount(){
+      this.getXodim()
+    }
     render() {
         const { Option } = Select;
           return (
@@ -147,36 +152,33 @@ export default class DarsJadvali extends Component {
                             <tr style={{borderBottom:'none'}}>
                             <th>#</th>
                             <th>F.I.O</th>
-                            <th>Tug'ilgan sana</th>
                             <th>Rasm</th>
                             <th>Ma'lumot</th>
                             <th>Mutaxassislik</th>
-                            <th>Qabul soati</th>
-                            <th>E-mail</th>
                             <th>Telefon</th>
-                            <th>Login/parol</th>                          
+                            <th>Login</th>                          
+                            <th>E-mail</th>
+                            <th>Manzil</th>
                             <th>O'zgartirish</th>
                             <th>O'chirish</th>                      
                             </tr>
                         </thead>
                         <tbody style={{border:'none'}}>
                          {
-                             this.state.teachers.map((item,key)=>{
+                             this.state.teachers.map((item, key)=>{
                               return(
                                 <tr>
                                 <td>{key+1}</td>
-                                <td>{item.name}</td>
-                                <td>{item.tugilgansana}</td>
-                                <td>{item.rasm}</td>
-                                <td>{item.malumot}</td>
-                                <td>{item.mutaxassislik}</td>
-                                <td>{item.qabulsoati}</td>
-                                <td>{item.email}</td>
-                                <td>{item.telefon}</td>
-                                <td>{item.login} {item.parol}</td>
+                                <td>{item.user.last_name} {item.user.first_name}</td>
+                                <td>{item.image}</td>
+                                <td>{item.description}</td>
+                                <td>{item.speciality}</td>
+                                <td>{item.phone}</td>
+                                <td>{item.user.username}</td>
+                                <td>{item.user.email}</td>
+                                <td>{item.position}</td>
                                 <td><Button style={{backgroundColor:'#187CC0',padding:'3px 10px',fontSize:'17px',border:'none'}} onClick={()=> this.editTeacher(key)}>O'zgartirish</Button></td>
-                                <td><Button style={{backgroundColor:'#187CC0',padding:'3px 10px',fontSize:'17px',border:'none'}}  onClick={()=> this.deleteTeacher(key)}>O'chirish</Button></td>
-                                
+                                <td><Button style={{backgroundColor:'red',padding:'3px 10px',fontSize:'17px',border:'none'}}  onClick={()=> this.deleteTeacher(key)}>O'chirish</Button></td>
                                 </tr>
                               )
                              })
@@ -263,9 +265,9 @@ export default class DarsJadvali extends Component {
                                   </Form.Group>
 
                                   <Button variant="primary" className={styles.inputFormBtn} onClick={()=> this.saveTeacher()}>
-                                  O'zgarishlarni saqlash
+                                  Saqlash
                                   </Button>
-                                  <Button variant="primary" className={styles.inputFormBtn1} onClick={this.hideModal}>
+                                  <Button variant="danger" className={styles.inputFormBtn1} onClick={this.hideModal}>
                                                   Bekor qilish
                                   </Button>   
                               </Form>

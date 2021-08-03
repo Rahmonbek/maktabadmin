@@ -80,3 +80,43 @@ export const editEvent=(configs, idT)=>{
     }
     return (httpRequest(config))
 }
+
+export const getXodim=()=>{
+    var config={
+        url:`${url}/staff/`,
+        method:'get',
+    }
+    return(httpRequest(config))
+}
+
+export const createXodim=(config)=>{
+    var configs={
+        url:`${url}/staff/`,
+        method:'post',
+        data:config,
+        
+            headers: {
+              "content-type": "multipart/form-data",
+            },
+        
+    }
+    return(httpRequest(configs))
+}
+
+export const deleteXodim=(idD)=>{
+    var config={
+        url:`${url}/staff/${idD}`,
+        method:'delete',
+
+
+    }
+    return(httpRequest(config))
+}
+export const editXodim=(configs, idT)=>{
+    var config= {
+        url: `${url}/staff/${idT}/`,
+        method: 'put',
+        data: configs
+    }
+    return (httpRequest(config))
+}
