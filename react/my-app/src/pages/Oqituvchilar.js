@@ -37,7 +37,8 @@ export default class DarsJadvali extends Component {
         })
       }
       getXodim=()=>{
-        getXodim().then(res=>this.setState({teachers: res.data})).catch(err=>console.log(err))
+        getXodim().then(res=>{this.setState({teachers: res.data});
+         }).catch(err=>console.log(err))
       }
       saveTeacher = () => {
         var name = document.getElementById('name').value
@@ -343,7 +344,6 @@ export default class DarsJadvali extends Component {
             <br/><br/>
             {(this.state.previewImage) ? ImageDemo(this.state.imageUrl) : ''}
             </Form.Group>
-
             <Form.Group controlId="formBasictext" className="mb-3" style={{width:"100%"}}>
             <Form.Label>Tadbir matni</Form.Label>
             <br/><Form.Control
