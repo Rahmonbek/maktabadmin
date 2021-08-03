@@ -22,20 +22,7 @@ export default class DarsJadvali extends Component {
           email:'',
           telefon:''
         },
-        teachers: [
-            {
-                // name: 'Zohidova O.',
-                // tugilgansana: '04.06.2021',
-                // rasm: <img src={new1} style={{width:'100px'}}/>,
-                // malumot: 'Oliy',
-                // mutaxassislik:'iqtisod',
-                // qabulsoati:'har kuni 11:00 dan 13:00 gacha',
-                // email:'zahidova@gmail.com',
-                // telefon:'+982376571',
-                // login:'zohidova',
-                // parol:'6733726'
-            }
-        ]
+        teachers: []
     }
       showModal = () => {
         this.setState({
@@ -49,7 +36,8 @@ export default class DarsJadvali extends Component {
         })
       }
       getXodim=()=>{
-        getXodim().then(res=>this.setState({teachers: res.data})).catch(err=>console.log(err))
+        getXodim().then(res=>{this.setState({teachers: res.data});
+         }).catch(err=>console.log(err))
       }
       saveTeacher = () => {
         var name = document.getElementById('name').value
@@ -165,7 +153,8 @@ export default class DarsJadvali extends Component {
                         </thead>
                         <tbody style={{border:'none'}}>
                          {
-                             this.state.teachers.map((item, key)=>{
+                             this.state.teachers!==[]?this.state.teachers.map((item, key)=>{
+                               console.log(item)
                               return(
                                 <tr>
                                 <td>{key+1}</td>
@@ -181,7 +170,7 @@ export default class DarsJadvali extends Component {
                                 <td><Button style={{backgroundColor:'red',padding:'3px 10px',fontSize:'17px',border:'none'}}  onClick={()=> this.deleteTeacher(key)}>O'chirish</Button></td>
                                 </tr>
                               )
-                             })
+                             }):''
                          }
                         </tbody>
                         </Table>
