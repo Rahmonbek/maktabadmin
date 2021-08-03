@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import styles from '../css/sport.module.css'
-import { Container,Row,Col,Button,Form,Table} from 'react-bootstrap'
-import new1 from '../img/new1.jpg'
-import { Modal, Select} from 'antd'
+import { SearchOutlined } from '@ant-design/icons';
+import { Button, Input, Modal, Select, Space, Table} from 'antd'
 import { getXodim } from '../host/Config'
+import Highlighter from 'react-highlight-words';
+import ImageDemo from './ImageDemo';
+import Form from 'antd/lib/form/Form';
 
 export default class DarsJadvali extends Component {
     state = {
@@ -22,20 +23,7 @@ export default class DarsJadvali extends Component {
           email:'',
           telefon:''
         },
-        teachers: [
-            {
-                // name: 'Zohidova O.',
-                // tugilgansana: '04.06.2021',
-                // rasm: <img src={new1} style={{width:'100px'}}/>,
-                // malumot: 'Oliy',
-                // mutaxassislik:'iqtisod',
-                // qabulsoati:'har kuni 11:00 dan 13:00 gacha',
-                // email:'zahidova@gmail.com',
-                // telefon:'+982376571',
-                // login:'zohidova',
-                // parol:'6733726'
-            }
-        ]
+        teachers: []
     }
       showModal = () => {
         this.setState({
@@ -134,145 +122,251 @@ export default class DarsJadvali extends Component {
         mutaxassislik:newmutax
       })
     }
+    getColumnSearchProps = dataIndex => ({
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={node => {
+              this.searchInput = node;
+            }}
+            placeholder={`Search ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            style={{ marginBottom: 8, display: 'block' }}
+          />
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+              icon={<SearchOutlined />}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Search
+            </Button>
+            <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+              Reset
+            </Button>
+            <Button
+              type="link"
+              size="small"
+              onClick={() => {
+                confirm({ closeDropdown: false });
+                this.setState({
+                  searchText: selectedKeys[0],
+                  searchedColumn: dataIndex,
+                });
+              }}
+            >
+              Filter
+            </Button>
+          </Space>
+        </div>
+      ),
+      filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+      onFilter: (value, record) =>
+        record[dataIndex]
+          ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+          : '',
+      onFilterDropdownVisibleChange: visible => {
+        if (visible) {
+          setTimeout(() => this.searchInput.select(), 100);
+        }
+      },
+      render: text =>
+        this.state.searchedColumn === dataIndex ? (
+          <Highlighter
+            highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+            searchWords={[this.state.searchText]}
+            autoEscape
+            textToHighlight={text ? text.toString() : ''}
+          />
+        ) : (
+          text
+        ),
+    });
+  
+    handleSearch = (selectedKeys, confirm, dataIndex) => {
+      confirm();
+      this.setState({
+        searchText: selectedKeys[0],
+        searchedColumn: dataIndex,
+      });
+    };
+  
+    handleReset = clearFilters => {
+      clearFilters();
+      this.setState({ searchText: '' });
+    };
     componentDidMount(){
       this.getXodim()
     }
     render() {
-        const { Option } = Select;
+      const columns = [
+        {
+            title: 'Id',
+            dataIndex: 'key',
+            key: 'key',
+            ...this.getColumnSearchProps('key'),
+          },
+        {
+            title: 'Rasm',
+            dataIndex: 'image',
+            key: 'image',
+            width: '20%',
+            render:(image)=>{
+                return(<img src={image} style={{width:'100%'}} alt='rasm'/>)
+            }
+          },
+          {
+            title: 'Familya',
+            dataIndex: 'user',
+            key: 'user',
+            ...this.getColumnSearchProps('user.last_name'),
+            render:(user)=>{return(user.last_name)}
+          },
+          {
+            title: 'Ism',
+            dataIndex: 'user',
+            key: 'user',
+            ...this.getColumnSearchProps('user.first_name'),
+            render:(user)=>{return(user.first_name)}
+          },
+          {
+            title: 'Mutaxassislik',
+            dataIndex: 'speciality',
+            key: 'speciality',
+          },
+          {
+            title: 'Mutaxassislik2',
+            dataIndex: 'position',
+            key: 'position',
+          },
+          {
+            title: 'Telefon raqam',
+            dataIndex: 'phone',
+            key: 'phone',
+            ...this.getColumnSearchProps('phone'),
+          },
+          {
+            title: 'Ma\'lumot',
+            dataIndex: 'description',
+            key: 'description',
+            ...this.getColumnSearchProps('description'),
+          },
+          {
+            title: 'Login',
+            dataIndex: 'user',
+            key: 'user',
+            ...this.getColumnSearchProps('user.username'),
+            render:(user)=>{return(user.username)}
+          },
+          {
+            title: 'Password',
+            dataIndex: 'user',
+            key: 'user',
+            render:(user)=>{return(user.password)}
+          },
+          {
+            title: 'Email',
+            dataIndex: 'user',
+            key: 'user',
+            ...this.getColumnSearchProps('user.email'),
+            render:(user)=>{return(user.email)}
+          },
+          {
+            title: 'O\'zgartirish',
+            dataIndex: 'key',
+            key: 'key',
+            render:(key)=>{
+                return( <Button type="primary">O'zgartirish</Button>
+                )
+            }
+
+          },
+          {
+            title: 'O\'chirish',
+            dataIndex: 'id',
+            key: 'keyId',
+            render:(key)=>{
+                return( <Button type="danger">O'chirish</Button>
+                )
+            }
+
+          },
+         
+      ];
           return (
             <div>
-                <Container fluid style={{padding:'0',marginRight:'20px'}}>               
-                  <Row>
-                    <Col lg={12} style={{padding:'0'}}>
-                    <h1  style={{fontSize:'30px',fontFamily:'"Lobster",cursive',display:'inline-block',marginRight:'30px'}}>O'qituvchilar <Button onClick={this.showModal} style={{marginLeft:'30px',backgroundColor:'#187CC0',border:'none'}}>Qo'shish</Button></h1>
-                    </Col>
-                  <Col lg={12} style={{padding:'0',marginRight:'20px'}}>
-                  <Table style={{backgroundColor:'white',border:'none', boxShadow: 'rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px',borderRadius:'5px',marginRight:'20px'}} >
-                        <thead style={{borderBottom:'none'}}>
-                            <tr style={{borderBottom:'none'}}>
-                            <th>#</th>
-                            <th>F.I.O</th>
-                            <th>Rasm</th>
-                            <th>Ma'lumot</th>
-                            <th>Mutaxassislik</th>
-                            <th>Telefon</th>
-                            <th>Login</th>                          
-                            <th>E-mail</th>
-                            <th>Manzil</th>
-                            <th>O'zgartirish</th>
-                            <th>O'chirish</th>                      
-                            </tr>
-                        </thead>
-                        <tbody style={{border:'none'}}>
-                         {
-                             this.state.teachers.map((item, key)=>{
-                              return(
-                                <tr>
-                                <td>{key+1}</td>
-                                <td>{item.user.last_name} {item.user.first_name}</td>
-                                <td>{item.image}</td>
-                                <td>{item.description}</td>
-                                <td>{item.speciality}</td>
-                                <td>{item.phone}</td>
-                                <td>{item.user.username}</td>
-                                <td>{item.user.email}</td>
-                                <td>{item.position}</td>
-                                <td><Button style={{backgroundColor:'#187CC0',padding:'3px 10px',fontSize:'17px',border:'none'}} onClick={()=> this.editTeacher(key)}>O'zgartirish</Button></td>
-                                <td><Button style={{backgroundColor:'red',padding:'3px 10px',fontSize:'17px',border:'none'}}  onClick={()=> this.deleteTeacher(key)}>O'chirish</Button></td>
-                                </tr>
-                              )
-                             })
-                         }
-                        </tbody>
-                        </Table>
-                  </Col>
-                  </Row>      
-                </Container>
-                <Modal
-                        title="O'qituvchi kiritish"
-                        visible={this.state.visible}
-                        onOk={this.hideModal}
-                        onCancel={this.hideModal}
-                        footer={false}
-                        >
-                       <Form id="formAdmint">
-                                  <Form.Group controlId="name">
-                                    <Form.Control type="text" placeholder="F.I.O" defaultValue={this.state.teacher1.nomi}/>
-                                  </Form.Group>
-                                  <Form.Group controlId="tugilgansana">
-                                    <Form.Control type="text" placeholder="Tug'ilgan sanasi" defaultValue={this.state.teacher1.sana}/>
-                                  </Form.Group>
-                                  <Form.Group controlId="malumot">
-                                    <Form.Control type="text" placeholder="Ma'lumotini kiriting" defaultValue={this.state.teacher1.sana}/>
-                                  </Form.Group>
-                                  <Form.Group controlId="rasm">
-                                    <Form.Control type="file" placeholder="Rasm kiriting" defaultValue={this.state.teacher1.rasm} onChange={(e)=>this.handleImage(e)}/>
-                                  </Form.Group>
-                                  <Form.Group controlId="qabulsoati">
-                                    <Form.Control type="text" placeholder="Qabul soatini kiriting" defaultValue={this.state.teacher1.qabulsoat}/>
-                                  </Form.Group>
-                                  <Form.Group controlId="email">
-                                    <Form.Control type="email" placeholder="Emailini kiriting" defaultValue={this.state.teacher1.email}/>
-                                  </Form.Group>
-                                  <Form.Group controlId="telefon">
-                                    <Form.Control type="text" placeholder="Telefonini  kiriting" defaultValue={this.state.teacher1.telefon}/>
-                                  </Form.Group>
-                                  <Form.Group controlId="login">
-                                    <Form.Control type="text" placeholder="Loginni  kiriting" defaultValue={this.state.teacher1.login}/>
-                                  </Form.Group>
-                                  <Form.Group controlId="parol">
-                                    <Form.Control type="text" placeholder="Parolni  kiriting" defaultValue={this.state.teacher1.parol}/>
-                                  </Form.Group>
-                                  <Form.Group>
-                                  <Select
-                                        id="mutaxassislik"
-                                        mode="multiple"
-                                        style={{ width: '100%' }}
-                                        placeholder="select one country"
-                                        defaultValue={['matematika']}
-                                        onChange={this.saveMutaxassislik}
-                                        optionLabelProp="label"
-                                    >
-                                        <Option value="bilogiya" label="China">
-                                        <div className="demo-option-label-item">
-                                            <span role="img" aria-label="China">
-                                             Bilogiya
-                                            </span>
-                                        </div>
-                                        </Option>
-                                        <Option value="geometriya" label="USA">
-                                        <div className="demo-option-label-item">
-                                            <span role="img" aria-label="USA">
-                                            Geometriya
-                                            </span>
-                                        </div>
-                                        </Option>
-                                        <Option value="geografiya" label="Japan">
-                                        <div className="demo-option-label-item">
-                                            <span role="img" aria-label="Japan">
-                                            Geografiya
-                                            </span>
-                                        </div>
-                                        </Option>
-                                        <Option value="kimyo" label="Korea">
-                                        <div className="demo-option-label-item">
-                                            <span role="img" aria-label="Korea">
-                                            Kimyo
-                                            </span>
-                                        </div>
-                                        </Option>
-                                    </Select>
-                                  </Form.Group>
+                <Button type="primary" onClick={this.openModal}>Xodim qo'shish</Button><br/><br/>
+              <Table columns={columns} dataSource={this.state.teachers} style={{marginRight: '20px'}} />              
+              <Modal
+                      title="Tadbir matni"
+                      visible={this.state.showMatn}
+                      onCancel={this.closeMatn}
+                  footer={false}
+                    >
+                      <p>{this.state.text}</p>
+                    </Modal>
+                    <Modal
+                      title="Tadbir"
+                      visible={this.state.show}
+                      onCancel={this.closeModal}
+                    footer={false}
+                    >
+          <Form>
+          <Form.Group className="mb-3" controlId="formBasictitle"> 
+            <Form.Label>Tadbir sarlavhasi</Form.Label><br/>
+            <Form.Control defaultValue={this.state.title} name="title" required type="text" placeholder="Tadbir sarlavhasi"/>
+            </Form.Group>
 
-                                  <Button variant="primary" className={styles.inputFormBtn} onClick={()=> this.saveTeacher()}>
-                                  Saqlash
-                                  </Button>
-                                  <Button variant="danger" className={styles.inputFormBtn1} onClick={this.hideModal}>
-                                                  Bekor qilish
-                                  </Button>   
-                              </Form>
+            <Form.Group className="mb-3" controlId="formBasicaddress"> 
+                <Form.Label>Tadbir manzili</Form.Label><br/>
+                <Form.Control defaultValue={this.state.address} name="address" required type="text" placeholder="Tadbir manzili"/>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicdate"> 
+                <Form.Label>Tadbir sanasi</Form.Label><br/>
+                <Form.Control defaultValue={this.state.date} name="date" required type="date" placeholder="mm/dd/yy"/>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasictime"> 
+                <Form.Label>Tadbir vaqti</Form.Label><br/>
+                <Form.Control defaultValue={this.state.time} name="time" required type="time"/>
+            </Form.Group>
+            
+            <Form.Group className="mb-3" controlId="formBasicimage">
+            <Form.Label>Tadbir rasmi</Form.Label><br/>
+            <Form.Control      accept=".jpg, .jpeg, .png"
+                              onChange={this.customRequest} name="image" required type="file"/>
+            <br/><br/>
+            {(this.state.previewImage) ? ImageDemo(this.state.imageUrl) : ''}
+            </Form.Group>
+
+            <Form.Group controlId="formBasictext" className="mb-3" style={{width:"100%"}}>
+            <Form.Label>Tadbir matni</Form.Label>
+            <br/><Form.Control
+            defaultValue={this.state.textF}
+              as="textarea"
+              name="text"
+              placeholder="Tadbir matnini yozing"
+              style={{ height: '200px'}}
+            />
+          </Form.Group>
+          <br/><br/>
+            <Button type="danger" htmlType="button" onClick={this.closeModal}>
+                
+            Bekor qilish
+          </Button>
+          <Button type="primary" htmlType="button"
+          onClick={this.createEvent}
+          >
+            Yaratish
+          </Button>
+          </Form>
         </Modal>
-            </div>
+       </div>
         )
     }
 }

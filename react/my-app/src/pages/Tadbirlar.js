@@ -20,7 +20,7 @@ export default class Tadbirlar extends Component {
         image: null,
         imageUrl: '',
         edit: null,
-        previewImage: true,
+        previewImage: false,
     }
   }
 
@@ -34,7 +34,6 @@ text:text
     this.setState({
         show:true,
        })  
-       console.log(this.state.edit);
   }
 
   closeMatn=()=>{
@@ -50,7 +49,6 @@ text:text
         edit: null,
         image: null,
         imageUrl: null,
-        previewImage: true
     })
     document.getElementById('formBasicimage').value=""
     document.getElementById('formBasictext').value=""
@@ -65,7 +63,8 @@ editEvent=(key)=>{
     document.getElementById('formBasictime').value = res.data[key].time;
     this.setState({
       edit: res.data[key].id,
-      imageUrl: res.data[key].image
+      imageUrl: res.data[key].image,
+      previewImage: true
     }) 
   }).catch(err=>console.log(err))
   this.openModal()
@@ -240,7 +239,7 @@ deleteEvent=(id)=>{
                 }
               },
               {
-                title: 'Yangilik nomi',
+                title: 'Tadbir nomi',
                 dataIndex: 'title',
                 key: 'title',
                 ...this.getColumnSearchProps('title'),
@@ -264,7 +263,7 @@ deleteEvent=(id)=>{
                 ...this.getColumnSearchProps('time'),
               },
               {
-                title: 'Yangilik matni',
+                title: 'Tadbir matni',
                 dataIndex: 'text',
                 key: 'text',
                 render:(text)=>{
@@ -299,10 +298,10 @@ deleteEvent=(id)=>{
           <div>
     <br/>
 
-            <Button type="primary" onClick={this.openModal}>Yangilik yaratish</Button><br/><br/>
+            <Button type="primary" onClick={this.openModal}>Tadbir yaratish</Button><br/><br/>
  <Table columns={columns} dataSource={this.state.events} />              
  <Modal
-        title="Yangilik matni"
+        title="Tadbir matni"
         visible={this.state.showMatn}
         onCancel={this.closeMatn}
      footer={false}
@@ -310,7 +309,7 @@ deleteEvent=(id)=>{
         <p>{this.state.text}</p>
       </Modal>
       <Modal
-        title="Yangilik"
+        title="Tadbir"
         visible={this.state.show}
         onCancel={this.closeModal}
      footer={false}

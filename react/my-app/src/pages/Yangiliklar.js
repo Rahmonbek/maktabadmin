@@ -20,7 +20,7 @@ export default class Yangiliklar extends Component {
         image: null,
         imageUrl: '',
         edit: null,
-        previewImage: true
+        previewImage: false
     }
   }
 
@@ -50,7 +50,6 @@ text:text
         image:null,
         imageUrl: null,
         edit:null,
-        previewImage: true,   
     })
     document.getElementById('formBasicimage').value=""
     document.getElementById('formBasictext').value=""
@@ -64,7 +63,8 @@ editNew=(key)=>{
     console.log(res.data[key].image)
     this.setState({
       edit: res.data[key].id,
-      imageUrl: res.data[key].image
+      imageUrl: res.data[key].image,
+      previewImage: true
     }) 
   }).catch(err=>console.log(err))
   this.openModal()
