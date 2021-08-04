@@ -207,12 +207,14 @@ export default class DarsJadvali extends Component {
       const columns = [
         {
             title: 'Id',
+           width:'30%',
             dataIndex: 'key',
             key: 'key',
             ...this.getColumnSearchProps('key'),
           },
         {
             title: 'Rasm',
+           width:'30%',
             dataIndex: 'image',
             key: 'image',
             width: '20%',
@@ -222,6 +224,7 @@ export default class DarsJadvali extends Component {
           },
           {
             title: 'Familya',
+           width:'30%',
             dataIndex: 'user',
             key: 'user',
             ...this.getColumnSearchProps('user.last_name'),
@@ -229,6 +232,7 @@ export default class DarsJadvali extends Component {
           },
           {
             title: 'Ism',
+           width:'30%',
             dataIndex: 'user',
             key: 'user',
             ...this.getColumnSearchProps('user.first_name'),
@@ -236,28 +240,33 @@ export default class DarsJadvali extends Component {
           },
           {
             title: 'Mutaxassislik',
+           width:'30%',
             dataIndex: 'speciality',
             key: 'speciality',
           },
           {
             title: 'Mutaxassislik2',
+           width:'30%',
             dataIndex: 'position',
             key: 'position',
           },
           {
             title: 'Telefon raqam',
+           width:'30%',
             dataIndex: 'phone',
             key: 'phone',
             ...this.getColumnSearchProps('phone'),
           },
           {
             title: 'Ma\'lumot',
+           width:'30%',
             dataIndex: 'description',
             key: 'description',
             ...this.getColumnSearchProps('description'),
           },
           {
             title: 'Login',
+           width:'30%',
             dataIndex: 'user',
             key: 'user',
             ...this.getColumnSearchProps('user.username'),
@@ -265,12 +274,14 @@ export default class DarsJadvali extends Component {
           },
           {
             title: 'Password',
+           width:'30%',
             dataIndex: 'user',
             key: 'user',
             render:(user)=>{return(user.password)}
           },
           {
             title: 'Email',
+           width:'30%',
             dataIndex: 'user',
             key: 'user',
             ...this.getColumnSearchProps('user.email'),
@@ -278,7 +289,10 @@ export default class DarsJadvali extends Component {
           },
           {
             title: 'O\'zgartirish',
+          
             dataIndex: 'key',
+            fixed: 'right',
+    width: 100,
             key: 'key',
             render:(key)=>{
                 return( <Button type="primary">O'zgartirish</Button>
@@ -290,6 +304,8 @@ export default class DarsJadvali extends Component {
             title: 'O\'chirish',
             dataIndex: 'id',
             key: 'keyId',
+            fixed: 'right',
+    width: 100,
             render:(key)=>{
                 return( <Button type="danger">O'chirish</Button>
                 )
@@ -301,7 +317,7 @@ export default class DarsJadvali extends Component {
           return (
             <div>
                 <Button type="primary" onClick={this.openModal}>Xodim qo'shish</Button><br/><br/>
-              <Table columns={columns} dataSource={this.state.teachers} style={{marginRight: '20px'}} />              
+              <Table columns={columns}  scroll={{ x: 1300 }} dataSource={this.state.teachers} style={{marginRight: '20px'}} />              
               <Modal
                       title="Tadbir matni"
                       visible={this.state.showMatn}
