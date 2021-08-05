@@ -17,7 +17,7 @@ news1:{},
             nomi: 'Maktabda so`nggi qo`ng`iroq ',
             sana: '04.06.2021',
             rasm: <img src={new1} style={{width:'100px'}}/>,
-            matn: 'vvvvvvvvvv vvvvvvvvvvvvv vvvvvvvvvvv',
+            matn: 'vvvvvv vvvvvvvvvvvvv vvvvvvvvvvv',
         },
         {
           nomi: 'Maktabda so`nggi qo`ng`iroq ',
