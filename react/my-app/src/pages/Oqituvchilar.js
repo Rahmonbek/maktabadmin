@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Col, Container, Image, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
-import { createXodim, deleteXodim, getSpec, editXodim, getXodim } from '../host/Config'
+import { createXodim, deleteXodim, getSpec,editXodim, getXodim, patchXodim } from '../host/Config'
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -82,9 +82,9 @@ export default class Oqituvchilar extends Component {
         var phone = document.getElementById('phone').value
         var description = document.getElementById('description').value
         var position = document.getElementById('position').value
-        var speciality = [1, 2, 3]
+       var speciality=[1,2,3]
         if(confirmPassword!==password) {
-          return document.getElementsByClassName('red').style.color = 'red'
+          return document.querySelector('.red').style.color = 'red'
         }
         var teacher = {
           user: {
@@ -100,19 +100,30 @@ export default class Oqituvchilar extends Component {
           description: description
         }
         let formData = new FormData()
-        formData.append(
-          'user',
-          {
-            first_name: firstname,
-            last_name: lastname,
-            username: username,
-            password: password,
-            email: email
-          } ?? ''
-        )
+     
         formData.append(
           'position',
          position ?? ''
+        )
+        formData.append(
+          'first_name',
+         firstname ?? ''
+        )
+        formData.append(
+          'last_name',
+         lastname ?? ''
+        )
+        formData.append(
+          'username',
+         username ?? ''
+        )
+        formData.append(
+          'password',
+         password ?? ''
+        )
+        formData.append(
+          'email',
+         email ?? ''
         )
         formData.append(
           'image',
@@ -122,18 +133,26 @@ export default class Oqituvchilar extends Component {
           'phone',
          phone ?? ''
         )
-        formData.append(
-          'speciality',
-         speciality ?? ''
-        )
+        // formData.append(
+        //   'speciality',
+        //  speciality ?? ''
+        // )
         formData.append(
           'description',
          description ?? ''
         )
         if(this.state.edit!==null) {
-          editXodim(formData, this.state.edit).then(res=>{this.getXodim()}).catch(err=>console.log(err))
+          editXodim(formData, this.state.edit).then(res=>{
+            
+            this.getXodim();
+          }).catch(err=>console.log(err))
         } else {
-          createXodim(formData).then(res=>{this.getXodim()}).catch(err=>{console.log(err)})
+          createXodim(formData).then(res=>{
+          patchXodim({speciality:speciality}, res.data.id).then(res1=>{
+            this.getXodim()
+         
+          }).catch(err1=>{console.log(err1)})  
+             }).catch(err=>{console.log(err)})
         }
         this.hideModal()
     }

@@ -109,9 +109,18 @@ export const deleteXodim=(idD)=>{
     return(httpRequest(config))
 }
 
-export const editXodim=(configs, idT)=>{
+export const patchXodim=(configs, idM)=>{
     var config= {
-        url: `${url}/staff/${idT}/`,
+        url: `${url}/staff/${idM}/`,
+        method: 'patch',
+        data: configs
+    }
+    return (httpRequest(config))
+}
+
+export const editXodim=(configs, idM)=>{
+    var config= {
+        url: `${url}/staff/${idM}/`,
         method: 'put',
         data: configs
     }
