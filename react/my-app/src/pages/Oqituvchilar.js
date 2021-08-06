@@ -1,372 +1,423 @@
 import React, { Component } from 'react'
-import { SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Modal, Select, Space, Table} from 'antd'
-import { getXodim } from '../host/Config'
-import Highlighter from 'react-highlight-words';
+import { Button, Col, Container, Image, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
+import { createXodim, deleteXodim, getSpec, editXodim, getXodim } from '../host/Config'
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
+import style from '../css/xodim.module.css'
+import styles from '../css/modalStyle.css'
+import clsx from 'clsx';
+import Modal from 'antd/lib/modal/Modal';
 import ImageDemo from './ImageDemo';
-import Form from 'antd/lib/form/Form';
+import { Input, Select, Form} from 'antd';
+import TextArea from 'antd/lib/input/TextArea';
+import axios from 'axios';
+import { url } from '../host/Host';
+import { Option } from 'antd/lib/mentions';
 
-export default class DarsJadvali extends Component {
+export default class Oqituvchilar extends Component {
     state = {
         mutaxassislik:[],
         visible: false,
         selectedFile:null,
         teacher: {},
         edit: null,
-        teacher1:{
-          name:'',
-          tugilgansana:'',
-          rasm:'',
-          malumot:'',
-          mutaxassislik:'',
-          qabulsoati:'',
-          email:'',
-          telefon:''
-        },
-        teachers: []
+        previewImage: false,
+        teachers: [],
+        expanded: [],
+        options: [],
+        image: null,
     }
-      showModal = () => {
-        this.setState({
-          visible: true,
-        })
-      }
-    
-      hideModal = () => {
+    openModal = () => {
+      this.setState({
+        visible: true,
+      })
+    }
+    hideModal = () => {
         this.setState({
           visible: false,
         })
+        this.reset()
+    }
+      getSpec=()=>{
+        getSpec().then(res=>{this.setState({options: res.data}); console.log(res.data)}).catch(err=>console.log(err))
       }
       getXodim=()=>{
-        getXodim().then(res=>{this.setState({teachers: res.data});
+        getXodim().then(res=>{return this.setState({teachers: res.data})
          }).catch(err=>console.log(err))
       }
-      saveTeacher = () => {
-        var name = document.getElementById('name').value
-        var tugilgansana = document.getElementById('tugilgansana').value
-        var rasm = document.getElementById('rasm').value
-        var malumot = document.getElementById('malumot').value
-        var mutaxassislik = this.state.mutaxassislik
-        var qabulsoati= document.getElementById('qabulsoati').value
+      editXodim=(id)=>{
+        axios.get(`${url}/staff/`).then(res=>{
+          this.setState({
+            edit: res.data[id].id
+          })
+          document.getElementById('firstname').value = res.data[id].user.first_name
+          document.getElementById('lastname').value = res.data[id].user.last_name
+          document.getElementById('username').value = res.data[id].user.username
+          document.getElementById('email').value = res.data[id].user.email
+          document.getElementById('password').value = res.data[id].user.password
+          document.getElementsById('confirmPassword').style.display='none'
+          document.getElementById('phone').value = res.data[id].phone
+          document.getElementById('description').value = res.data[id].description
+          document.getElementById('position').value = res.data[id].position
+        }).catch(err=>console.log(err))
+        this.openModal()
+       }
+      saveXodim = () => {
+        var firstname = document.getElementById('firstname').value
+        var lastname = document.getElementById('lastname').value
+        var image = this.state.image
+        var username = document.getElementById('username').value
         var email = document.getElementById('email').value
-        var telefon = document.getElementById('telefon').value
-        var login = document.getElementById('login').value
-        var parol = document.getElementById('parol').value
+        var password= document.getElementById('password').value
+        var confirmPassword = document.getElementById('confirmPassword').value
+        var phone = document.getElementById('phone').value
+        var description = document.getElementById('description').value
+        var position = document.getElementById('position').value
+        var speciality = [1, 2, 3]
+        if(confirmPassword!==password) {
+          return document.getElementsByClassName('red').style.color = 'red'
+        }
         var teacher = {
-          name,
-          tugilgansana,
-          rasm,
-          malumot,
-          mutaxassislik,
-          qabulsoati,
-          email,
-          telefon,
-          login,
-          parol    
+          user: {
+            first_name: firstname,
+            last_name: lastname,
+            username: username,
+            password: password,
+            email: email
+          },
+          position: position,
+          phone: phone,
+          speciality: speciality,
+          image: image,
+          description: description
         }
-    
-        var teachertable = this.state.teachers
-    
-        if(this.state.edit==null){
-            teachertable.push(teacher)
-            this.setState({
-                teachers:teachertable
-            })
-            console.log(teachertable)
+        // let formData = new FormData()
+        // formData.append(
+        //   'user',
+        //   teacher.user ?? ''
+        // )
+        // formData.append(
+        //   'position',
+        //   teacher.position ?? ''
+        // )
+        // formData.append(
+        //   'image',
+        //   teacher.image ?? ''
+        // )
+        // formData.append(
+        //   'phone',
+        //   teacher.phone ?? ''
+        // )
+        // formData.append(
+        //   'speciality',
+        //   teacher.speciality ?? ''
+        // )
+        // formData.append(
+        //   'description',
+        //   teacher.description ?? ''
+        // )
+        if(this.state.edit!==null) {
+          editXodim(teacher, this.state.edit).then(res=>{this.getXodim()}).catch(err=>console.log(err))
+        } else {
+          createXodim(teacher).then(res=>{this.getXodim()}).catch(err=>{console.log(err)})
         }
-        else{
-            teachertable[this.state.edit] = teacher
-            this.setState({
-                teacher: {},
-                edit: null
-            })
-        }
-        this.setState({
-            teachers: teachertable
-        })
-        this.reset()
         this.hideModal()
     }
-    deleteTeacher = (value) => {
-      var newteacher=this.state.teachers
-      newteacher.splice(value,1)
-      this.setState({
-        teachers:newteacher
-      })
-    }
-    editTeacher=(id)=>{
-     var newteacher=this.state.teachers[id]
-     console.log(newteacher)
-     this.setState({
-       teacher1:newteacher,
-       edit:id
-     })
-     this.showModal()
+    deleteXodim = (id) => {
+      deleteXodim(id).then(res=>{this.getXodim()}).catch(err=>console.log(err))
     }
     reset=()=>{
-      document.getElementById('name').value=''
-      document.getElementById('tugilgansana').value=''
-      document.getElementById('rasm').value=''
-      document.getElementById('malumot').value=''
-      document.getElementById('mutaxassislik').value=''
-      document.getElementById('qabulsoati').value=''
-      document.getElementById('email').value=''
-      document.getElementById('telefon').value=''
-      document.getElementById('login').value=''
-      document.getElementById('parol').value=''
+      document.getElementById('firstname').value = ''
+      document.getElementById('lastname').value = ''
+      document.getElementById('username').value = ''
+      document.getElementById('email').value = ''
+      document.getElementById('password').value = ''
+      document.getElementById('confirmPassword').value = ''
+      document.getElementById('phone').value = ''
+      document.getElementById('description').value = ''
+      document.getElementById('position').value = ''
+      document.getElementById('confirmPassword').style.display = 'block'
       this.setState({
-        edit:null
+        edit:null,
+        image: null
       })
     }
+    customRequest = (e) => {
+      console.log(e)
+      let image = e.target.files[0]
+      this.setState({
+        image: image
+      })
+    }
+    handleExpandClick = (id) => {
+      var a= this.state.expanded
+        a[id]=!a[id]
+        this.setState({expanded:a})
+    };
     saveMutaxassislik=(e)=>{
       var newmutax=e;
       this.setState({
         mutaxassislik:newmutax
       })
     }
-    getColumnSearchProps = dataIndex => ({
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-        <div style={{ padding: 8 }}>
-          <Input
-            ref={node => {
-              this.searchInput = node;
-            }}
-            placeholder={`Search ${dataIndex}`}
-            value={selectedKeys[0]}
-            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-            onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            style={{ marginBottom: 8, display: 'block' }}
-          />
-          <Space>
-            <Button
-              type="primary"
-              onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-              icon={<SearchOutlined />}
-              size="small"
-              style={{ width: 90 }}
-            >
-              Search
-            </Button>
-            <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-              Reset
-            </Button>
-            <Button
-              type="link"
-              size="small"
-              onClick={() => {
-                confirm({ closeDropdown: false });
-                this.setState({
-                  searchText: selectedKeys[0],
-                  searchedColumn: dataIndex,
-                });
-              }}
-            >
-              Filter
-            </Button>
-          </Space>
-        </div>
-      ),
-      filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-      onFilter: (value, record) =>
-        record[dataIndex]
-          ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-          : '',
-      onFilterDropdownVisibleChange: visible => {
-        if (visible) {
-          setTimeout(() => this.searchInput.select(), 100);
-        }
-      },
-      render: text =>
-        this.state.searchedColumn === dataIndex ? (
-          <Highlighter
-            highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-            searchWords={[this.state.searchText]}
-            autoEscape
-            textToHighlight={text ? text.toString() : ''}
-          />
-        ) : (
-          text
-        ),
-    });
-  
-    handleSearch = (selectedKeys, confirm, dataIndex) => {
-      confirm();
-      this.setState({
-        searchText: selectedKeys[0],
-        searchedColumn: dataIndex,
-      });
-    };
-  
-    handleReset = clearFilters => {
-      clearFilters();
-      this.setState({ searchText: '' });
-    };
+    handleChange = (selectedOption) => {
+      this.setState({selectedOption})
+    }
     componentDidMount(){
       this.getXodim()
+      this.getSpec()
     }
     render() {
-      const columns = [
-        {
-            title: 'Id',
-            dataIndex: 'key',
-            key: 'key',
-            ...this.getColumnSearchProps('key'),
-          },
-        {
-            title: 'Rasm',
-            dataIndex: 'image',
-            key: 'image',
-            width: '20%',
-            render:(image)=>{
-                return(<img src={image} style={{width:'100%'}} alt='rasm'/>)
-            }
-          },
-          {
-            title: 'Familya',
-            dataIndex: 'user',
-            key: 'user',
-            ...this.getColumnSearchProps('user.last_name'),
-            render:(user)=>{return(user.last_name)}
-          },
-          {
-            title: 'Ism',
-            dataIndex: 'user',
-            key: 'user',
-            ...this.getColumnSearchProps('user.first_name'),
-            render:(user)=>{return(user.first_name)}
-          },
-          {
-            title: 'Mutaxassislik',
-            dataIndex: 'speciality',
-            key: 'speciality',
-          },
-          {
-            title: 'Mutaxassislik2',
-            dataIndex: 'position',
-            key: 'position',
-          },
-          {
-            title: 'Telefon raqam',
-            dataIndex: 'phone',
-            key: 'phone',
-            ...this.getColumnSearchProps('phone'),
-          },
-          {
-            title: 'Ma\'lumot',
-            dataIndex: 'description',
-            key: 'description',
-            ...this.getColumnSearchProps('description'),
-          },
-          {
-            title: 'Login',
-            dataIndex: 'user',
-            key: 'user',
-            ...this.getColumnSearchProps('user.username'),
-            render:(user)=>{return(user.username)}
-          },
-          {
-            title: 'Password',
-            dataIndex: 'user',
-            key: 'user',
-            render:(user)=>{return(user.password)}
-          },
-          {
-            title: 'Email',
-            dataIndex: 'user',
-            key: 'user',
-            ...this.getColumnSearchProps('user.email'),
-            render:(user)=>{return(user.email)}
-          },
-          {
-            title: 'O\'zgartirish',
-            dataIndex: 'key',
-            key: 'key',
-            render:(key)=>{
-                return( <Button type="primary">O'zgartirish</Button>
-                )
-            }
-
-          },
-          {
-            title: 'O\'chirish',
-            dataIndex: 'id',
-            key: 'keyId',
-            render:(key)=>{
-                return( <Button type="danger">O'chirish</Button>
-                )
-            }
-
-          },
-         
-      ];
+      const selectedOption = this.state.selectedOption
           return (
             <div>
-                <Button type="primary" onClick={this.openModal}>Xodim qo'shish</Button><br/><br/>
-              <Table columns={columns} dataSource={this.state.teachers} style={{marginRight: '20px'}} />              
-              <Modal
-                      title="Tadbir matni"
-                      visible={this.state.showMatn}
-                      onCancel={this.closeMatn}
-                  footer={false}
+                <Container fluid><br/><br/>
+                    <Button type="primary" onClick={()=>{this.openModal()}}>Xodim qo'shish</Button>
+                        <Row>
+                              {
+                                  this.state.teachers!==null ? this.state.teachers.map((item, key)=>{
+                                      return(<Col lg={4} md={6} sm={12} style={{marginTop:'20px'}}>
+                                          <Card className={style.root}>
+                                              <CardHeader title='Xodim'/>
+                                                {item.image!==null ? 
+                                                  <CardMedia
+                                                    className={style.media}
+                                                    image={item.image}
+                                                    title={item.user.last_name + ' ' + item.user.first_name} /> : '' } 
+                                                      <CardContent>
+                                                        <Typography variant="body2" color="textSecondary" component="p">
+                                                          <p><b>Familyasi: </b>{item.user.last_name}</p>
+                                                          <p><b>Ismi: </b>{item.user.first_name}</p>
+                                                          <p><b>Login: </b>{item.user.username}</p>
+                                                          <p><b>Password: </b>{item.user.password}</p>
+                                                          <p><b>Mutaxassislik: </b>{item.speciality.map(item1=>{return (item1)})}</p>
+                                                          <p><b>Sohasi: </b>{item.position}</p>
+                                                          <p><b>Telefon raqami: </b>{item.phone}</p>
+                                                          <p><b>Email: </b>{item.user.email}</p>
+                                                        </Typography>
+                                                      </CardContent>
+                                                      <CardActions disableSpacing style={{display:'flex', justifyContent:'space-around'}}>
+                                                          <OverlayTrigger
+                                                          placement="bottom"
+                                                          overlay={<Tooltip id="button-tooltip-2"    style={{marginTop:'15px'}}>O'zgartirish</Tooltip>} >
+                                                            {({ ref, ...triggerHandler }) => (
+                                                          <Button
+                                                              onClick={()=>{this.editXodim(key)}}
+                                                            variant="blue"
+                                                            {...triggerHandler}
+                                                            className="d-inline-flex align-items-center"
+                                                          >
+                                                            <Image
+                                                              ref={ref}
+                                                              
+                                                            />
+                                                          
+                                                          <IconButton >
+                                                            <BorderColorIcon />
+                                                          </IconButton> 
+                                                          </Button>
+                                                        )}
+                                                      </OverlayTrigger>
+                                                          
+                                                      <OverlayTrigger
+                                                        
+                                                        placement="bottom"
+                                                        overlay={<Tooltip id="button-tooltip-2"    style={{marginTop:'15px'}}>O'chirish</Tooltip>}
+                                                      >
+                                                        {({ ref, ...triggerHandler }) => (
+                                                          <Button
+                                                            onClick={()=>{this.deleteXodim(item.id)}}
+                                                            variant="#f70707d9"
+                                                            {...triggerHandler}
+                                                            className="d-inline-flex align-items-center"
+                                                          >
+                                                            <Image
+                                                              ref={ref}
+                                                              
+                                                            />
+                                                          
+                                                          <IconButton >
+                                                            <DeleteIcon />
+                                                          </IconButton> 
+                                                          </Button>
+                                                        )}
+                                                      </OverlayTrigger>
+                                                        
+                                                            <OverlayTrigger
+                                                        
+                                                  placement="bottom"
+                                                  overlay={<Tooltip id="button-tooltip-2"    style={{marginTop:'15px'}}>Xodim haqida batafsil ma'lumot</Tooltip>}
+                                                >
+                                                  {({ ref, ...triggerHandler }) => (
+                                              <Button
+                                                variant="#F2F2F2"
+                                                {...triggerHandler}
+                                                className="d-inline-flex align-items-center" >
+                                                  <Image ref={ref} />
+                                                  <IconButton 
+                                                    className={clsx(styles.expand, {
+                                                      [styles.expandOpen]: this.state.expanded[key],
+                                                    })}
+                                                    onClick={()=>{this.handleExpandClick(key)}}
+                                                    aria-expanded={this.state.expanded[key]}
+                                                    aria-label="show more" >
+                                                    <ExpandMoreIcon />
+                                                  </IconButton>
+                                              </Button>
+                                            )}
+                                        </OverlayTrigger>
+                                    </CardActions>
+                                  <Collapse in={this.state.expanded[key]} timeout="auto" unmountOnExit>
+                                    <CardContent>
+                                      <Typography paragraph style={{fontSize:'16px'}}>
+                                        <p>Qo'shimcha ma'lumot</p>
+                                        <p>{item.description}</p>
+                                      </Typography>
+                                    </CardContent>
+                                  </Collapse>
+                                </Card>
+                              </Col>)
+                          }) : ''
+                      }
+                  </Row>
+                </Container>
+                <Modal title="Xodim" width="50%" visible={this.state.visible} footer={false} onCancel={()=>{this.hideModal()}}>
+                <Form>
+                  <Form.Item 
+                  className="mb-3" 
+                  label="Familya"
+                  name="lastname"
+                  rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
+                  >
+                    <Input placeholder="Familya"/> 
+                  </Form.Item>
+
+                  <Form.Item 
+                    className="mb-3" 
+                    name="firstname"
+                    label="Ism"
+                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
+                    > 
+                      <Input placeholder="Ism"/>
+                  </Form.Item>
+
+                  <Form.Item 
+                    className="mb-3" 
+                    name="image"
+                    label="Rasm"
+                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
+                  >
+                    <Input onChange={this.customRequest} type="file" required={false} style={{marginBottom: '20px'}} accept="image/jpg, image/jpeg, image/png"/>
+                      {(this.state.previewImage) ? ImageDemo(this.state.imageUrl) : ''}
+                  </Form.Item>
+
+                  <Form.Item 
+                    className="mb-3" 
+                    name="username"
+                    label="Login"
+                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
+                  > 
+                    <Input placeholder='Login'/>
+                  </Form.Item>
+
+                  <Form.Item 
+                    className="mb-3 red" 
+                    name="password"
+                    label="Parol"
+                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
+                  >
+                    <Input type='password' placeholder='Parol'/> 
+                  </Form.Item>
+
+                  <Form.Item 
+                    className="mb-3 red" 
+                    name="confirmPassword"
+                    label="Parol tekshirish"
+                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
+                  > 
+                    <Input placeholder="Parol tekshirish" type="password"/>
+                  </Form.Item>
+
+                  <Form.Item 
+                    className="mb-3" 
+                    name="email"
+                    label="Email"
+                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
+                  >
+                    <Input type="email" placeholder="Email"/> 
+                  </Form.Item>
+
+                  <Form.Item 
+                    className="mb-3" 
+                    name="position"
+                    label="Soha"
+                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
+                  >
+                    <Input placeholder="Soha"/> 
+                  </Form.Item>
+
+                  <Form.Item 
+                    className="mb-3" 
+                    name="speciality"
+                    label="Mutaxassislik"
+                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
+                  >
+                      <Select
+                          mode='multiple'
+                          style={{width:'100%'}}
+                          onChange={this.handleChange}
+                          optionLabelProp="label"
+                        />
+                      {
+                        this.state.options!==null ? this.state.options.map((item)=>{
+                          console.log(item.name)
+                          return (<Option value={item.name}  label={item.name}><div className="demo-option-label-item">{item.name}</div></Option>)
+                        }) : ''
+                      }
+                  </Form.Item>
+
+                  <Form.Item 
+                    className="mb-3" 
+                    name="phone"
+                    label="Telefon raqam"
+                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
+                  >
+                    <Input placeholder="Telefon raqam"/> 
+                  </Form.Item>
+
+
+                  <Form.Item 
+                    name="description" 
+                    className="mb-3" 
+                    style={{width:"100%"}}
+                    label="Qo'shimcha ma'lumot"
+                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
+                  >
+                    <TextArea
+                      placeholder="Qo'shimcha ma'lumot"
+                      style={{ height: '200px'}}
                     >
-                      <p>{this.state.text}</p>
-                    </Modal>
-                    <Modal
-                      title="Tadbir"
-                      visible={this.state.show}
-                      onCancel={this.closeModal}
-                    footer={false}
-                    >
-          <Form>
-          <Form.Group className="mb-3" controlId="formBasictitle"> 
-            <Form.Label>Tadbir sarlavhasi</Form.Label><br/>
-            <Form.Control defaultValue={this.state.title} name="title" required type="text" placeholder="Tadbir sarlavhasi"/>
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicaddress"> 
-                <Form.Label>Tadbir manzili</Form.Label><br/>
-                <Form.Control defaultValue={this.state.address} name="address" required type="text" placeholder="Tadbir manzili"/>
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicdate"> 
-                <Form.Label>Tadbir sanasi</Form.Label><br/>
-                <Form.Control defaultValue={this.state.date} name="date" required type="date" placeholder="mm/dd/yy"/>
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasictime"> 
-                <Form.Label>Tadbir vaqti</Form.Label><br/>
-                <Form.Control defaultValue={this.state.time} name="time" required type="time"/>
-            </Form.Group>
-            
-            <Form.Group className="mb-3" controlId="formBasicimage">
-            <Form.Label>Tadbir rasmi</Form.Label><br/>
-            <Form.Control      accept=".jpg, .jpeg, .png"
-                              onChange={this.customRequest} name="image" required type="file"/>
-            <br/><br/>
-            {(this.state.previewImage) ? ImageDemo(this.state.imageUrl) : ''}
-            </Form.Group>
-            <Form.Group controlId="formBasictext" className="mb-3" style={{width:"100%"}}>
-            <Form.Label>Tadbir matni</Form.Label>
-            <br/><Form.Control
-            defaultValue={this.state.textF}
-              as="textarea"
-              name="text"
-              placeholder="Tadbir matnini yozing"
-              style={{ height: '200px'}}
-            />
-          </Form.Group>
-          <br/><br/>
-            <Button type="danger" htmlType="button" onClick={this.closeModal}>
-                
-            Bekor qilish
-          </Button>
-          <Button type="primary" htmlType="button"
-          onClick={this.createEvent}
-          >
-            Yaratish
-          </Button>
-          </Form>
-        </Modal>
-       </div>
+                    </TextArea>
+                </Form.Item>
+                <br/>
+                <Button variant="danger" htmlType="button" style={{marginRight: '20px'}} onClick={()=>{this.hideModal()}}>
+                    Bekor qilish
+                </Button>
+                <Button variant="primary" htmlType="button" onClick={()=>{this.saveXodim()}}>
+                    Yaratish
+                </Button>
+              </Form>
+            </Modal>
+            </div>
         )
     }
 }

@@ -94,12 +94,8 @@ export const createXodim=(config)=>{
         url:`${url}/staff/`,
         method:'post',
         data:config,
-        
-            headers: {
-              "content-type": "multipart/form-data",
-            },
-        
     }
+    console.log(config);
     return(httpRequest(configs))
 }
 
@@ -112,6 +108,7 @@ export const deleteXodim=(idD)=>{
     }
     return(httpRequest(config))
 }
+
 export const editXodim=(configs, idT)=>{
     var config= {
         url: `${url}/staff/${idT}/`,
@@ -119,4 +116,12 @@ export const editXodim=(configs, idT)=>{
         data: configs
     }
     return (httpRequest(config))
+}
+
+export const getSpec=()=>{
+    var config={
+        url:`${url}/spec/`,
+        method:'get',
+    }
+    return(httpRequest(config))
 }
