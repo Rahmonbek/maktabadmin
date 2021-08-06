@@ -94,41 +94,46 @@ export default class Oqituvchilar extends Component {
             password: password,
             email: email
           },
-          position: position,
           phone: phone,
           speciality: speciality,
-          image: image,
+          image: this.state.image,
           description: description
         }
-        // let formData = new FormData()
-        // formData.append(
-        //   'user',
-        //   teacher.user ?? ''
-        // )
-        // formData.append(
-        //   'position',
-        //   teacher.position ?? ''
-        // )
-        // formData.append(
-        //   'image',
-        //   teacher.image ?? ''
-        // )
-        // formData.append(
-        //   'phone',
-        //   teacher.phone ?? ''
-        // )
-        // formData.append(
-        //   'speciality',
-        //   teacher.speciality ?? ''
-        // )
-        // formData.append(
-        //   'description',
-        //   teacher.description ?? ''
-        // )
+        let formData = new FormData()
+        formData.append(
+          'user',
+          {
+            first_name: firstname,
+            last_name: lastname,
+            username: username,
+            password: password,
+            email: email
+          } ?? ''
+        )
+        formData.append(
+          'position',
+         position ?? ''
+        )
+        formData.append(
+          'image',
+          this.state.image ?? ''
+        )
+        formData.append(
+          'phone',
+         phone ?? ''
+        )
+        formData.append(
+          'speciality',
+         speciality ?? ''
+        )
+        formData.append(
+          'description',
+         description ?? ''
+        )
         if(this.state.edit!==null) {
-          editXodim(teacher, this.state.edit).then(res=>{this.getXodim()}).catch(err=>console.log(err))
+          editXodim(formData, this.state.edit).then(res=>{this.getXodim()}).catch(err=>console.log(err))
         } else {
-          createXodim(teacher).then(res=>{this.getXodim()}).catch(err=>{console.log(err)})
+          createXodim(formData).then(res=>{this.getXodim()}).catch(err=>{console.log(err)})
         }
         this.hideModal()
     }
@@ -376,13 +381,13 @@ export default class Oqituvchilar extends Component {
                           style={{width:'100%'}}
                           onChange={this.handleChange}
                           optionLabelProp="label"
-                        />
+                        >
                       {
                         this.state.options!==null ? this.state.options.map((item)=>{
-                          console.log(item.name)
-                          return (<Option value={item.name}  label={item.name}><div className="demo-option-label-item">{item.name}</div></Option>)
+                         
+                          return (<Option value={item.id}  label={item.name}>{item.name}</Option>)
                         }) : ''
-                      }
+                      }</Select>
                   </Form.Item>
 
                   <Form.Item 
