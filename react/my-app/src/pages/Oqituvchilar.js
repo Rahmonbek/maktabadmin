@@ -105,26 +105,26 @@ export default class Oqituvchilar extends Component {
           'position',
          position ?? ''
         )
-        formData.append(
-          'first_name',
-         firstname ?? ''
-        )
-        formData.append(
-          'last_name',
-         lastname ?? ''
-        )
-        formData.append(
-          'username',
-         username ?? ''
-        )
-        formData.append(
-          'password',
-         password ?? ''
-        )
-        formData.append(
-          'email',
-         email ?? ''
-        )
+        // formData.append(
+        //   'first_name',
+        //  firstname ?? ''
+        // )
+        // formData.append(
+        //   'last_name',
+        //  lastname ?? ''
+        // )
+        // formData.append(
+        //   'username',
+        //  username ?? ''
+        // )
+        // formData.append(
+        //   'password',
+        //  password ?? ''
+        // )
+        // formData.append(
+        //   'email',
+        //  email ?? ''
+        // )
         formData.append(
           'image',
           this.state.image ?? ''
@@ -148,7 +148,7 @@ export default class Oqituvchilar extends Component {
           }).catch(err=>console.log(err))
         } else {
           createXodim(formData).then(res=>{
-          patchXodim({speciality:speciality}, res.data.id).then(res1=>{
+          patchXodim({speciality:speciality, user:teacher.user}, res.data.id).then(res1=>{
             this.getXodim()
          
           }).catch(err1=>{console.log(err1)})  
