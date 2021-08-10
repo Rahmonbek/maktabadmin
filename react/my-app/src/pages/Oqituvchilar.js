@@ -379,15 +379,6 @@ export default class Oqituvchilar extends Component {
 
                   <Form.Item 
                     className="mb-3" 
-                    name="email"
-                    label="Email"
-                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
-                  >
-                    <Input type="email" placeholder="Email"/> 
-                  </Form.Item>
-
-                  <Form.Item 
-                    className="mb-3" 
                     name="position"
                     label="Soha"
                     rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
