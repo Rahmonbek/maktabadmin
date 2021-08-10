@@ -35,6 +35,7 @@ export default class Oqituvchilar extends Component {
         expanded: [],
         options: [],
         image: null,
+        speciality:[]
     }
     openModal = () => {
       this.setState({
@@ -44,6 +45,8 @@ export default class Oqituvchilar extends Component {
     hideModal = () => {
         this.setState({
           visible: false,
+          speciality:[],
+          image:{}
         })
         this.reset()
     }
@@ -82,7 +85,7 @@ export default class Oqituvchilar extends Component {
         var phone = document.getElementById('phone').value
         var description = document.getElementById('description').value
         var position = document.getElementById('position').value
-       var speciality=[1,2,3]
+       var speciality= this.state.speciality
         if(confirmPassword!==password) {
           return document.querySelector('.red').style.color = 'red'
         }
@@ -150,7 +153,8 @@ export default class Oqituvchilar extends Component {
           )
         console.log(res)  
           createXodim(formData).then(res=>{
-            console.log(res)
+            console.log(speciality)
+       
             patchXodim({speciality:speciality}, res.data.id).then(res1=>{
         this.hideModal()
               
@@ -200,7 +204,7 @@ export default class Oqituvchilar extends Component {
       })
     }
     handleChange = (selectedOption) => {
-      this.setState({selectedOption})
+      this.setState({speciality:selectedOption})
     }
     componentDidMount(){
       this.getXodim()
