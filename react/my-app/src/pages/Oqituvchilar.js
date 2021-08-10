@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Col, Container, Image, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
-import { createXodim, deleteXodim, getSpec,editXodim, getXodim, patchXodim } from '../host/Config'
+import { createXodim, deleteXodim, getSpec,editXodim, getXodim, patchXodim, register } from '../host/Config'
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -114,10 +114,6 @@ export default class Oqituvchilar extends Component {
         //  lastname ?? ''
         // )
         // formData.append(
-        //   'username',
-        //  username ?? ''
-        // )
-        // formData.append(
         //   'password',
         //  password ?? ''
         // )
@@ -147,14 +143,23 @@ export default class Oqituvchilar extends Component {
             this.getXodim();
           }).catch(err=>console.log(err))
         } else {
+        register({username, password}).then(res=>{
+          formData.append(
+            'user',
+           res.data.user.id ?? ''
+          )
+        console.log(res)  
           createXodim(formData).then(res=>{
-          patchXodim({speciality:speciality, user:teacher.user}, res.data.id).then(res1=>{
-            this.getXodim()
-         
-          }).catch(err1=>{console.log(err1)})  
-             }).catch(err=>{console.log(err)})
-        }
+            patchXodim({speciality:speciality, user:teacher.user}, res.data.id).then(res1=>{
         this.hideModal()
+              
+              this.getXodim()
+           
+            }).catch(err1=>{console.log(err1)})  
+               }).catch(err=>{console.log(err)})
+   
+        }).catch(err=>{document.querySelector('.registerRed').style.display="block"})
+        }
     }
     deleteXodim = (id) => {
       deleteXodim(id).then(res=>{this.getXodim()}).catch(err=>console.log(err))
@@ -352,7 +357,7 @@ export default class Oqituvchilar extends Component {
                   > 
                     <Input placeholder='Login'/>
                   </Form.Item>
-
+<p style={{color:'red', fontSize:'14px', display:"none"}} className="registerRed">Bu login tizimda bor boshqa login kiriting</p>
                   <Form.Item 
                     className="mb-3 red" 
                     name="password"

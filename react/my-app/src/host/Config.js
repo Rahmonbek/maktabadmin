@@ -99,6 +99,16 @@ export const createXodim=(config)=>{
     return(httpRequest(configs))
 }
 
+export const register=(config)=>{
+    var configs={
+        url:`${url}/register/`,
+        method:'post',
+        data:config,
+    }
+    
+    return(httpRequest(configs))
+}
+
 export const deleteXodim=(idD)=>{
     var config={
         url:`${url}/staff/${idD}`,
