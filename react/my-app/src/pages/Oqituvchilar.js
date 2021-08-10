@@ -20,7 +20,7 @@ import ImageDemo from './ImageDemo';
 import { Input, Select, Form} from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import axios from 'axios';
-import { url } from '../host/Host';
+import { id, url } from '../host/Host';
 import { Option } from 'antd/lib/mentions';
 
 export default class Oqituvchilar extends Component {
@@ -105,10 +105,10 @@ export default class Oqituvchilar extends Component {
           'position',
          position ?? ''
         )
-        // formData.append(
-        //   'first_name',
-        //  firstname ?? ''
-        // )
+        formData.append(
+          'full_name',
+         firstname+" "+lastname ?? ''
+        )
         // formData.append(
         //   'last_name',
         //  lastname ?? ''
@@ -129,10 +129,10 @@ export default class Oqituvchilar extends Component {
           'phone',
          phone ?? ''
         )
-        // formData.append(
-        //   'speciality',
-        //  speciality ?? ''
-        // )
+        formData.append(
+          'school',
+         id ?? ''
+        )
         formData.append(
           'description',
          description ?? ''
@@ -150,7 +150,8 @@ export default class Oqituvchilar extends Component {
           )
         console.log(res)  
           createXodim(formData).then(res=>{
-            patchXodim({speciality:speciality, user:teacher.user}, res.data.id).then(res1=>{
+            console.log(res)
+            patchXodim({speciality:speciality}, res.data.id).then(res1=>{
         this.hideModal()
               
               this.getXodim()
@@ -213,7 +214,7 @@ export default class Oqituvchilar extends Component {
                     <Button type="primary" onClick={()=>{this.openModal()}}>Xodim qo'shish</Button>
                         <Row>
                               {
-                                  this.state.teachers!==null ? this.state.teachers.map((item, key)=>{
+                                  this.state.teachers!==[] ? this.state.teachers.map((item, key)=>{
                                       return(<Col lg={4} md={6} sm={12} style={{marginTop:'20px'}}>
                                           <Card className={style.root}>
                                               <CardHeader title='Xodim'/>
@@ -221,7 +222,7 @@ export default class Oqituvchilar extends Component {
                                                   <CardMedia
                                                     className={style.media}
                                                     image={item.image}
-                                                    title={item.user.last_name + ' ' + item.user.first_name} /> : '' } 
+                                                    title={item.user.full_name} /> : '' } 
                                                       <CardContent>
                                                         <Typography variant="body2" color="textSecondary" component="p">
                                                           <p><b>Familyasi: </b>{item.user.last_name}</p>
