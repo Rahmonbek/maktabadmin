@@ -29,7 +29,7 @@ export default class Oqituvchilar extends Component {
         visible: false,
         selectedFile:null,
         teacher: {},
-        edit: null,
+        edit: 0,
         previewImage: false,
         teachers: [],
         expanded: [],
@@ -57,26 +57,36 @@ export default class Oqituvchilar extends Component {
         getXodim().then(res=>{return this.setState({teachers: res.data})
          }).catch(err=>console.log(err))
       }
-      editXodim=(id)=>{
-        axios.get(`${url}/staff/`).then(res=>{
-          this.setState({
-            edit: res.data[id].id
-          })
-          document.getElementById('firstname').value = res.data[id].user.first_name
-          document.getElementById('lastname').value = res.data[id].user.last_name
-          document.getElementById('username').value = res.data[id].user.username
-          document.getElementById('email').value = res.data[id].user.email
-          document.getElementById('password').value = res.data[id].user.password
+      // setEdit(teachers[key].id)
+      // setTimeout(function(){
+      //   form.setFieldsValue({
+      //   full_name:teachers[key].full_name,
+      //   phone_number:teachers[key].phone_number,
+      //   photo:'',
+      //   text:teachers[key].text
+      //   })
+      // },0);
+      editXodim=(key)=>{
+        this.setState({
+          edit:this.state.teachers[key].id
+        })
+        // axios.get(`${url}/staff/`).then(res=>{
+        //   this.setState({
+        //     edit: res.data[id].id
+        //   })
+        console.log(this.state.teachers[key])
+        console.log(this.state.edit,this.state.teachers[key].id)
+          document.getElementById('full_name').value =this.state.teachers[key].full_name
+          document.getElementById('username').value = this.state.teachers[key].username
+          document.getElementById('password').value = this.state.teachers[key].password
           document.getElementsById('confirmPassword').style.display='none'
-          document.getElementById('phone').value = res.data[id].phone
-          document.getElementById('description').value = res.data[id].description
-          document.getElementById('position').value = res.data[id].position
-        }).catch(err=>console.log(err))
+          document.getElementById('phone').value = this.state.teachers[key].phone
+          document.getElementById('description').value = this.state.teachers[key].description
+          document.getElementById('position').value = this.state.teachers[key].position
         this.openModal()
        }
       saveXodim = () => {
-        var firstname = document.getElementById('firstname').value
-        var lastname = document.getElementById('lastname').value
+        var full_name = document.getElementById('full_name').value
         var image = this.state.image
         var username = document.getElementById('username').value
         var email = document.getElementById('email').value
@@ -91,8 +101,7 @@ export default class Oqituvchilar extends Component {
         }
         var teacher = {
           user: {
-            first_name: firstname,
-            last_name: lastname,
+            full_name: full_name,
             username: username,
             password: password,
             email: email
@@ -110,7 +119,7 @@ export default class Oqituvchilar extends Component {
         )
         formData.append(
           'full_name',
-         firstname+" "+lastname ?? ''
+         full_name ?? ''
         )
         // formData.append(
         //   'last_name',
@@ -170,8 +179,7 @@ export default class Oqituvchilar extends Component {
       deleteXodim(id).then(res=>{this.getXodim()}).catch(err=>console.log(err))
     }
     reset=()=>{
-      document.getElementById('firstname').value = ''
-      document.getElementById('lastname').value = ''
+      document.getElementById('full_name').value = ''
       document.getElementById('username').value = ''
       document.getElementById('email').value = ''
       document.getElementById('password').value = ''
@@ -181,7 +189,6 @@ export default class Oqituvchilar extends Component {
       document.getElementById('position').value = ''
       document.getElementById('confirmPassword').style.display = 'block'
       this.setState({
-        edit:null,
         image: null
       })
     }
@@ -226,17 +233,15 @@ export default class Oqituvchilar extends Component {
                                                   <CardMedia
                                                     className={style.media}
                                                     image={item.image}
-                                                    title={item.user.full_name} /> : '' } 
+                                                    title={item.full_name} /> : '' } 
                                                       <CardContent>
                                                         <Typography variant="body2" color="textSecondary" component="p">
-                                                          <p><b>Familyasi: </b>{item.user.last_name}</p>
-                                                          <p><b>Ismi: </b>{item.user.first_name}</p>
-                                                          <p><b>Login: </b>{item.user.username}</p>
-                                                          <p><b>Password: </b>{item.user.password}</p>
+                                                          <p><b>F.I.O: </b>{item.full_name}</p>
+                                                          {/* <p><b>Login: </b>{item.user.username}</p> */}
+                                                          {/* <p><b>Password: </b>{item.user.password}</p> */}
                                                           <p><b>Mutaxassislik: </b>{item.speciality.map(item1=>{return (item1)})}</p>
                                                           <p><b>Sohasi: </b>{item.position}</p>
                                                           <p><b>Telefon raqami: </b>{item.phone}</p>
-                                                          <p><b>Email: </b>{item.user.email}</p>
                                                         </Typography>
                                                       </CardContent>
                                                       <CardActions disableSpacing style={{display:'flex', justifyContent:'space-around'}}>
@@ -329,7 +334,7 @@ export default class Oqituvchilar extends Component {
                   <Form.Item 
                   className="mb-3" 
                   label="Familya"
-                  name="lastname"
+                  name="full_name"
                   rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
                   >
                     <Input placeholder="Familya"/> 
@@ -337,16 +342,7 @@ export default class Oqituvchilar extends Component {
 
                   <Form.Item 
                     className="mb-3" 
-                    name="firstname"
-                    label="Ism"
-                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
-                    > 
-                      <Input placeholder="Ism"/>
-                  </Form.Item>
-
-                  <Form.Item 
-                    className="mb-3" 
-                    name="image"
+                    name="photo"
                     label="Rasm"
                     rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
                   >
