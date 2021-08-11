@@ -144,3 +144,40 @@ export const getSpec=()=>{
     }
     return(httpRequest(config))
 }
+
+export const getClass=()=>{
+    var config={
+        url:`${url}/class/${id}`,
+        method:'get',
+    }
+    return(httpRequest(config))
+}
+
+export const createClass=(config)=>{
+    var configs={
+        url:`${url}/class/`,
+        method:'post',
+        data:config,
+    }
+    console.log(config);
+    return(httpRequest(configs))
+}
+
+export const deleteClass=(idD)=>{
+    var config={
+        url:`${url}/class/${idD}`,
+        method:'delete',
+
+
+    }
+    return(httpRequest(config))
+}
+
+export const editClass=(configs, idM)=>{
+    var config= {
+        url: `${url}/class/${idM}/`,
+        method: 'put',
+        data: configs
+    }
+    return (httpRequest(config))
+}
