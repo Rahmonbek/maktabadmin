@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Col, Container, Image, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
+import {  Col, Container, Image, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
 import { createXodim, deleteXodim, getSpec,editXodim, getXodim, patchXodim, register } from '../host/Config'
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -17,10 +17,8 @@ import styles from '../css/modalStyle.css'
 import clsx from 'clsx';
 import Modal from 'antd/lib/modal/Modal';
 import ImageDemo from './ImageDemo';
-import { Input, Select, Form} from 'antd';
-import TextArea from 'antd/lib/input/TextArea';
-import axios from 'axios';
-import { id, url } from '../host/Host';
+import {Button, Input, Select, Form, TextArea} from 'antd';
+import { id} from '../host/Host';
 import { Option } from 'antd/lib/mentions';
 
 export default class Oqituvchilar extends Component {
@@ -29,13 +27,15 @@ export default class Oqituvchilar extends Component {
         visible: false,
         selectedFile:null,
         teacher: {},
-        edit: 0,
+        edit: null,
         previewImage: false,
         teachers: [],
         expanded: [],
         options: [],
         image: null,
-        speciality:[]
+        speciality:[],
+        user:true,
+        staff:{}
     }
     openModal = () => {
       this.setState({
@@ -57,59 +57,28 @@ export default class Oqituvchilar extends Component {
         getXodim().then(res=>{return this.setState({teachers: res.data})
          }).catch(err=>console.log(err))
       }
-      // setEdit(teachers[key].id)
-      // setTimeout(function(){
-      //   form.setFieldsValue({
-      //   full_name:teachers[key].full_name,
-      //   phone_number:teachers[key].phone_number,
-      //   photo:'',
-      //   text:teachers[key].text
-      //   })
-      // },0);
+   
       editXodim=(key)=>{
         this.setState({
-          edit:this.state.teachers[key].id
+          edit:this.state.teachers[key].id,
+          user:false,
+          staff:this.state.teachers[key]
         })
-        // axios.get(`${url}/staff/`).then(res=>{
-        //   this.setState({
-        //     edit: res.data[id].id
-        //   })
-        console.log(this.state.teachers[key])
-        console.log(this.state.edit,this.state.teachers[key].id)
-          document.getElementById('full_name').value =this.state.teachers[key].full_name
-          document.getElementById('username').value = this.state.teachers[key].username
-          document.getElementById('password').value = this.state.teachers[key].password
-          document.getElementsById('confirmPassword').style.display='none'
-          document.getElementById('phone').value = this.state.teachers[key].phone
-          document.getElementById('description').value = this.state.teachers[key].description
-          document.getElementById('position').value = this.state.teachers[key].position
+      
         this.openModal()
        }
-      saveXodim = () => {
-        var full_name = document.getElementById('full_name').value
-        var image = this.state.image
-        var username = document.getElementById('username').value
-        var email = document.getElementById('email').value
-        var password= document.getElementById('password').value
-        var confirmPassword = document.getElementById('confirmPassword').value
-        var phone = document.getElementById('phone').value
-        var description = document.getElementById('description').value
-        var position = document.getElementById('position').value
+      saveXodim = (value) => {
+        var full_name = value.full_name
+        var username = value.username
+        var email = value.email
+        var password= value.password
+        var confirmPassword = value.confirmPassword
+        var phone = value.phone
+        var description = value.description
+        var position = value.position
        var speciality= this.state.speciality
         if(confirmPassword!==password) {
           return document.querySelector('.red').style.color = 'red'
-        }
-        var teacher = {
-          user: {
-            full_name: full_name,
-            username: username,
-            password: password,
-            email: email
-          },
-          phone: phone,
-          speciality: speciality,
-          image: this.state.image,
-          description: description
         }
         let formData = new FormData()
      
@@ -121,18 +90,6 @@ export default class Oqituvchilar extends Component {
           'full_name',
          full_name ?? ''
         )
-        // formData.append(
-        //   'last_name',
-        //  lastname ?? ''
-        // )
-        // formData.append(
-        //   'password',
-        //  password ?? ''
-        // )
-        // formData.append(
-        //   'email',
-        //  email ?? ''
-        // )
         formData.append(
           'image',
           this.state.image ?? ''
@@ -179,17 +136,10 @@ export default class Oqituvchilar extends Component {
       deleteXodim(id).then(res=>{this.getXodim()}).catch(err=>console.log(err))
     }
     reset=()=>{
-      document.getElementById('full_name').value = ''
-      document.getElementById('username').value = ''
-      document.getElementById('email').value = ''
-      document.getElementById('password').value = ''
-      document.getElementById('confirmPassword').value = ''
-      document.getElementById('phone').value = ''
-      document.getElementById('description').value = ''
-      document.getElementById('position').value = ''
-      document.getElementById('confirmPassword').style.display = 'block'
+    
       this.setState({
-        image: null
+        image: null,
+        staff:{}
       })
     }
     customRequest = (e) => {
@@ -333,11 +283,14 @@ export default class Oqituvchilar extends Component {
                 <Form>
                   <Form.Item 
                   className="mb-3" 
-                  label="Familya"
+                  label="FIO"
+                  onFinish={this.saveXodim}
                   name="full_name"
+initialValue={this.state.staff.full_name}
+                  
                   rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
                   >
-                    <Input placeholder="Familya"/> 
+                    <Input  placeholder="Ism familiya ochistva"/> 
                   </Form.Item>
 
                   <Form.Item 
@@ -350,53 +303,63 @@ export default class Oqituvchilar extends Component {
                       {(this.state.previewImage) ? ImageDemo(this.state.imageUrl) : ''}
                   </Form.Item>
 
-                  <Form.Item 
-                    className="mb-3" 
-                    name="username"
-                    label="Login"
-                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
-                  > 
-                    <Input placeholder='Login'/>
-                  </Form.Item>
+{
+  this.state.edit===null?
+ <> <Form.Item 
+  className="mb-3 username" 
+  name="username"
+  label="Login"
+
+  rules={[{ required: this.state.user, message: 'Bu joyni to\'ldirish majburiy!' }]}
+> 
+  <Input placeholder='Login'/>
+</Form.Item>
 <p style={{color:'red', fontSize:'14px', display:"none"}} className="registerRed">Bu login tizimda bor boshqa login kiriting</p>
-                  <Form.Item 
-                    className="mb-3 red" 
-                    name="password"
-                    label="Parol"
-                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
-                  >
-                    <Input type='password' placeholder='Parol'/> 
-                  </Form.Item>
+<Form.Item 
+  className="mb-3 red" 
+  name="password"
+  label="Parol"
 
-                  <Form.Item 
-                    className="mb-3 red" 
-                    name="confirmPassword"
-                    label="Parol tekshirish"
-                    rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
-                  > 
-                    <Input placeholder="Parol tekshirish" type="password"/>
-                  </Form.Item>
+  rules={[{ required: this.state.user, message: 'Bu joyni to\'ldirish majburiy!' }]}
+>
+  <Input type='password' placeholder='Parol'/> 
+</Form.Item>
 
+<Form.Item 
+  className="mb-3 red" 
+  name="confirmPassword"
+  label="Parol tekshirish"
+
+  rules={[{ required: this.state.user, message: 'Bu joyni to\'ldirish majburiy!' }]}
+> 
+  <Input placeholder="Parol tekshirish" type="password"/>
+</Form.Item></>:''
+}
+                  
                   <Form.Item 
                     className="mb-3" 
                     name="position"
+                    initialValue={this.state.staff.position}
                     label="Soha"
                     rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
                   >
-                    <Input placeholder="Soha"/> 
+                    <Input   placeholder="Soha"/> 
                   </Form.Item>
 
                   <Form.Item 
                     className="mb-3" 
                     name="speciality"
                     label="Mutaxassislik"
+                    initialValue={this.state.staff.speciality}
                     rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
                   >
                       <Select
                           mode='multiple'
+
                           style={{width:'100%'}}
                           onChange={this.handleChange}
                           optionLabelProp="label"
+                          
                         >
                       {
                         this.state.options!==null ? this.state.options.map((item)=>{
@@ -409,10 +372,11 @@ export default class Oqituvchilar extends Component {
                   <Form.Item 
                     className="mb-3" 
                     name="phone"
+                    initialValue={this.state.staff.phone}
                     label="Telefon raqam"
                     rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
                   >
-                    <Input placeholder="Telefon raqam"/> 
+                    <Input   placeholder="Telefon raqam"/> 
                   </Form.Item>
 
 
@@ -422,20 +386,18 @@ export default class Oqituvchilar extends Component {
                     style={{width:"100%"}}
                     label="Qo'shimcha ma'lumot"
                     rules={[{ required: false, message: 'Bu joyni to\'ldirish majburiy!' }]}
+                  initialValue={this.state.staff.description}
                   >
-                    <TextArea
-                      placeholder="Qo'shimcha ma'lumot"
-                      style={{ height: '200px'}}
-                    >
-                    </TextArea>
+                 <Input.TextArea />
                 </Form.Item>
                 <br/>
-                <Button variant="danger" htmlType="button" style={{marginRight: '20px'}} onClick={()=>{this.hideModal()}}>
+                <Form.Item>
+                <Button type="danger" htmlType="button" style={{marginRight: '20px'}} onClick={()=>{this.hideModal()}}>
                     Bekor qilish
                 </Button>
-                <Button variant="primary" htmlType="button" onClick={()=>{this.saveXodim()}}>
+                <Button type="primary" htmlType="submit">
                     Yaratish
-                </Button>
+                </Button></Form.Item>
               </Form>
             </Modal>
             </div>
