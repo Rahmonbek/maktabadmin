@@ -15,6 +15,7 @@ import Salomatlik from './pages/Salomatlik'
 import Dashboard from './pages/Dashboard'
 import Yutuqlar from './pages/Yutuqlar'
 import Yangiliklar from './pages/Yangiliklar';
+import Sinflar from './pages/Sinflar';
 const routes = [
 	{
 		path: '/login',
@@ -39,6 +40,10 @@ const routes = [
 			{
 				path: '/home/darsjadvali/uz',
 				component: DarsJadvali,
+			},
+			{
+				path: '/home/sinflar/uz',
+				component: Sinflar,
 			},
 			{
 				path: '/home/sportmashgulotlari/uz',

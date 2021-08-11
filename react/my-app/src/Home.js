@@ -11,6 +11,7 @@ import {FaCrown,FaRegCalendarAlt,FaRegNewspaper} from 'react-icons/fa'
 import {CgBowl} from 'react-icons/cg'
 import {GiHeartPlus} from 'react-icons/gi'
 import {MdSecurity} from 'react-icons/md'
+import {HiUserGroup} from 'react-icons/hi'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'antd/dist/antd.css';
 import Top from './pages/Top'
@@ -84,6 +85,11 @@ const Home = ({ routes }) => {
 			path: '/home/yutuqlar/uz',
 			name: "Yutuqlar",
 			icon:<FaCrown/>
+		},
+		{   id:15,  
+			path: '/home/sinflar/uz',
+			name: 'Sinflar',
+			icon:<HiUserGroup/>
 		},
 		{   id:10,  
 			path: '/home/darsjadvali/uz',
