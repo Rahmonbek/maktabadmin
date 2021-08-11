@@ -108,12 +108,14 @@ export default class Oqituvchilar extends Component {
         formData.append("phone", phone ?? "");
         formData.append("school", id ?? "");
         formData.append("description", description ?? "");
+        formData.append("speciality", this.state.speciality ?? "");
         if (this.state.edit !== null) {
             if (this.state.image !== null) {
                 formData.append("image", this.state.image ?? "");
             }
             editXodim(formData, this.state.edit)
                 .then((res) => {
+                    this.hideModal();
                     this.getXodim();
                 })
                 .catch((err) => console.log(err));
