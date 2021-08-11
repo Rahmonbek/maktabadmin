@@ -38,7 +38,7 @@ export default class Sinflar extends Component {
         }).catch(err=>console.log(err))
     }
     editClass = (id) => {
-        axios.get(`${url}/class/`).then(res=>{
+        axios.get(`${url}/class/${id}`).then(res=>{
             document.getElementById('classNumber').value = res.data[id].class_number
             document.getElementById('classChar').value = res.data[id].class_char  
             this.setState({editId:res.data[id].id, curator: res.data[id].curator})

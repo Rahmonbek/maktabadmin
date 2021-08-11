@@ -147,7 +147,7 @@ export const getSpec=()=>{
 
 export const getClass=()=>{
     var config={
-        url:`${url}/class/`,
+        url:`${url}/class/${id}`,
         method:'get',
     }
     return(httpRequest(config))
