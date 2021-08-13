@@ -43,7 +43,7 @@ console.log(this.state.teachers, this.state.class, this.state.subjects)
         </Radio.Group>    
       </div>
     )
-=======
+
 import React, { Component } from "react";
 import styles from "../css/sport.module.css";
 import { Form } from "react-bootstrap";
@@ -265,6 +265,7 @@ export default class DarsJadvali extends Component {
         </Container>
       </div>
     );
->>>>>>> 77ccdcb854aa8af4ab8ade37e9a8362664f509a4
   }
+}
+}
 }
