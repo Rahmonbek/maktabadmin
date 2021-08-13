@@ -9,6 +9,15 @@ export const getNews=()=>{
     return(httpRequest(config))
 }
 
+export const getSubject=()=>{
+    var config={
+        url:`${url}/subject/`,
+        method:'get',
+
+    }
+    return(httpRequest(config))
+}
+
 export const createNew=(config)=>{
     var configs={
         url:`${url}/new/`,
@@ -32,6 +41,9 @@ export const deleteNew=(idD)=>{
     }
     return(httpRequest(config))
 }
+
+
+
 export const editNew=(configs, idT)=>{
     var config= {
         url: `${url}/new/${idT}/`,
