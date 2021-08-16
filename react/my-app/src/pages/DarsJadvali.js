@@ -1,52 +1,7 @@
-
-import { Radio } from 'antd'
-import React, { Component } from 'react'
-import { getClass, getSubject, getXodim } from '../host/Config'
-
-export default class DarsJadvali extends Component {
-  state={
-    teachers:[],
-    subjects:[],
-    class:[],
-    jadval:[],
-    value:"0"
-
-  }
-
-getInfor=()=>{
-  getXodim().then(res=>{this.setState({
-    teachers:res.data
-  })})
-  
-  getSubject().then(res=>{this.setState({
-    subjects:res.data
-  })})
-  
-  getClass().then(res=>{this.setState({
-    class:res.data
-  })})
-  
-}
-
-
-componentDidMount(){
-  this.getInfor()
-console.log(this.state.teachers, this.state.class, this.state.subjects)
-}
-  render() {
-    return (
-      <div>
-      <Radio.Group value={this.state.value} onChange={this.handleSizeChange}>
-          <Radio.Button value="large">Large</Radio.Button>
-          <Radio.Button value="default">Default</Radio.Button>
-          <Radio.Button value="small">Small</Radio.Button>
-        </Radio.Group>    
-      </div>
-    )
-
 import React, { Component } from "react";
 import styles from "../css/sport.module.css";
-import { Form } from "react-bootstrap";
+import { Form, Table } from "react-bootstrap";
+import { getXodim, getSubject, getClass } from "../host/Config";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 export default class DarsJadvali extends Component {
@@ -81,7 +36,35 @@ export default class DarsJadvali extends Component {
         shanba: [],
       },
     },
+    teachers: [],
+    subjects: [],
+    class: [],
+    jadval: [],
+    value: "0",
   };
+  getInfor = () => {
+    getXodim().then((res) => {
+      this.setState({
+        teachers: res.data,
+      });
+    });
+
+    getSubject().then((res) => {
+      this.setState({
+        subjects: res.data,
+      });
+    });
+
+    getClass().then((res) => {
+      this.setState({
+        class: res.data,
+      });
+    });
+  };
+  componentDidMount() {
+    this.getInfor();
+    console.log(this.state.teachers, this.state.class, this.state.subjects);
+  }
   saveJadval = () => {
     var sinf = document.getElementById("sinf").value;
     var rahbar = document.getElementById("rahbar").value;
@@ -197,75 +180,71 @@ export default class DarsJadvali extends Component {
               </div>
             </Col>
             <Col lg={12}>
-              <div className={styles.timetable}>
-                {this.state.darslar.map((item, key) => {
-                  return (
-                    <div className={styles.timeDiv}>
-                      <div className={styles.sinf}>
-                        <h1>
-                          {item.sinf} <AiOutlineEdit onClick={() => this.editDars(key)} style={{ fontSize: "20px", color: "green", cursor: "pointer" }} /> <AiOutlineDelete style={{ fontSize: "20px", color: "red", cursor: "pointer" }} onClick={() => this.deleteDars(key)} />
-                        </h1>
-                        <p>Sinf rahbari: {item.rahbar}</p>
-                        <p>{item.smena}</p>
-                      </div>
-                      <div className={styles.day}>
-                        <h1>Dushanba</h1>
-                        <ol>
-                          {item.jadval.dushanba.map((item) => {
-                            return <li>{item}</li>;
-                          })}
-                        </ol>
-                      </div>
-                      <div className={styles.day}>
-                        <h1>Seshanba</h1>
-                        <ol>
-                          {item.jadval.seshanba.map((item) => {
-                            return <li>{item}</li>;
-                          })}
-                        </ol>
-                      </div>
-                      <div className={styles.day}>
-                        <h1>Chorshanba</h1>
-                        <ol>
-                          {item.jadval.chorshanba.map((item) => {
-                            return <li>{item}</li>;
-                          })}
-                        </ol>
-                      </div>
-                      <div className={styles.day}>
-                        <h1>Payshanba</h1>
-                        <ol>
-                          {item.jadval.payshanba.map((item) => {
-                            return <li>{item}</li>;
-                          })}
-                        </ol>
-                      </div>
-                      <div className={styles.day}>
-                        <h1>Juma</h1>
-                        <ol>
-                          {item.jadval.juma.map((item) => {
-                            return <li>{item}</li>;
-                          })}
-                        </ol>
-                      </div>
-                      <div className={styles.day}>
-                        <h1>Shanba</h1>
-                        <ol>
-                          {item.jadval.shanba.map((item) => {
-                            return <li>{item}</li>;
-                          })}
-                        </ol>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <Table responsive hover striped variant="light" style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}>
+                <thead>
+                  <tr>
+                    <th>Sinflar</th>
+                    <th>Dushanba</th>
+                    <th>Seshanba</th>
+                    <th>Chorshanba</th>
+                    <th>Payshanba</th>
+                    <th>Juma</th>
+                    <th>Shanba</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>11-"B"</td>
+                    <td>
+                      <ol style={{ paddingLeft: 0 }}>
+                        <li>Matematika</li>
+                        <li>Ona tili</li>
+                        <li>Rus tili</li>
+                      </ol>
+                    </td>
+                    <td>
+                      <ol style={{ paddingLeft: 0 }}>
+                        <li>Matematika</li>
+                        <li>Ona tili</li>
+                        <li>Rus tili</li>
+                      </ol>
+                    </td>
+                    <td>
+                      <ol style={{ paddingLeft: 0 }}>
+                        <li>Matematika</li>
+                        <li>Ona tili</li>
+                        <li>Rus tili</li>
+                        <li>Adabiyot</li>
+                      </ol>
+                    </td>
+                    <td>
+                      <ol style={{ paddingLeft: 0 }}>
+                        <li>Matematika</li>
+                        <li>Ona tili</li>
+                        <li>Rus tili</li>
+                      </ol>
+                    </td>
+                    <td>
+                      <ol style={{ paddingLeft: 0 }}>
+                        <li>Matematika</li>
+                        <li>Ona tili</li>
+                        <li>Rus tili</li>
+                      </ol>
+                    </td>
+                    <td>
+                      <ol style={{ paddingLeft: 0 }}>
+                        <li>Matematika</li>
+                        <li>Ona tili</li>
+                        <li>Rus tili</li>
+                      </ol>
+                    </td>
+                  </tr>
+                </tbody>
+              </Table>
             </Col>
           </Row>
         </Container>
       </div>
     );
   }
-}
-}
 }

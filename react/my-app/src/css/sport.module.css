@@ -481,3 +481,7 @@
   transform: rotate(270deg);
   background-color: #1a86d0;
 }
+
+.ol {
+  padding-left: 0;
+}
