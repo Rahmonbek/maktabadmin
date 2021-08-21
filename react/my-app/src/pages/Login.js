@@ -33,6 +33,7 @@ function Login() {
     <Form.Label className={styles.labelForm}>Password</Form.Label>
     <Form.Control type="password" placeholder="Password" className={styles.inputForm}/>
   </Form.Group>
+  <Link to="/verify">Emailni tasdiqlash</Link>
   <Button variant="primary" type="submit" onClick={saveData} style={{backgroundColor:'#1A86D0'}} className={styles.btnInput} >
     Submit
   </Button>
