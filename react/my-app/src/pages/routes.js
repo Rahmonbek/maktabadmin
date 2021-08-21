@@ -5,11 +5,12 @@ import Togaraklar from './Togaraklar';
 import Maktab from './maktab';
 import DarsJadvali from './DarsJadvali';
 import Admin from './Admin'
-
+import Verify from './Verify'
 const routes = [
     {
     path: '/login',
     component: Login,
+   
     },
     {
     path: '/dashboard',
@@ -23,6 +24,7 @@ const routes = [
                 path: '/dashboard/togaraklar/uz',
                 component: Togaraklar,
                 },
+               
                 {
                     path: '/dashboard/darsjadvali/uz',
                     component: DarsJadvali,

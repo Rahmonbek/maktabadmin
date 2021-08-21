@@ -1,6 +1,6 @@
 import React from 'react';
 import {Form ,Button} from 'react-bootstrap'
-import {useHistory} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import styles from '../css/login.module.css'
 function Login() {
         let history=useHistory()
