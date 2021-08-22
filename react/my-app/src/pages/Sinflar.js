@@ -4,7 +4,7 @@ import Modal from "antd/lib/modal/Modal";
 import axios from "axios";
 import React, { Component } from "react";
 import { Form } from "react-bootstrap";
-import { createClass, deleteClass, editClass, getClass, getXodim } from "../host/Config";
+import { createClass, deleteClass, editClass, getClass, getStaff } from "../host/Config";
 import { url } from "../host/Host";
 import GLOBAL from "../host/Global";
 
@@ -25,19 +25,34 @@ export default class Sinflar extends Component {
     document.getElementById("classChar").value = "";
   };
   getCurator = () => {
-    getXodim()
+    getStaff()
       .then((res) => this.setState({ curators: res.data }))
       .catch((err) => console.log(err));
   };
   getClass = () => {
-    getClass()
+    // getClass()
+    //   .then((res) => {
+    //     var classes = res.data;
+    //     for (let i = 0; i < classes.length; i++) {
+    //       classes[i].key = i + 1;
+    //     }
+    //     this.setState({
+    //       classes: res.data,
+    //     });
+    //   })
+    //   .catch((err) => console.log(err));
+    axios
+      .get(`${url}/class/`)
       .then((res) => {
-        var classes = res.data;
+        var classes = [];
+        res.data.map((item) => {
+          return item.school === GLOBAL.id ? classes.push(item) : "";
+        });
         for (let i = 0; i < classes.length; i++) {
           classes[i].key = i + 1;
         }
         this.setState({
-          classes: res.data,
+          classes: classes,
         });
       })
       .catch((err) => console.log(err));
@@ -66,11 +81,11 @@ export default class Sinflar extends Component {
       school: GLOBAL.id,
     };
     if (this.state.editId !== null) {
-      console.log(classes);
       editClass(classes, this.state.editId)
         .then((res) => this.getClass())
         .catch((err) => console.log(err));
     } else {
+      console.log(classes);
       createClass(classes)
         .then((res) => this.getClass())
         .catch((err) => console.log(err));

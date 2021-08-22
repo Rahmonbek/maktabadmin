@@ -196,3 +196,11 @@ export const getSchools = () => {
   };
   return httpRequest(config);
 };
+
+export const getStaff = () => {
+  var config = {
+    url: `${url}/staff-by-school/${GLOBAL.id}`,
+    method: "get",
+  };
+  return httpRequest(config);
+};
