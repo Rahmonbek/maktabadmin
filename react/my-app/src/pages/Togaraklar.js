@@ -4,6 +4,8 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import Modal from "antd/lib/modal/Modal";
+import admin from "../img/user.png";
+import { getCourses } from "../host/Config";
 
 export default class Togaraklar extends Component {
   state = {
@@ -35,6 +37,11 @@ export default class Togaraklar extends Component {
     ],
     show: false,
   };
+  getCourses = () => {
+    getCourses()
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  };
   openModal = () => {
     this.setState({ show: true });
   };
@@ -44,6 +51,9 @@ export default class Togaraklar extends Component {
   createSubject = () => {
     console.log("dasdadsa");
   };
+  componentDidMount() {
+    this.getCourses();
+  }
   render() {
     return (
       <div>
@@ -61,16 +71,16 @@ export default class Togaraklar extends Component {
                   <div className={(styles.card, styles.cardone)}>
                     <header>
                       <div className={styles.avatar}>
-                        <img src={item.rasm} alt={item.name} />
+                        <img src={item.image !== null ? item.image : admin} alt="" />
                       </div>
                     </header>
 
                     <h3 className={styles.headerName}>{item.name}</h3>
                     <div className={styles.desc}>
-                      <Button className={styles.btncard}>{item.lavozim}</Button>
-                      <p>{item.matn}</p>
-                      <p style={{ marginTop: "-40px", fontWeight: "800" }}>{item.email}</p>
-                      <p style={{ marginTop: "-40px", fontWeight: "800" }}>{item.telefon}</p>
+                      <p>{item.title}</p>
+                      <p>{item.mentor}</p>
+                      <p style={{ marginTop: "-40px", fontWeight: "800" }}>{item.address}</p>
+                      <p style={{ marginTop: "-40px", fontWeight: "800" }}>{item.text}</p>
                     </div>
 
                     <footer className={styles.footer} style={{ marginTop: "-40px", fontWeight: "800" }}>
