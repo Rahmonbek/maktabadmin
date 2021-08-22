@@ -8,7 +8,8 @@ import {CgBowl} from 'react-icons/cg'
 import {GiHeartPlus} from 'react-icons/gi'
 import {MdSecurity} from 'react-icons/md'
 import { Menu, Button } from 'antd';
-import {Link,useRouteMatch} from'react-router-dom'
+import GLOBAL from '../host/Global'
+import {Link,Redirect,useRouteMatch} from'react-router-dom'
 import {
   AppstoreOutlined,
   MenuUnfoldOutlined,
@@ -54,8 +55,7 @@ class Navbar extends Component {
   }
   render() {
       const { SubMenu } = Menu;
-      return (
-          <div style={{height:'100%'}}>
+      return ( GLOBAL.id !== null ?          <div style={{height:'100%'}}>
       <Menu
         id="menu1"
         style={{color:'black',height:'100%'}}
@@ -65,20 +65,20 @@ class Navbar extends Component {
         inlineCollapsed={this.state.collapsed}
       >
         <Menu.Item danger={true} key="1" icon={<PieChartOutlined />} className={styles.menuitem} theme='light'>Dashboard</Menu.Item>
-        <Menu.Item key="14" icon={<UserOutlined />}><p style={{color:'black'}}>Admin</p></Menu.Item>
+        {/* <Menu.Item key="14" icon={<UserOutlined />}><p style={{color:'black'}}>Admin</p></Menu.Item> */}
         <Menu.Item key="2" icon={<FaRegNewspaper />}><Link to="/dashboard/yangiliklar/uz">Yangiliklar</Link></Menu.Item>
         <Menu.Item key="3" icon={<CarryOutOutlined />}>Tadbirlar</Menu.Item>       
         <Menu.Item key="5" icon={<BiBasketball />}><Link to="/dashboard/togaraklar/uz">Togaraklar</Link></Menu.Item>
-        <Menu.Item key="6" icon={<FiMusic/>}>Musiqa to'garaklari</Menu.Item>
-        <Menu.Item key="7" icon={<DiJavascript1/>}>Axborot texnologiyalari</Menu.Item>         
+        {/* <Menu.Item key="6" icon={<FiMusic/>}>Musiqa to'garaklari</Menu.Item>
+        <Menu.Item key="7" icon={<DiJavascript1/>}>Axborot texnologiyalari</Menu.Item>          */}
         <Menu.Item key="8" icon={<FiUsers/>}><Link to="/dashboard/rahbariyat/uz">Rahbariyat</Link></Menu.Item>
         <Menu.Item key="9" icon={<FaCrown />}>A'lochi o'quvchilar</Menu.Item>
         <Menu.Item key="10" icon={<FaRegCalendarAlt/>}><Link to="/dashboard/darsjadvali/uz">Dars jadvali</Link></Menu.Item>
         <Menu.Item key="11" icon={<CgBowl/>}><Link to="/dashboard/maktaboshxona/uz">Maktab oshxonasi</Link></Menu.Item>
-        <Menu.Item key="12" icon={<MdSecurity />}>Xavfsizlik</Menu.Item>
-        <Menu.Item key="13" icon={<GiHeartPlus/>}>Salomatlik</Menu.Item>
+        {/* <Menu.Item key="12" icon={<MdSecurity />}>Xavfsizlik</Menu.Item> */}
+        {/* <Menu.Item key="13" icon={<GiHeartPlus/>}>Salomatlik</Menu.Item> */}
       </Menu>
-          </div>
+          </div> : <Redirect to="/login"/>
       );
   }
 }

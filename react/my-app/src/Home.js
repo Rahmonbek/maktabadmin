@@ -20,7 +20,8 @@ import { AppstoreOutlined, UserOutlined } from "@ant-design/icons";
 import { BiNews } from "react-icons/bi";
 import { FaRibbon } from "react-icons/fa";
 import { isArray } from "lodash";
-
+import GLOBAL from "./host/Global";
+import {Redirect} from 'react-router-dom'
 const Home = ({ routes }) => {
     const [collapsed, setCollapsed] = useState(false);
     const menu = [
@@ -30,21 +31,21 @@ const Home = ({ routes }) => {
             name: "Dashboard",
             icon: <AppstoreOutlined />, // name that appear in Sidebar
         },
-        { id: 2, path: "/home/admin/uz", name: "Admin", icon: <UserOutlined /> },
+        { id: 2, path: "/home/admin/uz", name: "Sinflar", icon: <UserOutlined /> },
         { id: 3, path: "/home/yangiliklar/uz", name: "Yangiliklar", icon: <BiNews /> },
         { id: 4, path: "/home/tadbirlar/uz", name: "Tadbirlar", icon: <FaRibbon /> },
         { id: 16, path: "/home/togaraklar/uz", name: "To'garaklar", icon: <FaDatabase /> },
-        { id: 5, path: "/home/sportmashgulotlari/uz", name: "Sport mashg'ulotlari", icon: <BiBasketball /> },
-        { id: 6, path: "/home/musiqatogaraklari/uz", name: "Musiqa to'garaklari", icon: <FiMusic /> },
-        { id: 7, path: "/home/axborottexnologiyalari/uz", name: "Axborot texnologiyalari", icon: <DiJavascript1 /> },
+        // { id: 5, path: "/home/sportmashgulotlari/uz", name: "Sport mashg'ulotlari", icon: <BiBasketball /> },
+        // { id: 6, path: "/home/musiqatogaraklari/uz", name: "Musiqa to'garaklari", icon: <FiMusic /> },
+        // { id: 7, path: "/home/axborottexnologiyalari/uz", name: "Axborot texnologiyalari", icon: <DiJavascript1 /> },
         { id: 8, path: "/home/oqituvchilar/uz", name: "O'qituvchilar", icon: <FiUsers /> },
         { id: 9, path: "/home/alochioquvchilar/uz", name: "A'lochi o'quvchilar", icon: <FaCrown /> },
         { id: 14, path: "/home/yutuqlar/uz", name: "Yutuqlar", icon: <FaCrown /> },
         { id: 15, path: "/home/sinflar/uz", name: "Sinflar", icon: <HiUserGroup /> },
         { id: 10, path: "/home/darsjadvali/uz", name: "Dars jadvali", icon: <FaRegCalendarAlt /> },
-        { id: 11, path: "/home/maktaboshxonasi/uz", name: "Maktab oshxonasi", icon: <CgBowl /> },
-        { id: 12, path: "/home/xavfsizlik/uz", name: "Xavfsizlik", icon: <MdSecurity /> },
-        { id: 13, path: "/home/salomatlik/uz", name: "Salomatlik", icon: <GiHeartPlus /> },
+        // { id: 11, path: "/home/maktaboshxonasi/uz", name: "Maktab oshxonasi", icon: <CgBowl /> },
+        // { id: 12, path: "/home/xavfsizlik/uz", name: "Xavfsizlik", icon: <MdSecurity /> },
+        // { id: 13, path: "/home/salomatlik/uz", name: "Salomatlik", icon: <GiHeartPlus /> },
     ];
     useEffect(() => {
         window.addEventListener("resize", resize.bind(this));
@@ -58,7 +59,7 @@ const Home = ({ routes }) => {
             setCollapsed(false);
         }
     };
-    return (
+    return (GLOBAL.id!==null?
         <>
             <Container fluid style={{ padding: "0", position: "relative" }}>
                 <Row>
@@ -103,7 +104,7 @@ const Home = ({ routes }) => {
                     </Col>
                 </Row>
             </Container>
-        </>
+        </>:<Redirect to="/login"/>
     );
 };
 

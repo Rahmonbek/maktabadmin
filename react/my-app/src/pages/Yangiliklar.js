@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { createNew, deleteNew, editNew, getNews } from '../host/Config'
-import { Table, Input, Modal, Button, Space,  } from 'antd';
+import { Table, Input, Modal, Button, Space, message,  } from 'antd';
 import Highlighter from 'react-highlight-words';
 import {Form} from 'react-bootstrap'
 import { SearchOutlined } from '@ant-design/icons';
-import { id, url } from '../host/Host';
+import { url } from '../host/Host';
 import axios from 'axios';
+import GLOBAL from "../host/Global";
+
 import ImageDemo from './ImageDemo';
 export default class Yangiliklar extends Component {
   constructor(){
@@ -34,7 +36,7 @@ text:text
     this.setState({
         show:true,
        })  
-       console.log(this.state.edit);
+     
   }
 
   closeMatn=()=>{
@@ -56,11 +58,11 @@ text:text
     document.getElementById('formBasictitle').value=""
 }
 editNew=(key)=>{
-  console.log(key);
-  axios.get(`${url}/new/${id}`).then((res)=>{ 
+
+  axios.get(`${url}/new/${GLOBAL.id}`).then((res)=>{ 
     document.getElementById('formBasictext').value = res.data[key].text; 
     document.getElementById('formBasictitle').value = res.data[key].title;
-    console.log(res.data[key].image)
+  
     this.setState({
       edit: res.data[key].id,
       imageUrl: res.data[key].image,
@@ -90,7 +92,7 @@ formData.append(
 );
 formData.append(
   "school",
-  Number(id)
+  Number(GLOBAL.id)
 );
 
 if(this.state.edit!==null) {
@@ -98,15 +100,15 @@ if(this.state.image!==null){
   formData.append("image", this.state.image ?? "");
 }
   
-  editNew(formData, this.state.edit).then(res=>{console.log(res); this.getNews()}).catch(err=>{console.log(err);})
+  editNew(formData, this.state.edit).then(res=>{message.success("Yangilik o'gartirildi");; this.getNews()}).catch(err=>{message.success("Yangilik o'zgartirilmadi");;})
 } else {
   formData.append("image", this.state.image ?? "");
 
   createNew(formData).then(res=>{
-  console.log(res)
+    message.success("Yangilik yaratildi");
   this.getNews()
 }).catch(err=>{
-  console.log(err)
+  message.success("Yangilik yaratilmadi");
 })
 }
   this.closeModal()
@@ -200,11 +202,11 @@ for(let i=0; i<news.length; i++){
 })
 
       }).catch(err=>{
-          console.log(err)
+        
       })
   }
 deleteNew=(id)=>{
-    deleteNew(id).then(res=>{console.log('Ochdi'); this.getNews()}).catch(err=>{console.log('Ochmadi')})
+    deleteNew(id).then(res=>{message.success("Yangilik o'chirildi"); this.getNews()}).catch(err=>{message.error("Yangilik o'chirilmadi");})
 }
   componentDidMount(){
       this.getNews()

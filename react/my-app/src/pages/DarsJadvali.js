@@ -2,13 +2,15 @@ import axios from 'axios';
 import React, { Component } from 'react'
 import { Button, Container, Form, } from 'react-bootstrap';
 import { url } from '../host/Host';
-import { Modal} from 'antd'
-
+import { message, Modal, Select} from 'antd'
+import { Option } from 'antd/lib/mentions';
+import GLOBAL from '../host/Global'
 export default class DarsJadvali extends Component {
   state={
     id:null,
     subjects:[],
     teacher:null,
+teach:[],
     class:null,
     show:false,
     kun:["Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba", "Yakshanba"]
@@ -19,16 +21,50 @@ export default class DarsJadvali extends Component {
     axios.get(`${url}/subject/`).then(res=>{this.setState({subjects:res.data}); console.log(res.data)})
     axios.get(`${url}/class/`).then(res=>{
       var a=[]
+      console.log(GLOBAL.id)
       res.data.map(item=>{
-        
+        if(item.school===GLOBAL.id){a.push(item)}
       })
-      this.setState({subjects:res.data}); console.log(res.data)})
+
+      this.setState({class:a}); }).catch(err=>{console.log(err)})
+      axios.get(`${url}/staff/`).then(res=>{
+        var a=[]
+        res.data.map(item=>{
+          if(item.school===GLOBAL.id){a.push(item)}
+        })
+  if(a.length!==0){
+    this.setState({teacher:a})
   }
+     }).catch(err=>{console.log(err)})
+ 
+      }
+addLesson=(e)=>{
+  
+  e.preventDefault();
+  const formData = new FormData(e.target)
+formData.append('school', GLOBAL.id)
+    var formDataObj = Object.fromEntries(formData.entries());
+    formDataObj.class=Number(formDataObj.class)
+    formDataObj.number=Number(formDataObj.number)
+    formDataObj.subject=Number(formDataObj.subject)
+    formDataObj.school=Number(formDataObj.school)
+    axios.post(`${url}/lesson/`, formDataObj).then(res=>{axios.put(`${url}/lesson/${res.data.id}`, {teacher:this.state.teach}).then(res1=>{message.success("Ma'lumot saqlandi")})
+  .catch(err=>{message.error("Ma'lumot saqlanmadi")})}).catch(err=>{message.error("Ma'lumot saqlanmadi")})
+
+  }
+
+handleChange = (value)=>{
+  this.setState({
+    teach:value
+  })
+}
+
   render() {
     return (
       <div>
-     <Modal title="Basic Modal" visible={this.state.show}footer={false} onCancel={this.handleCancel}>
-        <Form>
+     <Modal title="Dars qo'shish" visible={this.state.show}footer={false} onCancel={this.handleCancel}>
+        <Form 
+        onSubmit={this.addLesson}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
     
     <Form.Label>Sinfni tanlang</Form.Label><br/>
@@ -50,7 +86,7 @@ export default class DarsJadvali extends Component {
   </Form.Group>
   <Form.Group className="mb-3" controlId="formBasicEmail">
   <Form.Label>Soatni kiriting</Form.Label><br/>
-  <Form.Control required={true} type="number" placeholder="number" min="1" max="12"/>
+  <Form.Control style={{width:'100%', borderRadius:'10px', border:'1px solid lightgrey', fontSize:'16px', padding:'5px'}} required={true} type="number" placeholder="Nechinchi soat" min="1" max="12"/>
   
    </Form.Group>
    <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -61,11 +97,26 @@ export default class DarsJadvali extends Component {
      }):''} 
    </select>
   </Form.Group>
+  <Form.Group className="mb-3" controlId="formBasicEmail">
+  <Select
+      mode="multiple"
+      allowClear
+      style={{width:'100%', borderRadius:'10px', border:'1px solid lightgrey', fontSize:'16px', padding:'5px' }}
+      placeholder="O'qituvchilarni tanlang"
+      defaultValue={this.state.teach}
+      onChange={this.handleChange}
+      name="teacher"
+    >
+{this.state.teacher!==null?this.state.teacher.map(item=>{
+  return(<Option key={item.id} label={item.full_name}>{item.full_name}</Option>)
+}):''}
 
-
+    </Select>
+    </Form.Group>
+    
  
   
-  <Button variant="secondary" onClick={this.handleClose}>
+  <Button variant="danger" onClick={this.handleClose}>
             Bekor qilish
           </Button>
           <Button variant="primary" type="submit">

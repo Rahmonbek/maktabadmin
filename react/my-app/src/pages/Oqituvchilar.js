@@ -19,8 +19,9 @@ import Modal from "antd/lib/modal/Modal";
 import ImageDemo from "./ImageDemo";
 import { Input, Select } from "antd";
 import axios from "axios";
-import { id, url } from "../host/Host";
+import { url } from "../host/Host";
 import { Option } from "antd/lib/mentions";
+import GLOBAL from "../host/Global";
 
 export default class Oqituvchilar extends Component {
   state = {
@@ -49,18 +50,31 @@ export default class Oqituvchilar extends Component {
     });
     this.reset();
   };
+  echoOptions=(a)=>{
+    
+  }
   getSpec = () => {
     getSpec()
       .then((res) => {
         this.setState({ options: res.data });
-        console.log(res.data);
+    
       })
       .catch((err) => console.log(err));
   };
   getXodim = () => {
     getXodim()
       .then((res) => {
-        return this.setState({ teachers: res.data });
+        var a=[]
+        console.log(res.data)
+      res.data.map(item=>{
+          if(item.school===GLOBAL.id){
+            a.push(item)
+          }
+        })
+        this.setState({
+          teachers:a
+        })
+        console.log(this.state.teachers)
       })
       .catch((err) => console.log(err));
   };
@@ -68,7 +82,7 @@ export default class Oqituvchilar extends Component {
     axios
       .get(`${url}/staff/`)
       .then((res) => {
-        console.log(res.data[key]);
+    
         document.getElementById("fullname").value = res.data[key].full_name;
         document.getElementById("user").style.display = "none";
         document.getElementById("phone").value = res.data[key].phone;
@@ -106,10 +120,10 @@ export default class Oqituvchilar extends Component {
     //  password ?? ''
     // )
     formData.append("phone", phone ?? "");
-    formData.append("school", id ?? "");
+    formData.append("school", GLOBAL.id ?? "");
     formData.append("description", description ?? "");
     formData.append("speciality", this.state.speciality ?? "");
-    console.log(this.state.speciality);
+
     if (this.state.edit !== null) {
       if (this.state.image !== null) {
         formData.append("image", this.state.image ?? "");
@@ -127,18 +141,18 @@ export default class Oqituvchilar extends Component {
           formData.append("user", res.data.user.id ?? "");
           createXodim(formData)
             .then((res) => {
-              console.log(speciality);
+          
               patchXodim({ speciality: speciality }, res.data.id)
                 .then((res1) => {
                   this.hideModal();
                   this.getXodim();
                 })
                 .catch((err1) => {
-                  console.log(err1);
+              
                 });
             })
             .catch((err) => {
-              console.log(err);
+          
             });
         })
         .catch((err) => {
@@ -192,6 +206,7 @@ export default class Oqituvchilar extends Component {
   };
   componentDidMount() {
     this.getXodim();
+    console.log(GLOBAL.id)
     this.getSpec();
   }
   render() {
@@ -223,13 +238,13 @@ export default class Oqituvchilar extends Component {
                               {item.full_name}
                             </p>
                             <p>
-                              <b>Mutaxassislik: </b>
+                              <b>Sohasi: </b>
                               {item.speciality.map((item1) => {
                                 return item1;
                               })}
                             </p>
                             <p>
-                              <b>Sohasi: </b>
+                              <b>Mutaxassislik: </b>
                               {item.position}
                             </p>
                             <p>

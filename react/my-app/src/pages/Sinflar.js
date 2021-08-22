@@ -5,7 +5,8 @@ import axios from "axios";
 import React, { Component } from "react";
 import { Form } from "react-bootstrap";
 import { createClass, deleteClass, editClass, getClass, getXodim } from "../host/Config";
-import { id, url } from "../host/Host";
+import { url } from "../host/Host";
+import GLOBAL from "../host/Global";
 
 export default class Sinflar extends Component {
   state = {
@@ -62,7 +63,7 @@ export default class Sinflar extends Component {
       curator: this.state.curator,
       class_number: classNumber,
       class_char: classChar,
-      school: id,
+      school: GLOBAL.id,
     };
     if (this.state.editId !== null) {
       console.log(classes);

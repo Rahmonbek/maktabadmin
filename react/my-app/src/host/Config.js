@@ -1,8 +1,9 @@
-import { httpRequest, id, url } from "./Host";
+import GLOBAL from "./Global";
+import { httpRequest, url } from "./Host";
 
 export const getNews = () => {
   var config = {
-    url: `${url}/new/${id}`,
+    url: `${url}/new/${GLOBAL.id}`,
     method: "get",
   };
   return httpRequest(config);
@@ -48,7 +49,7 @@ export const editNew = (configs, idT) => {
 
 export const getEvents = () => {
   var config = {
-    url: `${url}/event/${id}`,
+    url: `${url}/event/${GLOBAL.id}`,
     method: "get",
   };
   return httpRequest(config);
@@ -147,7 +148,7 @@ export const getSpec = () => {
 
 export const getClass = () => {
   var config = {
-    url: `${url}/class/${id}`,
+    url: `${url}/class/${GLOBAL.id}`,
     method: "get",
   };
   return httpRequest(config);

@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { createEvent, deleteEvent, editEvent, getEvents } from '../host/Config'
-import { Table, Input, Modal, Button, Space,  } from 'antd';
+import { Table, Input, Modal, Button, Space, message,  } from 'antd';
 import Highlighter from 'react-highlight-words';
 import {Form} from 'react-bootstrap'
 import { SearchOutlined } from '@ant-design/icons';
-import { id, url } from '../host/Host';
+import {  url } from '../host/Host';
 import axios from 'axios';
 import ImageDemo from './ImageDemo';
+import GLOBAL from "../host/Global";
+
 export default class Tadbirlar extends Component {
   constructor(){
     super();
@@ -49,13 +51,15 @@ text:text
         edit: null,
         image: null,
         imageUrl: null,
+        date:[],
+        time:[]
     })
     document.getElementById('formBasicimage').value=""
     document.getElementById('formBasictext').value=""
     document.getElementById('formBasictitle').value=""
 }
 editEvent=(key)=>{
-  axios.get(`${url}/event/${id}`).then((res)=>{ 
+  axios.get(`${url}/event/${GLOBAL.id}`).then((res)=>{ 
     document.getElementById('formBasictext').value = res.data[key].text; 
     document.getElementById('formBasictitle').value = res.data[key].title;
     document.getElementById('formBasicaddress').value = res.data[key].address;
@@ -70,9 +74,9 @@ editEvent=(key)=>{
   this.openModal()
 }
 customRequest = (e) => {
-  console.log(e);
+
   let image = e.target.files[0];
-  console.log(image);
+
   this.setState({
     image:image,
     imageUrl: image, 
@@ -103,23 +107,25 @@ formData.append(
 );
 formData.append(
   "school",
-  Number(id)
+  Number(GLOBAL.id)
 );
 
-console.log(formData.get('school'), formData.get('image'), formData.get('title'), formData.get('text'),)
+
 if(this.state.edit!==null) {
     if(this.state.image!==null){
         formData.append("image", this.state.image ?? "");
     }
-  editEvent(formData, this.state.edit).then(res=>{console.log(res); this.getEvent()}).catch(err=>{console.log(err);})
+  editEvent(formData, this.state.edit).then(res=>{message.success('Tadbir o\'zgartirildi'); this.getEvent()}).catch(err=>{message.error('Tadbir o\'zgartirilmadi');})
+  this.getEvent()
 } else {
     formData.append("image", this.state.image ?? "");
     createEvent(formData).then(res=>{
-        console.log(res)
+      message.success('Tadbir saqlandi');
         this.getEvent()
         }).catch(err=>{
-        console.log(err)
+          message.error('Tadbir saqlanmadi')
         })
+        this.getEvent()
 }
   this.closeModal()
 }
@@ -211,11 +217,11 @@ if(this.state.edit!==null) {
             events:res.data
         })
       }).catch(err=>{
-          console.log(err)
+        
       })
   }
 deleteEvent=(id)=>{
-    deleteEvent(id).then(res=>{console.log('Ochdi'); this.getEvent()}).catch(err=>{console.log('Ochmadi')})
+    deleteEvent(id).then(res=>{message.success('Tadbir o\'chirildi'); this.getEvent()}).catch(err=>{message.error('Tadbir o\'chiirilmadi')})
 }
   componentDidMount(){
       this.getEvent()
