@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, Col, Container, Image, OverlayTrigger, Row, Tooltip, Form } from "react-bootstrap";
-import { createXodim, deleteXodim, getSpec, editXodim, getXodim, patchXodim, register } from "../host/Config";
+import { createXodim, deleteXodim, getSpec, editXodim, getXodim, patchXodim, register, getStaff } from "../host/Config";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -69,17 +69,10 @@ export default class Oqituvchilar extends Component {
       .catch((err) => console.log(err));
   };
   getXodim = () => {
-    getXodim()
+    getStaff()
       .then((res) => {
-        var a=[]
-    
-      res.data.map(item=>{
-          if(item.school===GLOBAL.id){
-            a.push(item)
-          }
-        })
         this.setState({
-          teachers:a
+          teachers:res.data
         })
     
       })
