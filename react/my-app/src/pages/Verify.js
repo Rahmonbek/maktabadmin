@@ -1,71 +1,92 @@
-import axios from 'axios'
-import React, { Component } from 'react'
-import { Button, Form } from 'react-bootstrap'
-import style from '../css/Verify.module.css'
-import { url } from '../host/Host'
-import {message} from 'antd'
+import axios from "axios";
+import React, { Component } from "react";
+import { Button, Form } from "react-bootstrap";
+import style from "../css/Verify.module.css";
+import { url } from "../host/Host";
+import { message } from "antd";
+import GLOBAL from "../host/Global";
 export default class Verify extends Component {
-  state={
-      login:false,
-      email:'',
-      id:null,
-      username:'',
-      verify:false,
-      info:false,
-      viloyat:[],
-      tuman:null,
-  }
-  login = (e)=>{
-    e.preventDefault()
+  state = {
+    login: false,
+    email: "",
+    id: null,
+    username: "",
+    verify: false,
+    info: false,
+    viloyat: [],
+    tuman: null,
+  };
+  login = (e) => {
+    e.preventDefault();
     const formData = new FormData(e.target),
-          formDataObj = Object.fromEntries(formData.entries())
-this.setState({
-    username:document.getElementById('username').value
-})
-          axios.post(`${url}/login/`, formDataObj).then(res=>{this.setState({
-            id:res.data.id,
-            login:true,
-            
-            })
-        window.localStorage.setItem('tokenVerify', res.data.token)}).catch(err=>{message.error('Login yoki parolni xato kiritdingiz. Iltimos tekshirib qaytatdan kiriting.')})
-  }
-  verify = (e)=>{
-    e.preventDefault()
+      formDataObj = Object.fromEntries(formData.entries());
+    this.setState({
+      username: document.getElementById("username").value,
+    });
+    axios
+      .post(`${url}/login/`, formDataObj)
+      .then((res) => {
+        this.setState({
+          id: res.data.id,
+          login: true,
+        });
+        window.localStorage.setItem("tokenVerify", res.data.token);
+      })
+      .catch((err) => {
+        message.error("Login yoki parolni xato kiritdingiz. Iltimos tekshirib qaytatdan kiriting.");
+      });
+  };
+  verify = (e) => {
+    e.preventDefault();
     const formData = new FormData(e.target),
-          formDataObj = Object.fromEntries(formData.entries())
+      formDataObj = Object.fromEntries(formData.entries());
 
-          axios.post(`${url}/verify_email/`, formDataObj, {
-            headers: {'Authorization': `token ${window.localStorage.getItem('tokenVerify')}`}
-        },
-          ).then(res=>{this.setState({verify:true})}).catch(err=>{message.error('Bu email tizimda mavjud tekshirib qaytatdan kiriting')})
-       
-  }
-  loginVeb = (e)=>{
-    e.preventDefault()
+    axios
+      .post(`${url}/verify_email/`, formDataObj, {
+        headers: { Authorization: `token ${window.localStorage.getItem("tokenVerify")}` },
+      })
+      .then((res) => {
+        this.setState({ verify: true });
+      })
+      .catch((err) => {
+        message.error("Bu email tizimda mavjud tekshirib qaytatdan kiriting");
+      });
+  };
+  loginVeb = (e) => {
+    e.preventDefault();
     const formData = new FormData(e.target),
-          formDataObj = Object.fromEntries(formData.entries())
+      formDataObj = Object.fromEntries(formData.entries());
 
-          axios.post(`${url}/login/`, formDataObj).then(res=>{
-              this.setState({id:res.data.id, info:true})
-        window.localStorage.setItem('token', res.data.token)
-  
-    }).catch(err=>{message.error('Login yoki parolni xato kiritdingiz. Iltimos tekshirib qaytatdan kiriting.')})
-  }
-onChange=(value)=>{
+    axios
+      .post(`${url}/login/`, formDataObj)
+      .then((res) => {
+        this.setState({ id: res.data.id, info: true });
+        window.localStorage.setItem("token", res.data.token);
+      })
+      .catch((err) => {
+        message.error("Login yoki parolni xato kiritdingiz. Iltimos tekshirib qaytatdan kiriting.");
+      });
+  };
+  onChange = (value) => {
     console.log(value);
     this.setState({
-        tuman:value
-    })
-}
-  componentDidMount(){
-    axios.get(`${url}/region/`).then(res=>{
-        var a=res.data.sort(function(a, b) {
-            var textA = a.address;
-            var textB = b.address;
-            return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-        })
-        this.setState({viloyat:a})       
-        }).catch(err=>{console.log(err)})
+      tuman: value,
+    });
+  };
+  componentDidMount() {
+    axios
+      .get(`${url}/region/`)
+      .then((res) => {
+        var a = res.data.sort(function (a, b) {
+          var textA = a.address;
+          var textB = b.address;
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
+        });
+        this.setState({ viloyat: a });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   Maktab = (e)=>{
     e.preventDefault()
