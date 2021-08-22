@@ -46,7 +46,7 @@ this.setState({
           formDataObj = Object.fromEntries(formData.entries())
 
           axios.post(`${url}/login/`, formDataObj).then(res=>{
-              this.setState({id:res.data.id})
+              this.setState({id:res.data.id, info:true})
         window.localStorage.setItem('token', res.data.token)
   
     }).catch(err=>{message.error('Login yoki parolni xato kiritdingiz. Iltimos tekshirib qaytatdan kiriting.')})
@@ -67,15 +67,29 @@ onChange=(value)=>{
         this.setState({viloyat:a})       
         }).catch(err=>{console.log(err)})
   }
+  Maktab = (e)=>{
+    e.preventDefault()
+    const formData = new FormData(e.target),
+          formDataObj = Object.fromEntries(formData.entries())
+console.log(e.target.value, formDataObj, this.state.id, this.state.tuman)
+          axios.post(`${url}/school/`, formDataObj).then(res=>{
+              axios.put(`${url}/school/`, {region:this.state.tuman, admin:this.state.id}).then(res=>{message.success("Ma'lumot kiritldi")}).catch(err=>{
+                message.error('Ma\'lumot kiritlmadi')
+              })
+        window.localStorage.setItem('token', res.data.token)
+  
+    }).catch(err=>{message.error('Ma\'lumot kiritlmadi')})
+  }
+
     render() {
         return (
             <div className={style.formDiv}>
-                {/* {
-                this.state.info? */}
+                {
+                this.state.info?
                 <div className={style.loginBox} style={{width:'600px'}}>
                 <h2>Maktabni malumotlari</h2>
                 <Form  className={style.From}
-                onSubmit={this.loginVeb}>
+                onSubmit={this.Maktab}>
                   <Form.Group className={style.userBox}>
                     <Form.Control style={{outline:'none'}} className={style.Forminput}  type="number" name="number"required={true}/>
                     <Form.Label className={style.formLabel} >Raqami</Form.Label>
@@ -83,7 +97,7 @@ onChange=(value)=>{
                   </Form.Group>
                   
                   <Form.Group className={style.userBox}>
-                    <Form.Control style={{outline:'none'}} className={style.Forminput}  type="text" name="name"  required={true}/>
+                    <Form.Control style={{outline:'none'}} defaultValue="" className={style.Forminput}  type="text" name="name"  required={true}/>
                     <Form.Label className={style.formLabel} >Nomi</Form.Label>
                   
                     <Form.Text className="text-muted">
@@ -112,7 +126,7 @@ onChange=(value)=>{
                   </Button>
                 </Form>
               </div>
-              {/* :
+              :
                 this.state.verify? <div className={style.loginBox}>
                 <h2>Tizimga kirish</h2>
                 <Form  className={style.From}
@@ -177,7 +191,7 @@ onChange=(value)=>{
     </Button>
   </Form>
 </div>
-            } */}
+            }
                 
             </div>
         )
