@@ -51,7 +51,14 @@ export default class Oqituvchilar extends Component {
     this.reset();
   };
   echoOptions=(a)=>{
-    
+    var g=""
+    this.state.options.map(item=>{
+      if(item.id===a){
+        g=item.name
+      }
+
+    })
+    return(g)
   }
   getSpec = () => {
     getSpec()
@@ -240,7 +247,7 @@ export default class Oqituvchilar extends Component {
                             <p>
                               <b>Sohasi: </b>
                               {item.speciality.map((item1) => {
-                                return item1;
+                                return this.echoOptions(item1);
                               })}
                             </p>
                             <p>
