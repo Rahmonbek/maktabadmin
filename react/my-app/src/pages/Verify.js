@@ -103,6 +103,7 @@ export default class Verify extends Component {
       .post(`${url}/school/`, formDataObj)
       .then((res) => {
         GLOBAL.id = res.data.id;
+        GLOBAL.user = this.state.id;
         window.localStorage.setItem("token", res.data.token);
         this.setState({ dashbord: true });
       })
