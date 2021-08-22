@@ -17,7 +17,7 @@ import styles from "../css/modalStyle.css";
 import clsx from "clsx";
 import Modal from "antd/lib/modal/Modal";
 import ImageDemo from "./ImageDemo";
-import { Input, Select } from "antd";
+import { Input, message, Select } from "antd";
 import axios from "axios";
 import { url } from "../host/Host";
 import { Option } from "antd/lib/mentions";
@@ -72,7 +72,7 @@ export default class Oqituvchilar extends Component {
     getXodim()
       .then((res) => {
         var a=[]
-        console.log(res.data)
+    
       res.data.map(item=>{
           if(item.school===GLOBAL.id){
             a.push(item)
@@ -81,7 +81,7 @@ export default class Oqituvchilar extends Component {
         this.setState({
           teachers:a
         })
-        console.log(this.state.teachers)
+    
       })
       .catch((err) => console.log(err));
   };
@@ -129,7 +129,7 @@ export default class Oqituvchilar extends Component {
     formData.append("phone", phone ?? "");
     formData.append("school", GLOBAL.id ?? "");
     formData.append("description", description ?? "");
-    formData.append("speciality", this.state.speciality ?? "");
+    
 
     if (this.state.edit !== null) {
       if (this.state.image !== null) {
@@ -137,10 +137,14 @@ export default class Oqituvchilar extends Component {
       }
       editXodim(formData, this.state.edit)
         .then((res) => {
-          this.hideModal();
-          this.getXodim();
+    editXodim({speciality:this.state.speciality}, this.state.edit).then(res2=>{
+  message.success("Xodim o'zgartildi")
+      this.hideModal();
+      this.getXodim();
+  
+    })
         })
-        .catch((err) => console.log(err));
+        .catch((err) => message.error("Xodim o'zgartilmadi"));
     } else {
       formData.append("image", this.state.image ?? "");
       register({ username, password })
@@ -153,12 +157,16 @@ export default class Oqituvchilar extends Component {
                 .then((res1) => {
                   this.hideModal();
                   this.getXodim();
+                  message.success("Xodim saqlandi")
+  
                 })
                 .catch((err1) => {
+                  message.error("Xodim saqlanmadi")
               
                 });
             })
             .catch((err) => {
+              message.error("Xodim saqlanmadi")
           
             });
         })
@@ -171,8 +179,11 @@ export default class Oqituvchilar extends Component {
     deleteXodim(id)
       .then((res) => {
         this.getXodim();
+        message.success("Xodim o'chirildi")
+        
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>                   message.error("Xodim o'chirilmadi")
+      );
   };
   reset = () => {
     document.getElementById("fullname").value = "";
@@ -213,7 +224,7 @@ export default class Oqituvchilar extends Component {
   };
   componentDidMount() {
     this.getXodim();
-    console.log(GLOBAL.id)
+
     this.getSpec();
   }
   render() {
@@ -247,7 +258,7 @@ export default class Oqituvchilar extends Component {
                             <p>
                               <b>Sohasi: </b>
                               {item.speciality.map((item1) => {
-                                return this.echoOptions(item1);
+                                return this.echoOptions(item1)+' ';
                               })}
                             </p>
                             <p>
