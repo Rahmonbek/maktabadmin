@@ -69,16 +69,15 @@ onChange=(value)=>{
   }
   Maktab = (e)=>{
     e.preventDefault()
-    const formData = new FormData(e.target),
-
-          formDataObj = Object.fromEntries(formData.entries())
+    const formData = new FormData(e.target)
+formData.append('admin', Number(this.state.id))
+          var formDataObj = Object.fromEntries(formData.entries())
           formDataObj.school_number=Number(formDataObj.school_number)
           formDataObj.region=Number(formDataObj.region)
+          formDataObj.admin=Number(formDataObj.admin)
           console.log(e.target.value, formDataObj, this.state.id, this.state.tuman)
           axios.post(`${url}/school/`, formDataObj).then(res=>{
-              axios.put(`${url}/school/`, { admin:this.state.id}).then(res=>{message.success("Ma'lumot kiritldi")}).catch(err=>{
-                message.error('Ma\'lumot kiritlmadi')
-              })
+             
         window.localStorage.setItem('token', res.data.token)
   
     }).catch(err=>{message.error('Ma\'lumot kiritlmadi')})
@@ -100,7 +99,7 @@ onChange=(value)=>{
                   </Form.Group>
                   
                   <Form.Group className={style.userBox}>
-                    <Form.Control style={{outline:'none'}} defaultValue="" className={style.Forminput}  type="text" name="name"  required={true}/>
+                    <Form.Control style={{outline:'none'}} defaultValue="" className={style.Forminput}  type="text" name="school_name"  required={true}/>
                     <Form.Label className={style.formLabel} >Nomi</Form.Label>
                   
                     <Form.Text className="text-muted">
@@ -112,6 +111,20 @@ onChange=(value)=>{
   {this.state.viloyat.length!==0?this.state.viloyat.map(item=>{
       return( <option value={item.id}>{item.address} {item.region_name} tumani</option>)
   }):''}
+  
+ 
+</select>
+<Form.Text className="text-muted">
+     Maktab qaysi tuman tarkibiga kirishini tanlang
+    </Form.Text>
+                  </Form.Group>
+                  <Form.Group className={style.userBox}>
+                  <select name="type" onChange={(e)=>{this.onChange(e.target.value)}} className={style.Forminput}>
+                  <option value="IDUM">IDUM</option>
+                  <option value="DUM">DUM</option>
+                  <option value="Xususiy">Xususiy</option>
+                  <option value="Prezident">Prezident</option>
+  
   
  
 </select>
