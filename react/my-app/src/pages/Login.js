@@ -22,13 +22,13 @@ function Login() {
           <div style={{ textAlign: "left" }}>
             <Form>
               <Form.Group className="mb-3" controlId="formUsername">
-                <Form.Label className={styles.labelForm}>Email address</Form.Label>
-                <Form.Control type="text" placeholder="Enter username" className={styles.inputForm} />
+                <Form.Label className={styles.labelForm}>Login</Form.Label>
+                <Form.Control type="text" placeholder="Login" className={styles.inputForm} />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formPassword">
-                <Form.Label className={styles.labelForm}>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" className={styles.inputForm} />
+                <Form.Label className={styles.labelForm}>Parol</Form.Label>
+                <Form.Control type="password" placeholder="Parol" className={styles.inputForm} />
               </Form.Group>
               <Link to="/verify">Emailni tasdiqlash</Link>
               <Button variant="primary" type="submit" onClick={saveData} style={{ backgroundColor: "#1A86D0" }} className={styles.btnInput}>
