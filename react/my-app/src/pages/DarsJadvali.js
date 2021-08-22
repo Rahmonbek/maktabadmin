@@ -21,7 +21,7 @@ teach:[],
     axios.get(`${url}/subject/`).then(res=>{this.setState({subjects:res.data}); console.log(res.data)})
     axios.get(`${url}/class/`).then(res=>{
       var a=[]
-      console.log(GLOBAL.id)
+      
       res.data.map(item=>{
         if(item.school===GLOBAL.id){a.push(item)}
       })
