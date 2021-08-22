@@ -70,10 +70,13 @@ onChange=(value)=>{
   Maktab = (e)=>{
     e.preventDefault()
     const formData = new FormData(e.target),
+
           formDataObj = Object.fromEntries(formData.entries())
-console.log(e.target.value, formDataObj, this.state.id, this.state.tuman)
+          formDataObj.school_number=Number(formDataObj.school_number)
+          formDataObj.region=Number(formDataObj.region)
+          console.log(e.target.value, formDataObj, this.state.id, this.state.tuman)
           axios.post(`${url}/school/`, formDataObj).then(res=>{
-              axios.put(`${url}/school/`, {region:this.state.tuman, admin:this.state.id}).then(res=>{message.success("Ma'lumot kiritldi")}).catch(err=>{
+              axios.put(`${url}/school/`, { admin:this.state.id}).then(res=>{message.success("Ma'lumot kiritldi")}).catch(err=>{
                 message.error('Ma\'lumot kiritlmadi')
               })
         window.localStorage.setItem('token', res.data.token)
@@ -91,7 +94,7 @@ console.log(e.target.value, formDataObj, this.state.id, this.state.tuman)
                 <Form  className={style.From}
                 onSubmit={this.Maktab}>
                   <Form.Group className={style.userBox}>
-                    <Form.Control style={{outline:'none'}} className={style.Forminput}  type="number" name="number"required={true}/>
+                    <Form.Control style={{outline:'none'}} className={style.Forminput}  type="number" name="school_number"required={true}/>
                     <Form.Label className={style.formLabel} >Raqami</Form.Label>
                   
                   </Form.Group>
