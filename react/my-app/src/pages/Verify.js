@@ -5,6 +5,7 @@ import style from "../css/Verify.module.css";
 import { url } from "../host/Host";
 import { message } from "antd";
 import GLOBAL from "../host/Global";
+import { Redirect } from "react-router-dom";
 export default class Verify extends Component {
   state = {
     login: false,
@@ -15,6 +16,7 @@ export default class Verify extends Component {
     info: false,
     viloyat: [],
     tuman: null,
+    dashbord: false,
   };
   login = (e) => {
     e.preventDefault();
@@ -88,149 +90,157 @@ export default class Verify extends Component {
         console.log(err);
       });
   }
-  Maktab = (e)=>{
-    e.preventDefault()
-    const formData = new FormData(e.target)
-formData.append('admin', Number(this.state.id))
-          var formDataObj = Object.fromEntries(formData.entries())
-          formDataObj.school_number=Number(formDataObj.school_number)
-          formDataObj.region=Number(formDataObj.region)
-          formDataObj.admin=Number(formDataObj.admin)
-          console.log(e.target.value, formDataObj, this.state.id, this.state.tuman)
-          axios.post(`${url}/school/`, formDataObj).then(res=>{
-             
-        window.localStorage.setItem('token', res.data.token)
-  
-    }).catch(err=>{message.error('Ma\'lumot kiritlmadi')})
-  }
+  Maktab = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    formData.append("admin", Number(this.state.id));
+    var formDataObj = Object.fromEntries(formData.entries());
+    formDataObj.school_number = Number(formDataObj.school_number);
+    formDataObj.region = Number(formDataObj.region);
+    formDataObj.admin = Number(formDataObj.admin);
+    console.log(e.target.value, formDataObj, this.state.id, this.state.tuman);
+    axios
+      .post(`${url}/school/`, formDataObj)
+      .then((res) => {
+        GLOBAL.id = res.data.id;
+        window.localStorage.setItem("token", res.data.token);
+        this.setState({ dashbord: true });
+      })
+      .catch((err) => {
+        message.error("Ma'lumot kiritlmadi");
+      });
+  };
 
-    render() {
-        return (
-            <div className={style.formDiv}>
-                {
-                this.state.info?
-                <div className={style.loginBox} style={{width:'600px'}}>
-                <h2>Maktabni malumotlari</h2>
-                <Form  className={style.From}
-                onSubmit={this.Maktab}>
-                  <Form.Group className={style.userBox}>
-                    <Form.Control style={{outline:'none'}} className={style.Forminput}  type="number" name="school_number"required={true}/>
-                    <Form.Label className={style.formLabel} >Raqami</Form.Label>
-                  
-                  </Form.Group>
-                  
-                  <Form.Group className={style.userBox}>
-                    <Form.Control style={{outline:'none'}} defaultValue="" className={style.Forminput}  type="text" name="school_name"  required={true}/>
-                    <Form.Label className={style.formLabel} >Nomi</Form.Label>
-                  
-                    <Form.Text className="text-muted">
-     Maktab nomini to'liq yozing. Agar maktabni maxsus nomi bo'lmasa bu joyni bo'sh qoldiring.
-    </Form.Text>
-                  </Form.Group>
-                  <Form.Group className={style.userBox}>
-                  <select name="region" onChange={(e)=>{this.onChange(e.target.value)}} className={style.Forminput}>
-  {this.state.viloyat.length!==0?this.state.viloyat.map(item=>{
-      return( <option value={item.id}>{item.address} {item.region_name} tumani</option>)
-  }):''}
-  
- 
-</select>
-<Form.Text className="text-muted">
-     Maktab qaysi tuman tarkibiga kirishini tanlang
-    </Form.Text>
-                  </Form.Group>
-                  <Form.Group className={style.userBox}>
-                  <select name="type" onChange={(e)=>{this.onChange(e.target.value)}} className={style.Forminput}>
+  render() {
+    return this.state.dashbord === false ? (
+      <div className={style.formDiv}>
+        {this.state.info ? (
+          <div className={style.loginBox} style={{ width: "600px" }}>
+            <h2>Maktabni malumotlari</h2>
+            <Form className={style.From} onSubmit={this.Maktab}>
+              <Form.Group className={style.userBox}>
+                <Form.Control style={{ outline: "none" }} className={style.Forminput} type="number" name="school_number" required={true} />
+                <Form.Label className={style.formLabel}>Raqami</Form.Label>
+              </Form.Group>
+
+              <Form.Group className={style.userBox}>
+                <Form.Control style={{ outline: "none" }} defaultValue="" className={style.Forminput} type="text" name="school_name" />
+                <Form.Label className={style.formLabel}>Nomi</Form.Label>
+
+                <Form.Text className="text-muted">Maktab nomini to'liq yozing. Agar maktabni maxsus nomi bo'lmasa bu joyni bo'sh qoldiring.</Form.Text>
+              </Form.Group>
+              <Form.Group className={style.userBox}>
+                <select
+                  name="region"
+                  onChange={(e) => {
+                    this.onChange(e.target.value);
+                  }}
+                  className={style.Forminput}
+                >
+                  {this.state.viloyat.length !== 0
+                    ? this.state.viloyat.map((item) => {
+                        return (
+                          <option value={item.id}>
+                            {item.address} {item.region_name} tumani
+                          </option>
+                        );
+                      })
+                    : ""}
+                </select>
+                <Form.Text className="text-muted">Maktab qaysi tuman tarkibiga kirishini tanlang</Form.Text>
+              </Form.Group>
+              <Form.Group className={style.userBox}>
+                <select
+                  name="type"
+                  onChange={(e) => {
+                    this.onChange(e.target.value);
+                  }}
+                  className={style.Forminput}
+                >
                   <option value="IDUM">IDUM</option>
                   <option value="DUM">DUM</option>
                   <option value="Xususiy">Xususiy</option>
                   <option value="Prezident">Prezident</option>
-  
-  
- 
-</select>
-<Form.Text className="text-muted">
-     Maktab qaysi tuman tarkibiga kirishini tanlang
-    </Form.Text>
-                  </Form.Group>
-              
-                  <Button className={style.sub} type="submit">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Kirish
-                  </Button>
-                </Form>
-              </div>
-              :
-                this.state.verify? <div className={style.loginBox}>
-                <h2>Tizimga kirish</h2>
-                <Form  className={style.From}
-                onSubmit={this.loginVeb}>
-                  <Form.Group className={style.userBox}>
-                    <Form.Control style={{outline:'none'}} className={style.Forminput} value={this.state.username} type="text" name="username" required={true}/>
-                    <Form.Label className={style.formLabel} >Login</Form.Label>
-                  </Form.Group>
-                  <Form.Group className={style.userBox}>
-                    <Form.Control style={{outline:'none'}} className={style.Forminput} type="password" name="password"  required={true}/>
-                    <Form.Label className={style.formLabel}>Parol</Form.Label>
-                  </Form.Group>
-                  <p style={{color:'white'}}>Emailingizga yuborilgan parolni kiriting</p>
-                  <Button className={style.sub} type="submit">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    Kirish
-                  </Button>
-                </Form>
-              </div>:
-                !this.state.login?
-                <div className={style.loginBox}>
-  <h2>Tizimga kirish</h2>
-  <Form  className={style.From}
-  onSubmit={this.login}>
-    <Form.Group className={style.userBox}>
-      <Form.Control style={{outline:'none'}} className={style.Forminput} type="text" name="username" id="username" required={true}/>
-      <Form.Label className={style.formLabel}>Login</Form.Label>
-    </Form.Group>
-    <Form.Group className={style.userBox}>
-      <Form.Control style={{outline:'none'}} className={style.Forminput} type="password" name="password"  required={true}/>
-      <Form.Label className={style.formLabel}>Parol</Form.Label>
-    </Form.Group>
-    <p style={{color:'white'}}>Tizim admini tomonidan berilgan login va parolni kiriting</p>
-    <Button className={style.sub} type="submit">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      Kirish
-    </Button>
-  </Form>
-</div>:
-<div className={style.loginBox}>
-  <h2>Email tasdiqlash</h2>
-  <Form  className={style.From}
-  onSubmit={this.verify}>
-    <Form.Group className={style.userBox}>
-      <Form.Control style={{outline:'none'}} className={style.Forminput} type="email" name="email" required={true}/>
-      <Form.Label className={style.formLabel}>Email</Form.Label>
-    </Form.Group>
- 
-    <p style={{color:'white'}}>Emailingizni kiriting</p>
-    <Button className={style.sub} type="submit">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      Kirish
-    </Button>
-  </Form>
-</div>
-            }
-                
-            </div>
-        )
-    }
+                </select>
+                <Form.Text className="text-muted">Maktab qaysi tuman tarkibiga kirishini tanlang</Form.Text>
+              </Form.Group>
+
+              <Button className={style.sub} type="submit">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Kirish
+              </Button>
+            </Form>
+          </div>
+        ) : this.state.verify ? (
+          <div className={style.loginBox}>
+            <h2>Tizimga kirish</h2>
+            <Form className={style.From} onSubmit={this.loginVeb}>
+              <Form.Group className={style.userBox}>
+                <Form.Control style={{ outline: "none" }} className={style.Forminput} value={this.state.username} type="text" name="username" required={true} />
+                <Form.Label className={style.formLabel}>Login</Form.Label>
+              </Form.Group>
+              <Form.Group className={style.userBox}>
+                <Form.Control style={{ outline: "none" }} className={style.Forminput} type="password" name="password" required={true} />
+                <Form.Label className={style.formLabel}>Parol</Form.Label>
+              </Form.Group>
+              <p style={{ color: "white" }}>Emailingizga yuborilgan parolni kiriting</p>
+              <Button className={style.sub} type="submit">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Kirish
+              </Button>
+            </Form>
+          </div>
+        ) : !this.state.login ? (
+          <div className={style.loginBox}>
+            <h2>Tizimga kirish</h2>
+            <Form className={style.From} onSubmit={this.login}>
+              <Form.Group className={style.userBox}>
+                <Form.Control style={{ outline: "none" }} className={style.Forminput} type="text" name="username" id="username" required={true} />
+                <Form.Label className={style.formLabel}>Login</Form.Label>
+              </Form.Group>
+              <Form.Group className={style.userBox}>
+                <Form.Control style={{ outline: "none" }} className={style.Forminput} type="password" name="password" required={true} />
+                <Form.Label className={style.formLabel}>Parol</Form.Label>
+              </Form.Group>
+              <p style={{ color: "white" }}>Tizim admini tomonidan berilgan login va parolni kiriting</p>
+              <Button className={style.sub} type="submit">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Kirish
+              </Button>
+            </Form>
+          </div>
+        ) : (
+          <div className={style.loginBox}>
+            <h2>Email tasdiqlash</h2>
+            <Form className={style.From} onSubmit={this.verify}>
+              <Form.Group className={style.userBox}>
+                <Form.Control style={{ outline: "none" }} className={style.Forminput} type="email" name="email" required={true} />
+                <Form.Label className={style.formLabel}>Email</Form.Label>
+              </Form.Group>
+
+              <p style={{ color: "white" }}>Emailingizni kiriting</p>
+              <Button className={style.sub} type="submit">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Kirish
+              </Button>
+            </Form>
+          </div>
+        )}
+      </div>
+    ) : (
+      <Redirect to="/home/dashboard/uz" />
+    );
+  }
 }

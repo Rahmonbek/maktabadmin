@@ -187,3 +187,11 @@ export const getCourses = () => {
   };
   return httpRequest(config);
 };
+
+export const getSchools = () => {
+  var config = {
+    url: `${url}/school`,
+    method: "get",
+  };
+  return httpRequest(config);
+};
