@@ -7,7 +7,7 @@ import { Modal} from 'antd'
 export default class DarsJadvali extends Component {
   state={
     id:null,
-    subjects:null,
+    subjects:[],
     teacher:null,
     class:null,
     show:false,
@@ -16,7 +16,13 @@ export default class DarsJadvali extends Component {
   handleClose = () =>this.setState({show:false});
   handleShow = () => this.setState({show:true});
   componentDidMount(){
-    axios.get(`${url}/`)
+    axios.get(`${url}/subject/`).then(res=>{this.setState({subjects:res.data}); console.log(res.data)})
+    axios.get(`${url}/class/`).then(res=>{
+      var a=[]
+      res.data.map(item=>{
+        
+      })
+      this.setState({subjects:res.data}); console.log(res.data)})
   }
   render() {
     return (
@@ -50,10 +56,9 @@ export default class DarsJadvali extends Component {
    <Form.Group className="mb-3" controlId="formBasicEmail">
   <Form.Label>Fanni tanlang</Form.Label><br/>
    <select style={{width:'100%', borderRadius:'10px', border:'1px solid lightgrey', fontSize:'16px', padding:'5px'}} required={true} name="subject">
-     <option value="1">1</option>
-      {/* {this.state.subject!==null?this.state.subject.map(item=>{
+      {this.state.subjects!==null?this.state.subjects.map(item=>{
        return(<option value={item.id}>{item.subject_name}</option>)
-     }):''}  */}
+     }):''} 
    </select>
   </Form.Group>
 
