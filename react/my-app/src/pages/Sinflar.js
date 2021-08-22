@@ -1,5 +1,5 @@
 import { Button, Select, Table } from "antd";
-import { Option } from "antd/lib/mentions";
+// import { Option } from "antd/lib/mentions";
 import Modal from "antd/lib/modal/Modal";
 import axios from "axios";
 import React, { Component } from "react";
@@ -30,6 +30,7 @@ export default class Sinflar extends Component {
       .catch((err) => console.log(err));
   };
   getClass = () => {
+    console.log(this.state.curators);
     // getClass()
     //   .then((res) => {
     //     var classes = res.data;
@@ -59,13 +60,13 @@ export default class Sinflar extends Component {
   };
   editClass = (id) => {
     axios
-      .get(`${url}/class/${id}`)
+      .get(`${url}/class/${this.state.classes[id].id}`)
       .then((res) => {
-        document.getElementById("classNumber").value = res.data[id].class_number;
-        document.getElementById("classChar").value = res.data[id].class_char;
+        document.getElementById("classNumber").value = res.data.class_number;
+        document.getElementById("classChar").value = res.data.class_char;
         this.setState({
-          editId: res.data[id].id,
-          curator: res.data[id].curator,
+          editId: res.data.id,
+          curator: res.data.curator,
         });
       })
       .catch((err) => console.log(err));
@@ -85,7 +86,6 @@ export default class Sinflar extends Component {
         .then((res) => this.getClass())
         .catch((err) => console.log(err));
     } else {
-      console.log(classes);
       createClass(classes)
         .then((res) => this.getClass())
         .catch((err) => console.log(err));
@@ -101,8 +101,8 @@ export default class Sinflar extends Component {
     this.setState({ curator: value });
   };
   componentDidMount() {
-    this.getClass();
     this.getCurator();
+    this.getClass();
   }
   render() {
     const columns = [
@@ -161,6 +161,7 @@ export default class Sinflar extends Component {
         },
       },
     ];
+    const { Option } = Select;
     return (
       <div>
         <Button type="primary" width="60%" onClick={this.openModal}>
@@ -173,10 +174,9 @@ export default class Sinflar extends Component {
           <Form>
             <Form.Group className="mb-3" controlId="curator">
               <Form.Label>Sinf rahbari</Form.Label>
-              <Select style={{ width: "100%" }} defaultValue={this.state.curator} onChange={this.selected} optionLabelProp="label">
+              <Select style={{ width: "100%" }} value={this.state.curator !== null ? this.state.curator : ""} onChange={this.selected} optionLabelProp="label">
                 {this.state.curators !== null
                   ? this.state.curators.map((item) => {
-                      console.log(item.id);
                       return (
                         <Option value={item.id} label={item.full_name}>
                           {item.full_name}
