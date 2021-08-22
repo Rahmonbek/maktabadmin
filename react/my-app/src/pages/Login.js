@@ -23,11 +23,11 @@ export default class Login extends Component {
     axios
       .post(`${url}/login/`, formDataObj)
       .then((res) => {
-        console.log(res.data.id);
         this.state.schools.map((item) => {
           return item.admin === res.data.id ? (GLOBAL.id = item.id) : "";
         });
         if (GLOBAL.id !== null) {
+          GLOBAL.user = res.data.id;
           window.localStorage.setItem("token", res.data.token);
           this.setState({ login: true });
         } else {
