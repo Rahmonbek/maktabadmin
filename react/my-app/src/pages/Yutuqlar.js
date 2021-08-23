@@ -67,12 +67,18 @@ export default class Yutuqlar extends Component {
     });
   };
   componentDidMount(){
-    axios.get(`${url}/class-by-school/${GLOBAL.id}/`).then(res=>{
-    var clas=[]
+    axios.get(`${url}/school/`).then(res=>{
+    var ger=[]
+      res.data.map(fer=>{
+      if(fer.id===GLOBAL.id){
+        ger.push(fer)
+      }
+    })
+      var clas=[]
     var students=[]
     console.log(res.data)
     clas.push(res.data)
-    res.data.map(item=>{
+    ger.map(item=>{
       axios.get(`${url}/pupil/${item.id}/`).then(res1=>{
         students.push(res1.data)
       })
