@@ -4,9 +4,11 @@ import { Button, Col, Form, Row } from 'react-bootstrap'
 import YouTube from 'react-youtube'
 import GLOBAL from '../host/Global'
 import { url } from '../host/Host'
+import Loader from './Loader'
 
 export default class Admin extends Component {
   state={
+    loading:true,
     school:null,
 images:{},
 input:true,
@@ -18,6 +20,7 @@ input:true,
   componentDidMount(){
     axios.get(`${url}/school-by-admin/${GLOBAL.user}`).then(res=>{
       console.log(res.data)
+      this.setState({loading:false})
     })
   }
   customRequest = (e) => {
@@ -42,7 +45,8 @@ console.log(e.target.name)
     return (
 
       <div>
-    <Form style={{backgroundColor:'white', padding:'20px', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', marginBottom:'30px'}}>
+        {this.state.loading===true?(<Loader/>):(
+    <div><Form style={{backgroundColor:'white', padding:'20px', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', marginBottom:'30px'}}>
    <Row>
      <Col lg={7}>
      <Form.Group controlId="formFile" className="mb-3">
@@ -573,7 +577,7 @@ foto7:img */}
       <Button variant="primary" type="submit">
     Submit
   </Button>
-    </Form>
+    </Form></div>)}
       </div>
     )
   }
