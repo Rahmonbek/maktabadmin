@@ -41,7 +41,16 @@ console.log(e.target.name)
       <Row>
 <Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
 <Form.Group controlId="formFile" className="mb-3">
-    <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Bosh sahifaning bosh qismidagi rasm</Form.Label>
+    <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Maktab emailini kiriting</Form.Label>
+    <Form.Control  name="email" type="email"  onChange={(e)=>this.customText(e)} />
+  </Form.Group></Col>
+</Row>    
+
+<Row>
+<Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
+
+<Form.Group controlId="formFile" className="mb-3">
+    <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Maktab telefon raqamini kiriting</Form.Label>
     <Form.Control  name="tel" type="text"  onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
 </Row>    
@@ -58,7 +67,7 @@ console.log(e.target.name)
 <Row>
 <Col sm={8} style={{alignItems:'center', justifyContent:'center'}} md={8} lg={8}> 
 <Form.Group controlId="formFile" className="mb-3">
-    <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Bosh sahifaning bosh qismidagi rasm</Form.Label>
+    <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Bosh sahifadagi</Form.Label>
     <Form.Control accept=".jpg, .jpeg, .png" name="b_c1" type="file"  onChange={this.customRequest} />
   </Form.Group></Col>
 <Col sm={4} style={{alignItems:'center', justifyContent:'center'}} md={4} lg={4}>
