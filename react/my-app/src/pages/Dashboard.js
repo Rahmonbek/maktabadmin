@@ -5,9 +5,11 @@ import { Button, Col, Form, Row } from 'react-bootstrap'
 import YouTube from 'react-youtube'
 import GLOBAL from '../host/Global'
 import { url } from '../host/Host'
+import Loader from './Loader'
 
 export default class Admin extends Component {
   state={
+    loading:true,
     school:null,
 images:{},
 input:true,
@@ -19,6 +21,7 @@ input:true,
   componentDidMount(){
     axios.get(`${url}/school-by-admin/${GLOBAL.user}`).then(res=>{
       console.log(res.data)
+      this.setState({loading:false})
     })
   }
   addLesson=(e)=>{
@@ -595,8 +598,8 @@ foto7:img */}
       <Button variant="primary" type="submit">
     Submit
   </Button>
-    </Form>
-      </div>
+    </Form></div>
+      
     )
   }
 }

@@ -6,9 +6,10 @@ import { MdDelete } from "react-icons/md";
 import Modal from "antd/lib/modal/Modal";
 import admin from "../img/user.png";
 import { getCourses } from "../host/Config";
-
+import Loader from "./Loader";
 export default class Togaraklar extends Component {
   state = {
+    loading:true,
     teachers: [
       {
         rasm: "https://randomuser.me/api/portraits/men/3.jpg",
@@ -53,9 +54,11 @@ export default class Togaraklar extends Component {
   };
   componentDidMount() {
     this.getCourses();
+    this.setState({loading:false})
   }
   render() {
     return (
+      <div>{this.state.loading===true?(<Loader/>):( 
       <div>
         <h1 style={{ fontSize: "30px", display: "inline-block", marginRight: "30px" }}>
           To'garaklar{" "}
@@ -131,6 +134,7 @@ export default class Togaraklar extends Component {
             </Button>
           </Form>
         </Modal>
+        </div>)}
       </div>
     );
   }

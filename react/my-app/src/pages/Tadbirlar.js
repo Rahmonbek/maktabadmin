@@ -8,11 +8,13 @@ import {  url } from '../host/Host';
 import axios from 'axios';
 import ImageDemo from './ImageDemo';
 import GLOBAL from "../host/Global";
+import Loader from './Loader';
 
 export default class Tadbirlar extends Component {
   constructor(){
     super();
     this.state={
+      loading:true,
         events:[],
         searchText: '',
         searchedColumn: '',
@@ -208,7 +210,8 @@ if(this.state.edit!==null) {
   };
 
   getEvent=()=>{
-      getEvents().then(res=>{
+   
+      getEvents().then(res=>{ 
         var events=res.data
         for(let i=0; i<events.length; i++){
             events[i].key=i+1
@@ -216,8 +219,9 @@ if(this.state.edit!==null) {
         this.setState({ 
             events:res.data
         })
-      }).catch(err=>{
         
+      }).catch(err=>{
+        this.setState({loading:false}) 
       })
   }
 deleteEvent=(id)=>{
@@ -225,6 +229,7 @@ deleteEvent=(id)=>{
 }
   componentDidMount(){
       this.getEvent()
+      
   }
     render() {
         const columns = [
@@ -302,7 +307,8 @@ deleteEvent=(id)=>{
           ];
         return (
           <div>
-    <br/>
+            { this.state.loading===true?(<Loader/>):(
+  <div>  <br/>
 
             <Button type="primary" onClick={this.openModal}>Tadbir yaratish</Button><br/><br/>
  <Table columns={columns} dataSource={this.state.events} />              
@@ -370,8 +376,8 @@ deleteEvent=(id)=>{
     Yaratish
   </Button>
 </Form>
-      </Modal>
-
+      </Modal></div>
+)}
                  </div>
                  
         )
