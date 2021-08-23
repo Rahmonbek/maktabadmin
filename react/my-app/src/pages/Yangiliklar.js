@@ -9,10 +9,12 @@ import axios from 'axios';
 import GLOBAL from "../host/Global";
 
 import ImageDemo from './ImageDemo';
+import Loader from './Loader';
 export default class Yangiliklar extends Component {
   constructor(){
     super();
     this.state={
+      loading:true,
         news:[],
         searchText: '',
         searchedColumn: '',
@@ -200,10 +202,11 @@ for(let i=0; i<news.length; i++){
         this.setState({ 
     news:res.data
 })
-
+  
       }).catch(err=>{
-        
+       this.setState({loading:false})
       })
+     
   }
 deleteNew=(id)=>{
     deleteNew(id).then(res=>{message.success("Yangilik o'chirildi"); this.getNews()}).catch(err=>{message.error("Yangilik o'chirilmadi");})
@@ -269,6 +272,8 @@ deleteNew=(id)=>{
           ];
         return (
           <div>
+{this.state.loading===true?(<Loader/>):(<div>
+
     <br/>
 
             <Button type="primary" onClick={this.openModal}>Yangilik yaratish</Button><br/><br/>
@@ -323,7 +328,7 @@ deleteNew=(id)=>{
   </Button>
 </Form>
       </Modal>
-
+</div>)}
                  </div>
                  
         )
