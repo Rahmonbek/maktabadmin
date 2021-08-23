@@ -8,7 +8,8 @@ import { url } from '../host/Host'
 export default class Admin extends Component {
   state={
     school:null,
-images:{}
+images:{},
+input:true,
   }
   _onReady(event) {
     // access to player in all event handlers via event.target
@@ -39,7 +40,20 @@ console.log(e.target.name)
   };
   render() {
     return (
+
       <div>
+    <Form style={{backgroundColor:'white', padding:'20px', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', marginBottom:'30px'}}>
+   <Row>
+     <Col lg={7}>
+     <Form.Group controlId="formFile" className="mb-3">
+    <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Yangi passwordni kiriting</Form.Label>
+    <Form.Control  name="password" type={this.state.input?"password":"text"}   required={true}/>
+  </Form.Group>
+   
+     </Col>
+     <Col lg={5}><Button variant="danger" onClick={this.setState({input:!this.state.input})}>Parolni ko'rish</Button></Col>
+   </Row>
+      </Form>    
     <Form style={{backgroundColor:'white', padding:'20px', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'}}>
       <Row style={{marginTop:'20px'}}>
       <Col lg={6} md={12} sm={12}>
