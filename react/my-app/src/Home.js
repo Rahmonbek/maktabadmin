@@ -42,7 +42,7 @@ const Home = ({ routes }) => {
         { id: 9, path: "/home/alochioquvchilar/uz", name: "A'lochi o'quvchilar", icon: <FaCrown /> },
         { id: 14, path: "/home/yutuqlar/uz", name: "Yutuqlar", icon: <FaCrown /> },
         { id: 15, path: "/home/sinflar/uz", name: "Sinflar", icon: <HiUserGroup /> },
-        // { id: 10, path: "/home/darsjadvali/uz", name: "Dars jadvali", icon: <FaRegCalendarAlt /> },
+        { id: 10, path: "/home/darsjadvali/uz", name: "Dars jadvali", icon: <FaRegCalendarAlt /> },
         // { id: 11, path: "/home/maktaboshxonasi/uz", name: "Maktab oshxonasi", icon: <CgBowl /> },
         // { id: 12, path: "/home/xavfsizlik/uz", name: "Xavfsizlik", icon: <MdSecurity /> },
         // { id: 13, path: "/home/salomatlik/uz", name: "Salomatlik", icon: <GiHeartPlus /> },

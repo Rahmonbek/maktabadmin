@@ -56,7 +56,7 @@ export default class Login extends Component {
               <Form.Control style={{ outline: "none" }} className={style.Forminput} type="password" name="password" required={true} />
               <Form.Label className={style.formLabel}>Parol</Form.Label>
             </Form.Group>
-            {/* <Link to="/verify">Emailni tasdiqlash</Link> */}
+            <Link to="/verify">Emailni tasdiqlash</Link>
             <Button className={style.sub} type="submit">
               <span></span>
               <span></span>
