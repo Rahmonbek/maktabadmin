@@ -17,8 +17,23 @@ export default class Yutuqlar extends Component {
     students:null,
    sinf:null,
    image:null,
-
+yutuqlar:null,
+stu:null,
+yutuq:{},
+edit:null
   };
+  echoPupil=(id)=>{
+
+    var f=''
+    if(this.state.stu!==null){this.state.stu.map(item=>{
+if(item.id===id){
+  f=item.full_name
+}
+
+    })}
+    return(f)
+
+  }
   setUstoz = (value) => {
    
     this.setState({
@@ -26,38 +41,52 @@ export default class Yutuqlar extends Component {
     })
   };
   deleteTeacher = (id) => {
-    var newteachers = this.state.teachers;
-    newteachers.splice(id, 1);
-    this.setState({
-      teachers: newteachers,
-    });
-  };
-  editTeacher = (id) => {
-    var newteacher1 = {
-      name: this.state.teachers[id].name,
-      yutuq: this.state.teachers[id].yutuq,
-      orin: this.state.teachers[id].orin,
-      rasm: this.state.teachers[id].rasm,
-    };
-    this.setState({
-      teacher1: newteacher1,
-      edit: id,
-    });
-  };
-  componentDidMount(){
+    axios.delete(`${url}/achiviment/${id}`).then(res=>{
+      message.success("Ma'lumot o'chirildi")
+      this.getYutuq()
+    }).catch(err=>{
     
+      message.error("Ma'lumot o'chirilmadi")
+      
+    })
+  };
+  reset=()=>{
+    this.setState({
+      student:[],
+      image:null,
+      sinf:null,
+      edit:null,
+      yutuq:{},
+    })
+    document.getElementById("formBasiccompetition").value=''
+    document.getElementById("formBasictext").value=''
+    document.getElementById("formBasicresult").value=''
+  }
+  editTeacher = (id) => {
+    this.setState({
+     
+    student:this.state.yutuqlar[id].pupils,
+  edit:this.state.yutuqlar[id].id})
+  document.getElementById("formBasiccompetition").value=this.state.yutuqlar[id].competition
+  document.getElementById("formBasictext").value=this.state.yutuqlar[id].text
+  document.getElementById("formBasicresult").value=this.state.yutuqlar[id].result    
+};
+
+  componentDidMount(){
+   
 axios.get(`${url}/pupil/`).then(res=>{
-  console.log('f')
+  
   this.setState({
-   students:res.data
- })
+   students:res.data,
+ stu:res.data
+  })
  axios.get(`${url}/class/`).then(res1=>{
   var clas=[]
-  console.log('f')
+  
   res1.data.map(fer=>{
   if(fer.school===GLOBAL.id){
     clas.push(fer)
-    console.log(fer)
+ 
   }
   
 })
@@ -73,8 +102,15 @@ setTimeout(()=>{
 
 })
 })
-   }
-   
+      this.getYutuq()
+}
+getYutuq=()=>{
+  axios.get(`${url}/achiviment/`).then(res=>{
+
+    this.setState({
+     yutuqlar:res.data
+   })}) 
+}   
 addYutuq=(e)=>{
   e.preventDefault();
     const formData = new FormData(e.target)
@@ -101,17 +137,30 @@ addYutuq=(e)=>{
     formDataObj.id=Number(formDataObj.id)
           
   
-  // if(this.state.edit!==null) {
-  // if(this.state.image!==null){
-  //   formData.append("image", this.state.image ?? "");
-  // }
+  if(this.state.edit!==null) {
+  
+    formData.append("image", this.state.image ?? "");
+  
     
-  //   editNew(formData, this.state.edit).then(res=>{message.success("Yangilik o'gartirildi");; this.getNews()}).catch(err=>{message.success("Yangilik o'zgartirilmadi");;})
-  // } else {
+    axios.put(`${url}/achiviment/${this.state.edit}/`, formData).then(res=>{
+      if(this.state.student.lenght!==0){
+        axios.put(`${url}/achiviment/${this.state.edit}/`, {pupils:this.state.student}).then(res=>{this.reset();
+          message.success("Ma'lumot qo'shildi");
+         this.getYutuq()}).catch(err=>{message.success("Ma'lumot o'zgartirilmadi");})
+      }else{
+        this.reset();
+        this.getYutuq()
+        message.success("Ma'lumot o'gartirildi");
+      }
+      }).catch(err=>{message.success("Ma'lumot o'zgartirilmadi");})
+    }
+    else{  
     formData.append("image", this.state.image ?? "");
   if(this.state.student.length!==0){
     axios.post(`${url}/achiviment/`, formData).then(res=>{
-      axios.patch(`${url}/achiviment/`, {pupils:this.state.student}).then(res=>{ message.success("Ma'lumot qo'shildi");}).catch(err=>{
+     axios.put(`${url}/achiviment/${res.data.id}/`, {pupils:this.state.student}).then(res=>{this.reset();
+       message.success("Ma'lumot qo'shildi");
+      this.getYutuq()}).catch(err=>{
         message.error("Ma'lumot qo'shilmadi");
       })
     }).catch(err=>{
@@ -119,9 +168,9 @@ addYutuq=(e)=>{
     })
         
   }
-    
+}
 
-  // }
+  
    
   }
    customRequest = (e) => {
@@ -136,7 +185,7 @@ addYutuq=(e)=>{
      })
    }
   fer=(clasa, st)=>{
-    console.log('f')
+ 
     var clas=[]
     clasa.map(item=>{
 var f=[]
@@ -153,7 +202,7 @@ if(f.length==0){
 
 }
     })
-    console.log(clas, clasa,this.state.sinf, st)
+ 
     this.setState({students:clas, sinf:0})
   }
   render() {
@@ -173,7 +222,7 @@ if(f.length==0){
                     <Form 
                     onSubmit={this.addYutuq}>
                     <Form.Group required={true} controlId="sinf">
-                        <Select required={true} showSearch style={{ width: "100%" }} defaultValue={this.state.sinf} placeholder="Sinf" optionFilterProp="children" onChange={this.setUstoz}>
+                        <Select required={true} showSearch style={{ width: "100%" }} value={this.state.sinf} placeholder="Sinf" optionFilterProp="children" onChange={this.setUstoz}>
 {this.state.clas!==null?this.state.clas.map((item, key)=>{
          return(               
         <Option value={key} label={item.class_number+' "' + item.class_char + '" - sinf'}>{item.class_number+' "' + item.class_char + '" - sinf'}</Option>
@@ -187,30 +236,32 @@ if(f.length==0){
       <Select
       mode="multiple"
       allowClear
+      optionLabelProp="label"
       style={{ width: '100%' }}
       placeholder="O'quvchiarni tanlang"
-      defaultValue={[]}
+      value={this.state.student}
       
       onChange={this.handleChange}
     > 
-    {this.state.sinf!==null && this.state.students!==null && this.state.students[this.state.sinf]!==null?
+    {this.state.sinf!==null?this.state.sinf!==null && this.state.students!==null && this.state.students[this.state.sinf]!==null?
     this.state.students[this.state.sinf].map(item=>{
+return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
+    }):'':this.state.stu!==null?this.state.stu.map(item=>{
 return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
     }):''}
                         </Select>
                       </Form.Group>
                       <Form.Group controlId="formBasiccompetition">
-                        <Form.Control required={true}
+                        <Form.Control className="formInput" required={true}
        type="text" name="competition" placeholder="Tanlovni kiriting" />
                       </Form.Group>
                       <Form.Group controlId="formBasicresult">
-                        <Form.Control required={true}
+                        <Form.Control className="formInput" required={true}
        type="text" name="result" placeholder="O'rinni kiriting" />
                       </Form.Group>
                       <Form.Group required={true}
        controlId="formBasictext" className="mb-3" style={{width:"100%"}}>
-    {/* <Form.Label></Form.Label> */}
-    <br/><Form.Control
+    <br/><Form.Control className="formInput"
     required={true}
       
       as="textarea"
@@ -220,7 +271,7 @@ return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
     />
   </Form.Group>
                       <Form.Group controlId="rasm">
-                        <Form.Control type="file" required={true}  onChange={this.customRequest} placeholder="Rasm kiriting"  />
+                        <Form.Control className="formInput" type="file" required={this.state.edit===null?true:false}  onChange={this.customRequest} placeholder="Rasm kiriting"  />
                       </Form.Group>
                       <Button variant="primary" className={styles.inputFormBtn} type="submit">
                         O'zgarishlarni saqlash
@@ -234,12 +285,12 @@ return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
               </Row>
             </Col>
             <Col lg={12}>
-              {/* <Table style={{ backgroundColor: "white", border: "none", boxShadow: "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px", borderRadius: "5px" }}>
+              <Table style={{ backgroundColor: "white", border: "none", boxShadow: "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px", borderRadius: "5px" }}>
                 <thead style={{ borderBottom: "none" }}>
                   <tr style={{ borderBottom: "none" }}>
                     <th>#</th>
-                    <th>F.I.O</th>
-                    <th>Yutuq</th>
+                    <th>O'quvchilar</th>
+                    <th>Tanlov</th>
                     <th>O'rin</th>
                     <th>Rasm</th>
                     <th>O'zgartirish</th>
@@ -247,29 +298,31 @@ return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
                   </tr>
                 </thead>
                 <tbody style={{ border: "none" }}>
-                  {this.state.teachers.map((item, key) => {
+                  {this.state.yutuqlar!==null?this.state.yutuqlar.map((item, key) => {
                     return (
                       <tr>
                         <td>{key + 1}</td>
-                        <td>{item.name}</td>
-                        <td>{item.yutuq}</td>
-                        <td>{item.orin}</td>
-                        <td>{item.rasm}</td>
+                        <td>{item.pupils.map(item1=>{
+                         return(<p>{this.echoPupil(item1)}</p>)
+                        })}</td>
+                        <td>{item.competition}</td>
+                        <td>{item.result}</td>
+                        <td><img alt="..." src={item.image} style={{width:'100px'}} /></td>
                         <td>
                           <Button style={{ backgroundColor: "#187CC0", padding: "3px 10px", fontSize: "17px", border: "none" }} onClick={() => this.editTeacher(key)}>
                             O'zgartirish
                           </Button>
                         </td>
                         <td>
-                          <Button style={{ backgroundColor: "#187CC0", padding: "3px 10px", fontSize: "17px", border: "none" }} onClick={() => this.deleteTeacher(key)}>
+                          <Button style={{ backgroundColor: "#187CC0", padding: "3px 10px", fontSize: "17px", border: "none" }} onClick={() => this.deleteTeacher(item.id)}>
                             O'chirish
                           </Button>
                         </td>
                       </tr>
                     );
-                  })}
+                  }):''}
                 </tbody>
-              </Table> */}
+              </Table>
             </Col>
           </Row>
         </Container>

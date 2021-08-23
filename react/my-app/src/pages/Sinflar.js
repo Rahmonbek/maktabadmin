@@ -29,6 +29,18 @@ export default class Sinflar extends Component {
       .then((res) => this.setState({ curators: res.data }))
       .catch((err) => console.log(err));
   };
+  echoTeacher=(id)=>{
+
+    var f=''
+    if(this.state.curators!==null){this.state.curators.map(item=>{
+if(item.id===id){
+  f=item.full_name
+}
+
+    })}
+    return(f)
+
+  }
   getClass = () => {
     console.log(this.state.curators);
     // getClass()
@@ -115,6 +127,7 @@ export default class Sinflar extends Component {
         title: "Sinf rahbari",
         dataIndex: "curator",
         key: "curator",
+        render:(curator)=>{return(this.echoTeacher(curator))}
       },
       {
         title: "Sinf raqami",
@@ -189,12 +202,12 @@ export default class Sinflar extends Component {
 
             <Form.Group className="mb-3" controlId="classNumber">
               <Form.Label>Sinf raqami</Form.Label>
-              <Form.Control type="number" min="1" max="11" placeholder="1" />
+              <Form.Control  className="formInput" type="number" min="1" max="11" placeholder="1" />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="classChar">
               <Form.Label>Sinf harfi</Form.Label>
-              <Form.Control type="text" placeholder="A" pattern="[A-Z]{1}" />
+              <Form.Control  className="formInput" type="text" placeholder="A" pattern="[A-Z]{1}" />
             </Form.Group>
 
             <br />

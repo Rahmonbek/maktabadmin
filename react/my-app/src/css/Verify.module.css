@@ -47,26 +47,19 @@
   }
   .loginBox .userBox .formLabel {
     position: absolute;
-    top:0;
-    left: 0;
     padding: 10px 0;
-    font-size: 16px;
-    color: #fff;
     pointer-events: none;
-    transition: .5s;
+    top: -30px;
+    left: 0;
+    color: #03e9f4;
+    font-size: 12px;
+      transition: .5s;
   }
   .Forminput option{
       background-color:#141e30;
        color:white;
        padding:5px; 
        font-size:16px;
-  }
-  .loginBox .userBox .Forminput:focus ~ .formLabel,
-  .loginBox .userBox .Forminput:valid ~ .formLabel {
-    top: -20px;
-    left: 0;
-    color: #03e9f4;
-    font-size: 12px;
   }
   
   .loginBox .From .sub {

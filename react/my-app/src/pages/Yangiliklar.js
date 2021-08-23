@@ -295,12 +295,12 @@ deleteNew=(id)=>{
         <Form>
         <Form.Group className="mb-3" controlId="formBasictitle"> 
     <Form.Label>Yangilik sarlavhasi</Form.Label><br/>
-    <Form.Control defaultValue={this.state.title} name="title" required type="text" placeholder="Yangilik sarlavhasi"/>
+    <Form.Control  className="formInput" defaultValue={this.state.title} name="title" required type="text" placeholder="Yangilik sarlavhasi"/>
     </Form.Group>
     
     <Form.Group className="mb-3" controlId="formBasicimage">
     <Form.Label>Yangilik rasmi</Form.Label><br/>
-    <Form.Control      accept=".jpg, .jpeg, .png"
+    <Form.Control  className="formInput"      accept=".jpg, .jpeg, .png"
                       onChange={this.customRequest} name="image" required type="file"/>
     <br/><br/>
     {(this.state.previewImage) ? ImageDemo(this.state.imageUrl) : ''}
@@ -308,7 +308,7 @@ deleteNew=(id)=>{
     
     <Form.Group controlId="formBasictext" className="mb-3" style={{width:"100%"}}>
     <Form.Label>Yangilik matni</Form.Label>
-    <br/><Form.Control
+    <br/><Form.Control  className="formInput"
     defaultValue={this.state.textF}
       as="textarea"
       name="text"

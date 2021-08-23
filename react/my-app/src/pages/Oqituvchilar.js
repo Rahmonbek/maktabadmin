@@ -398,7 +398,7 @@ export default class Oqituvchilar extends Component {
           <Form>
             <Form.Group className="mb-3" controlId="fullname">
               <Form.Label>F.I.O.</Form.Label>
-              <Form.Control placeholder="F.I.O." />
+              <Form.Control  className="formInput" placeholder="F.I.O." />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="image">
@@ -410,19 +410,19 @@ export default class Oqituvchilar extends Component {
             <div id="user">
               <Form.Group className="mb-3" controlId="username">
                 <Form.Label>Login</Form.Label>
-                <Form.Control placeholder="Login" />
+                <Form.Control  className="formInput" placeholder="Login" />
               </Form.Group>
               <p style={{ color: "red", fontSize: "14px", display: "none" }} className="registerRed">
                 Bu login tizimda bor boshqa login kiriting
               </p>
               <Form.Group className="mb-3 red" controlId="password">
                 <Form.Label>Parol</Form.Label>
-                <Form.Control type="password" placeholder="Parol" />
+                <Form.Control  className="formInput" type="password" placeholder="Parol" />
               </Form.Group>
 
               <Form.Group className="mb-3 red" controlId="confirmPassword">
                 <Form.Label>Parol tekshirish</Form.Label>
-                <Form.Control placeholder="Parol tekshirish" type="password" />
+                <Form.Control  className="formInput" placeholder="Parol tekshirish" type="password" />
               </Form.Group>
               <p style={{ color: "red", fontSize: "14px", display: "none" }} className="confirm">
                 Parollar mos kelmadi!
@@ -431,7 +431,7 @@ export default class Oqituvchilar extends Component {
 
             <Form.Group className="mb-3" controlId="position">
               <Form.Label>Soha</Form.Label>
-              <Form.Control placeholder="Soha" />
+              <Form.Control  className="formInput" placeholder="Soha" />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="speciality">
@@ -451,12 +451,12 @@ export default class Oqituvchilar extends Component {
 
             <Form.Group className="mb-3" controlId="phone">
               <Form.Label>Telefon raqam</Form.Label>
-              <Form.Control placeholder="Telefon raqam" />
+              <Form.Control  className="formInput" placeholder="Telefon raqam" />
             </Form.Group>
 
             <Form.Group className="mb-3" style={{ width: "100%" }} controlId="description">
               <Form.Label>Qo'shimcha ma'lumot</Form.Label>
-              <Form.Control as="textarea" placeholder="Qo'shimcha ma'lumot" style={{ height: "200px" }} />
+              <Form.Control  className="formInput" as="textarea" placeholder="Qo'shimcha ma'lumot" style={{ height: "200px" }} />
             </Form.Group>
             <br />
             <Button

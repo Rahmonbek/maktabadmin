@@ -306,12 +306,12 @@ echoTeacher=(a)=>{
   </Form.Group>
   <Form.Group className="mb-3" controlId="formBasicEmail">
   <Form.Label>Soatni kiriting</Form.Label><br/>
-  <Form.Control style={{width:'100%', borderRadius:'10px', border:'1px solid lightgrey', fontSize:'16px', padding:'5px'}} required={true} type="number" name="number" placeholder="Nechinchi soat" min="1" max="12"/>
+  <Form.Control  className="formInput" style={{width:'100%', borderRadius:'10px', border:'1px solid lightgrey', fontSize:'16px', padding:'5px'}} required={true} type="number" name="number" placeholder="Nechinchi soat" min="1" max="12"/>
   
    </Form.Group>
    <Form.Group className="mb-3" controlId="formBasicEmail">
   <Form.Label>Fanni tanlang</Form.Label><br/>
-   <select style={{width:'100%', borderRadius:'10px', border:'1px solid lightgrey', fontSize:'16px', padding:'5px'}} required={true} name="subject">
+   <select  className="formInput" style={{width:'100%', borderRadius:'10px', border:'1px solid lightgrey', fontSize:'16px', padding:'5px'}} required={true} name="subject">
       {this.state.subjects!==null?this.state.subjects.map(item=>{
        return(<option value={item.id}>{item.subject_name}</option>)
      }):''} 

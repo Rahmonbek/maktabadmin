@@ -329,27 +329,27 @@ deleteEvent=(id)=>{
         <Form>
         <Form.Group className="mb-3" controlId="formBasictitle"> 
     <Form.Label>Tadbir sarlavhasi</Form.Label><br/>
-    <Form.Control defaultValue={this.state.title} name="title" required type="text" placeholder="Tadbir sarlavhasi"/>
+    <Form.Control className="formInput" defaultValue={this.state.title} name="title" required type="text" placeholder="Tadbir sarlavhasi"/>
     </Form.Group>
 
     <Form.Group className="mb-3" controlId="formBasicaddress"> 
         <Form.Label>Tadbir manzili</Form.Label><br/>
-        <Form.Control defaultValue={this.state.address} name="address" required type="text" placeholder="Tadbir manzili"/>
+        <Form.Control className="formInput" defaultValue={this.state.address} name="address" required type="text" placeholder="Tadbir manzili"/>
     </Form.Group>
 
     <Form.Group className="mb-3" controlId="formBasicdate"> 
         <Form.Label>Tadbir sanasi</Form.Label><br/>
-        <Form.Control defaultValue={this.state.date} name="date" required type="date" placeholder="mm/dd/yy"/>
+        <Form.Control className="formInput" defaultValue={this.state.date} name="date" required type="date" placeholder="mm/dd/yy"/>
     </Form.Group>
 
     <Form.Group className="mb-3" controlId="formBasictime"> 
         <Form.Label>Tadbir vaqti</Form.Label><br/>
-        <Form.Control defaultValue={this.state.time} name="time" required type="time"/>
+        <Form.Control className="formInput" defaultValue={this.state.time} name="time" required type="time"/>
     </Form.Group>
     
     <Form.Group className="mb-3" controlId="formBasicimage">
     <Form.Label>Tadbir rasmi</Form.Label><br/>
-    <Form.Control      accept=".jpg, .jpeg, .png"
+    <Form.Control className="formInput"      accept=".jpg, .jpeg, .png"
                       onChange={this.customRequest} name="image" required type="file"/>
     <br/><br/>
     {(this.state.previewImage) ? ImageDemo(this.state.imageUrl) : ''}
@@ -357,7 +357,7 @@ deleteEvent=(id)=>{
 
     <Form.Group controlId="formBasictext" className="mb-3" style={{width:"100%"}}>
     <Form.Label>Tadbir matni</Form.Label>
-    <br/><Form.Control
+    <br/><Form.Control className="formInput"
     defaultValue={this.state.textF}
       as="textarea"
       name="text"

@@ -215,16 +215,16 @@ export default class Musiqa extends Component {
                                   <h4>Dars jadvalini kiritish</h4>
                               <Form id="formAdmin">
             <Form.Group controlId="title">
-              <Form.Control type="text" placeholder="Musiqa turini kiritning" defaultValue={this.state.musiqa1.fullname}/>
+              <Form.Control className="formInput" type="text" placeholder="Musiqa turini kiritning" defaultValue={this.state.musiqa1.fullname}/>
             </Form.Group>
             <Form.Group controlId="day">
-              <Form.Control type="text" placeholder="Kunni kiriting" defaultValue={this.state.musiqa1.day}/>
+              <Form.Control className="formInput" type="text" placeholder="Kunni kiriting" defaultValue={this.state.musiqa1.day}/>
             </Form.Group>
             <Form.Group controlId="time">
-              <Form.Control type="text" placeholder="Vaqtni kiriting" defaultValue={this.state.musiqa1.time}/>
+              <Form.Control className="formInput" type="text" placeholder="Vaqtni kiriting" defaultValue={this.state.musiqa1.time}/>
             </Form.Group>
             <Form.Group controlId="location">
-              <Form.Control type="text" placeholder="Dars o'tiladigan joyni kiriting" defaultValue={this.state.musiqa1.location}/>
+              <Form.Control className="formInput" type="text" placeholder="Dars o'tiladigan joyni kiriting" defaultValue={this.state.musiqa1.location}/>
             </Form.Group>
             <a href="#2"><Button variant="primary" className={styles.inputFormBtn} onClick={this.saveMusiqa}>
             O'zgarishlarni saqlash
@@ -275,22 +275,22 @@ export default class Musiqa extends Component {
         >
            <Form id="formAdmin">
             <Form.Group controlId="rasm">
-              <Form.Control type="file" placeholder="Rasm" defaultValue={this.state.teacher1.rasm}/>
+              <Form.Control className="formInput" type="file" placeholder="Rasm" defaultValue={this.state.teacher1.rasm}/>
             </Form.Group>
             <Form.Group controlId="name">
-              <Form.Control type="text" placeholder="F.I.O" defaultValue={this.state.teacher1.name}/>
+              <Form.Control className="formInput" type="text" placeholder="F.I.O" defaultValue={this.state.teacher1.name}/>
             </Form.Group>
             <Form.Group controlId="lavozim">
-              <Form.Control type="text" placeholder="Lavozimini kiriting" defaultValue={this.state.teacher1.lavozim}/>
+              <Form.Control className="formInput" type="text" placeholder="Lavozimini kiriting" defaultValue={this.state.teacher1.lavozim}/>
             </Form.Group>
             <Form.Group controlId="matn">
-              <Form.Control type="text" placeholder="Murabbiy haqida ma'lumot" defaultValue={this.state.teacher1.matn}/>
+              <Form.Control className="formInput" type="text" placeholder="Murabbiy haqida ma'lumot" defaultValue={this.state.teacher1.matn}/>
             </Form.Group>
             <Form.Group controlId="email">
-              <Form.Control type="email" placeholder="E-mail kiriting" defaultValue={this.state.teacher1.email}/>
+              <Form.Control className="formInput" type="email" placeholder="E-mail kiriting" defaultValue={this.state.teacher1.email}/>
             </Form.Group>
             <Form.Group controlId="telefon">
-              <Form.Control type="text" placeholder="Telefon kiriting" defaultValue={this.state.teacher1.telefon}/>
+              <Form.Control className="formInput" type="text" placeholder="Telefon kiriting" defaultValue={this.state.teacher1.telefon}/>
             </Form.Group>
             <a href="#2"><Button variant="primary" className={styles.inputFormBtn} onClick={this.saveTeacher1}>
             O'zgarishlarni saqlash

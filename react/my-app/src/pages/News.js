@@ -176,16 +176,16 @@ console.log(event.target.files[0].name)
                           <h4>O'qituvchi kiritish</h4>
                               <Form id="formAdmint">
                                   <Form.Group controlId="formBasicNomi">
-                                    <Form.Control type="text" placeholder="Yangilik sarlavhasi" defaultValue={this.state.news1.nomi}/>
+                                    <Form.Control className="formInput" type="text" placeholder="Yangilik sarlavhasi" defaultValue={this.state.news1.nomi}/>
                                   </Form.Group>
                                   <Form.Group controlId="formBasicSanasi">
-                                    <Form.Control type="text" placeholder="Sanasi" defaultValue={this.state.news1.sana}/>
+                                    <Form.Control className="formInput" type="text" placeholder="Sanasi" defaultValue={this.state.news1.sana}/>
                                   </Form.Group>
                                   <Form.Group controlId="formBasicRasmi">
-                                    <Form.Control type="file" placeholder="Rasm kiriting" defaultValue={this.state.news1.rasm} onChange={(e)=>this.handleImage(e)}/>
+                                    <Form.Control className="formInput" type="file" placeholder="Rasm kiriting" defaultValue={this.state.news1.rasm} onChange={(e)=>this.handleImage(e)}/>
                                   </Form.Group>
                                   <Form.Group controlId="formBasicMatni">
-                                    <Form.Control type="text" placeholder="Matnini kiriting" defaultValue={this.state.news1.matn}/>
+                                    <Form.Control className="formInput" type="text" placeholder="Matnini kiriting" defaultValue={this.state.news1.matn}/>
                                   </Form.Group>
                                   <a href="#2"><Button variant="primary" className={styles.inputFormBtn} onClick={this.SaveYangilikTable}>
                                   O'zgarishlarni saqlash

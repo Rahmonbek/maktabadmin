@@ -17,3 +17,8 @@
    background: rgb(5,65,116);
     background: linear-gradient(90deg, rgba(5,65,116,1) 0%, rgba(0,43,73,1) 100%);
 }
+.formInput{font-size:14px; border-radius: 3px; padding:5px 10px;}
+.formInput::placeholder {
+	color: #bfbfbf;
+	opacity: 0.9;
+  }

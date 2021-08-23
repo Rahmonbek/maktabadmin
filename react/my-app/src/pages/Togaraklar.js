@@ -116,12 +116,12 @@ export default class Togaraklar extends Component {
 
             <Form.Group className="mb-3" controlId="classNumber">
               <Form.Label>Sinf id</Form.Label>
-              <Form.Control type="number" min="1" max="11" placeholder="1" />
+              <Form.Control className="formInput" type="number" min="1" max="11" placeholder="1" />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="classChar">
               <Form.Label>Sinf</Form.Label>
-              <Form.Control type="text" placeholder="A" pattern="[A-Z]{1}" />
+              <Form.Control className="formInput" type="text" placeholder="A" pattern="[A-Z]{1}" />
             </Form.Group>
 
             <br />
