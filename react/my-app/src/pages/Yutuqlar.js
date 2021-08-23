@@ -14,14 +14,14 @@ export default class Yutuqlar extends Component {
     teachers: null,
     student:{},
     clas:null,
-    students:null,
-    ustoz: "rgbw",
+    students:[],
+   sinf:[]
   };
   setUstoz = (value) => {
+   
     this.setState({
-      ustoz: value,
-    });
-    console.log(this.state.ustoz, value);
+      sinf:value
+    })
   };
   saveTeacher = () => {
     var name = this.state.ustoz;
@@ -67,25 +67,54 @@ export default class Yutuqlar extends Component {
     });
   };
   componentDidMount(){
-    axios.get(`${url}/school/`).then(res=>{
-    var ger=[]
-      res.data.map(fer=>{
-      if(fer.id===GLOBAL.id){
-        ger.push(fer)
-      }
-    })
-      var clas=[]
-    var students=[]
-    console.log(res.data)
-    clas.push(res.data)
-    ger.map(item=>{
-      axios.get(`${url}/pupil/${item.id}/`).then(res1=>{
-        students.push(res1.data)
-      })
-    })
-    this.setState({clas:clas, students:students})  
-    })
+    
+axios.get(`${url}/pupil/`).then(res=>{
+  var students=res.data
+  console.log('f')
+  this.setState({
+   students:res.data
+ })
 
+})
+    axios.get(`${url}/class/`).then(res=>{
+      var clas=[]
+      console.log('f')
+      res.data.map(fer=>{
+      if(fer.school===GLOBAL.id){
+        clas.push(fer)
+        console.log(fer)
+      }
+      
+    })
+    
+    this.setState({
+      clas:clas
+    })
+    this.fer()
+
+  })
+
+
+
+   
+ 
+    
+  }
+  fer=()=>{
+    console.log('f')
+    var clas=[]
+    console.log(this.state.clas)
+    this.state.clas.map(item=>{
+var f=[]
+this.state.students.map(item1=>{
+  if(item.id===item1.clas){
+    f.push(item1)
+  }
+})
+clas.push(f)
+    })
+    console.log(clas)
+    this.setState({students:clas})
   }
   render() {
     const { Option } = Select;
@@ -103,20 +132,28 @@ export default class Yutuqlar extends Component {
                     <h4>Yutuq kiritish</h4>
                     <Form>
                     <Form.Group controlId="sinf">
-                        <Select showSearch style={{ width: "100%" }} placeholder="Sinf" optionFilterProp="children" onChange={this.setUstoz} filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                        <Select showSearch style={{ width: "100%" }} defaultValue={this.state.sinf} placeholder="Sinf" optionFilterProp="children" onChange={this.setUstoz} filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
 {this.state.clas!==null?this.state.clas.map((item, key)=>{
          return(               
-        <Option value={key} label={item.school_number+' ' + item.school_char + " - sinf"}>{item.school_number+' ' + item.school_char + " - sinf"}</Option>
+        <Option value={key} label={item.class_number+' "' + item.class_char + '" - sinf'}>{item.class_number+' "' + item.class_char + '" - sinf'}</Option>
          )
 }):''}                          
                           </Select>
                       </Form.Group>
                   
                     <Form.Group controlId="name">
-                        <Select showSearch style={{ width: "100%" }} placeholder="F.I.O" optionFilterProp="children" onChange={this.setUstoz} filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-                          <Option value="Zohidova O.">Zohidova O.</Option>
-                          <Option value="Raximova Sh.">Raximova Sh.</Option>
-                          <Option value="Shoraximov B.">Shoraximov B.</Option>
+                    
+      <Select
+      mode="multiple"
+      allowClear
+      style={{ width: '100%' }}
+      placeholder="O'quvchiarni tanlang"
+      defaultValue={[]}
+      onChange={this.handleChange}
+    > 
+    {this.state.students!==null && this.state.students!==[] && this.state.students[this.state.sinf]!==[]?this.state.students[this.state.sinf].map(item=>{
+return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
+    }):''}
                         </Select>
                       </Form.Group>
                       <Form.Group controlId="yutuq">
@@ -140,7 +177,7 @@ export default class Yutuqlar extends Component {
               </Row>
             </Col>
             <Col lg={12}>
-              {/* <Table style={{ backgroundColor: "white", border: "none", boxShadow: "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px", borderRadius: "5px" }}>
+              <Table style={{ backgroundColor: "white", border: "none", boxShadow: "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px", borderRadius: "5px" }}>
                 <thead style={{ borderBottom: "none" }}>
                   <tr style={{ borderBottom: "none" }}>
                     <th>#</th>
@@ -175,7 +212,7 @@ export default class Yutuqlar extends Component {
                     );
                   })}
                 </tbody>
-              </Table> */}
+              </Table>
             </Col>
           </Row>
         </Container>
