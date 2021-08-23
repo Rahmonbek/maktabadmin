@@ -220,6 +220,7 @@ export default class Oqituvchilar extends Component {
 
     this.getSpec();
   }
+ 
   render() {
     return (
       <div>

@@ -11,6 +11,7 @@ export default class DarsJadvali extends Component {
     id:null,
     subjects:[],
     teacher:null,
+    rowNumber:[[0],[0]],
 teach:[],
 jadval:[],
     class:null,
@@ -45,18 +46,76 @@ jadval:[],
      
       }
       getJadval=()=>{
-this.state.class.map(item=>{
-  axios.get(`${url}/lesson-table/${item.id}`).then(res=>{
-   var a=this.state.jadval
-   console.log(res.data)
-   a.push(res.data)
-    this.setState({jadval:a})
-    console.log(a) 
+        var jad=[]
+        var number=[[0], [0]] 
+        this.state.class.map(item=>{
+
+ axios.get(`${url}/lesson-table/${item.id}`).then(res=>{
+  console.log('jsss')
+  jad[jad.length]=res.data
+   var max=0
+   res.data.Dushanba.map(item1=>{
+     if(item1.number>max){
+       max=item1.number
+     }
+   })
+   
+   res.data.Seshanba.map(item1=>{
+    if(item1.number>max){
+      max=item1.number
+    }
+  })
+  
+  res.data.Chorshanba.map(item1=>{
+    if(item1.number>max){
+      max=item1.number
+    }
+  })
+  
+  res.data.Payshanba.map(item1=>{
+    if(item1.number>max){
+      max=item1.number
+    }
+  })
+  
+  res.data.Juma.map(item1=>{
+    if(item1.number>max){
+      max=item1.number
+    }
+  })
+  
+  res.data.Shanba.map(item1=>{
+    if(item1.number>max){
+      max=item1.number
+    }
+  })
+  var g=[]
+  for(let i=0; i<max; i++){
+g.push(i+1)
+  }
+if(g.length===0){
+  number[number.length-1]=[1]
+  number.push([0])
+}
+else{
+  number[number.length-1]=g
+  number.push([0])
+  
+}
+  
+ 
+  
+ 
+  
   
   })
-    
-})        
-      }
+  
+})
+
+console.log(jad,number)
+this.setState({jadval:jad, rowNumber:number})
+   
+             }
 addLesson=(e)=>{
   
   e.preventDefault();
@@ -83,13 +142,144 @@ formData.append('teacher', [])
   }
 
 handleChange = (value)=>{
-console.log(value)
+
+// console.log(value)
   this.setState({
     teach:value
   })
 }
+Dushanba=(key, number)=>{
+  var t=["", []]
+  if(this.state.jadval[key]){
+    var a=this.state.jadval[key].Dushanba
+    // console.log(this.state.jadval[key].Dushanba)
+    a.map(item=>{
+      
+      if(item.number===number){
+        t[0]=item.subject
+        item.teacher.map(item1=>{
+          t[1].push(this.echoTeacher(item1))
+        })
+        
+      }
+    })
 
+  }
+   return(t)
+}
+
+Seshanba=(key, number)=>{
+  var t=["", []]
+  if(this.state.jadval[key]){
+    var a=this.state.jadval[key].Seshanba
+    // console.log(this.state.jadval[key].Dushanba)
+    a.map(item=>{
+      
+      if(item.number===number){
+        t[0]=item.subject
+        item.teacher.map(item1=>{
+          t[1].push(this.echoTeacher(item1))
+        })
+        
+      }
+    })
+
+  }
+   return(t)
+}
+
+Chorshanba=(key, number)=>{
+  var t=["", []]
+  if(this.state.jadval[key]){
+    var a=this.state.jadval[key].Chorshanba
+    // console.log(this.state.jadval[key].Dushanba)
+    a.map(item=>{
+      
+      if(item.number===number){
+        t[0]=item.subject
+        item.teacher.map(item1=>{
+          t[1].push(this.echoTeacher(item1))
+        })
+        
+      }
+    })
+
+  }
+   return(t)
+}
+
+Payshanba=(key, number)=>{
+  var t=["", []]
+  if(this.state.jadval[key]){
+    var a=this.state.jadval[key].Payshanba
+    // console.log(this.state.jadval[key].Dushanba)
+    a.map(item=>{
+      
+      if(item.number===number){
+        t[0]=item.subject
+        item.teacher.map(item1=>{
+          t[1].push(this.echoTeacher(item1))
+        })
+        
+      }
+    })
+
+  }
+   return(t)
+}
+
+Juma=(key, number)=>{
+  var t=["", []]
+  if(this.state.jadval[key]){
+    var a=this.state.jadval[key].Juma
+    // console.log(this.state.jadval[key].Dushanba)
+    a.map(item=>{
+      
+      if(item.number===number){
+        t[0]=item.subject
+        item.teacher.map(item1=>{
+          t[1].push(this.echoTeacher(item1))
+        })
+        
+      }
+    })
+
+  }
+   return(t)
+}
+
+Shanba=(key, number)=>{
+  var t=["", []]
+  if(this.state.jadval[key]){
+    var a=this.state.jadval[key].Shanba
+    // console.log(this.state.jadval[key].Dushanba)
+    a.map(item=>{
+      
+      if(item.number===number){
+        t[0]=item.subject
+        item.teacher.map(item1=>{
+          t[1].push(this.echoTeacher(item1))
+        })
+        
+      }
+    })
+
+  }
+   return(t)
+}
+
+echoTeacher=(a)=>{
+  var g=""
+  this.state.teacher.map(item=>{
+    if(item.id===a){
+      g=item.full_name
+    }
+
+  })
+  return(g)
+}
   render() {
+    console.log(this.state.jadval[0], this.state.rowNumber.length)
     return (
       <div>
      <Modal title="Dars qo'shish" visible={this.state.show}footer={false} onCancel={this.handleCancel}>
@@ -161,7 +351,7 @@ console.log(value)
         Dars yaratish
       </Button>
 
-{this.state.class!==null && this.state.jadval.length!==0?this.state.class.map((item,key)=>{
+{this.state.class!==null?this.state.class.map((item,key)=>{
   return(
     <div className={style.tableWrapper}>
       <h3>{item.class_number} "{item.class_char}" - sinf</h3>
@@ -178,16 +368,21 @@ console.log(value)
   </tr>
   </thead>
   <tbody>
+    {this.state.rowNumber.length!==2?this.state.rowNumber[key+1]!==[]?this.state.rowNumber[key+1].map(number=>{
+      
+  return(    <tr>
+        <td>{number}</td>
+        <td><b>{this.Dushanba(key,number)[0]}</b><br/><br/> {this.Dushanba(key,number)[1].map(item3=>{return(<p>{item3}</p>)})}</td>
+        <td><b>{this.Seshanba(key,number)[0]}</b><br/><br/> {this.Seshanba(key,number)[1].map(item3=>{return(<p>{item3}</p>)})}</td>
+        <td><b>{this.Chorshanba(key,number)[0]}</b><br/><br/> {this.Chorshanba(key,number)[1].map(item3=>{return(<p>{item3}</p>)})}</td>
+        <td><b>{this.Payshanba(key,number)[0]}</b><br/><br/> {this.Payshanba(key,number)[1].map(item3=>{return(<p>{item3}</p>)})}</td>
+        <td><b>{this.Juma(key,number)[0]}</b><br/><br/> {this.Juma(key,number)[1].map(item3=>{return(<p>{item3}</p>)})}</td>
+        <td><b>{this.Shanba(key,number)[0]}</b><br/><br/> {this.Shanba(key,number)[1].map(item3=>{return(<p>{item3}</p>)})}</td>
+        
+        </tr>)
+        
+    }):'':''}
   
-  <tr>
-      <td>1</td>
-      <td>Content 1</td>
-      <td>Content 1</td>
-      <td>Content 1</td>
-      <td>Content 1</td>
-      <td>Content 1</td>
-      <td>Content 1</td>
-  </tr>
   </tbody>
 </table></div>)
 }):''}
