@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styles from "../css/admin.module.css";
 import { Form, Button, Table } from "react-bootstrap";
-import { Select } from "antd";
+import { message, Select } from "antd";
 import { Container, Row, Col } from "react-bootstrap";
 import rasm from "../img/school19.jpg";
 import { url } from "../host/Host";
@@ -12,40 +12,18 @@ export default class Yutuqlar extends Component {
   state = {
     edit: null,
     teachers: null,
-    student:{},
+    student:[],
     clas:null,
-    students:[],
-   sinf:[]
+    students:null,
+   sinf:null,
+   image:null,
+
   };
   setUstoz = (value) => {
    
     this.setState({
       sinf:value
     })
-  };
-  saveTeacher = () => {
-    var name = this.state.ustoz;
-    var yutuq = document.getElementById("yutuq").value;
-    var orin = document.getElementById("orin").value;
-    var rasm = document.getElementById("rasm").value;
-    var newteacher = {
-      name,
-      yutuq,
-      orin,
-      rasm,
-    };
-    var newteachers = this.state.teachers;
-    if (this.state.edit === null) {
-      newteachers.push(newteacher);
-      this.setState({
-        teachers: newteachers,
-      });
-    } else {
-      newteachers[this.state.edit] = newteacher;
-      this.setState({
-        edit: null,
-      });
-    }
   };
   deleteTeacher = (id) => {
     var newteachers = this.state.teachers;
@@ -69,52 +47,114 @@ export default class Yutuqlar extends Component {
   componentDidMount(){
     
 axios.get(`${url}/pupil/`).then(res=>{
-  var students=res.data
   console.log('f')
   this.setState({
    students:res.data
  })
+ axios.get(`${url}/class/`).then(res1=>{
+  var clas=[]
+  console.log('f')
+  res1.data.map(fer=>{
+  if(fer.school===GLOBAL.id){
+    clas.push(fer)
+    console.log(fer)
+  }
+  
+})
+
+this.setState({
+  clas:clas
+})
+setTimeout(()=>{
+
+  this.fer(clas, res.data)
+
+},500)
 
 })
-    axios.get(`${url}/class/`).then(res=>{
-      var clas=[]
-      console.log('f')
-      res.data.map(fer=>{
-      if(fer.school===GLOBAL.id){
-        clas.push(fer)
-        console.log(fer)
-      }
-      
-    })
-    
-    this.setState({
-      clas:clas
-    })
-    this.fer()
-
-  })
-
-
-
+})
+   }
    
- 
+addYutuq=(e)=>{
+  e.preventDefault();
+    const formData = new FormData(e.target)
+  
+    formData.append(
+      "competition",
+      document.getElementById("formBasiccompetition").value ?? ""
+    );
+    formData.append(
+      "text",
+      document.getElementById("formBasictext").value ?? ""
+    );
+    formData.append(
+      "result",
+      document.getElementById("formBasicresult").value ?? ""
+    );
+    formData.append(
+      "school",
+      Number(GLOBAL.id)
+    );
     
+    var formDataObj = Object.fromEntries(formData.entries());
+   
+    formDataObj.id=Number(formDataObj.id)
+          
+  
+  // if(this.state.edit!==null) {
+  // if(this.state.image!==null){
+  //   formData.append("image", this.state.image ?? "");
+  // }
+    
+  //   editNew(formData, this.state.edit).then(res=>{message.success("Yangilik o'gartirildi");; this.getNews()}).catch(err=>{message.success("Yangilik o'zgartirilmadi");;})
+  // } else {
+    formData.append("image", this.state.image ?? "");
+  if(this.state.student.length!==0){
+    axios.post(`${url}/achiviment/`, formData).then(res=>{
+      axios.patch(`${url}/achiviment/`, {pupils:this.state.student}).then(res=>{ message.success("Ma'lumot qo'shildi");}).catch(err=>{
+        message.error("Ma'lumot qo'shilmadi");
+      })
+    }).catch(err=>{
+      message.error("Ma'lumot qo'shilmadi");
+    })
+        
   }
-  fer=()=>{
+    
+
+  // }
+   
+  }
+   customRequest = (e) => {
+    let image = e.target.files[0];
+    this.setState({
+      image:image,
+    })
+  };
+   handleChange=(value)=>{
+     this.setState({
+       student:value
+     })
+   }
+  fer=(clasa, st)=>{
     console.log('f')
     var clas=[]
-    console.log(this.state.clas)
-    this.state.clas.map(item=>{
+    clasa.map(item=>{
 var f=[]
-this.state.students.map(item1=>{
+st.map(item1=>{
   if(item.id===item1.clas){
     f.push(item1)
   }
 })
-clas.push(f)
+if(f.length==0){
+  clas.push(null)
+
+}else{
+  clas.push(f)
+
+}
     })
-    console.log(clas)
-    this.setState({students:clas})
+    console.log(clas, clasa,this.state.sinf, st)
+    this.setState({students:clas, sinf:0})
   }
   render() {
     const { Option } = Select;
@@ -130,9 +170,10 @@ clas.push(f)
                 <Col lg={12}>
                   <div className={styles.formAdmin}>
                     <h4>Yutuq kiritish</h4>
-                    <Form>
-                    <Form.Group controlId="sinf">
-                        <Select showSearch style={{ width: "100%" }} defaultValue={this.state.sinf} placeholder="Sinf" optionFilterProp="children" onChange={this.setUstoz} filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                    <Form 
+                    onSubmit={this.addYutuq}>
+                    <Form.Group required={true} controlId="sinf">
+                        <Select required={true} showSearch style={{ width: "100%" }} defaultValue={this.state.sinf} placeholder="Sinf" optionFilterProp="children" onChange={this.setUstoz}>
 {this.state.clas!==null?this.state.clas.map((item, key)=>{
          return(               
         <Option value={key} label={item.class_number+' "' + item.class_char + '" - sinf'}>{item.class_number+' "' + item.class_char + '" - sinf'}</Option>
@@ -141,7 +182,7 @@ clas.push(f)
                           </Select>
                       </Form.Group>
                   
-                    <Form.Group controlId="name">
+                    <Form.Group required={true} controlId="name">
                     
       <Select
       mode="multiple"
@@ -149,23 +190,39 @@ clas.push(f)
       style={{ width: '100%' }}
       placeholder="O'quvchiarni tanlang"
       defaultValue={[]}
+      
       onChange={this.handleChange}
     > 
-    {this.state.students!==null && this.state.students!==[] && this.state.students[this.state.sinf]!==[]?this.state.students[this.state.sinf].map(item=>{
+    {this.state.sinf!==null && this.state.students!==null && this.state.students[this.state.sinf]!==null?
+    this.state.students[this.state.sinf].map(item=>{
 return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
     }):''}
                         </Select>
                       </Form.Group>
-                      <Form.Group controlId="yutuq">
-                        <Form.Control type="text" placeholder="Yutuq kiriting" />
+                      <Form.Group controlId="formBasiccompetition">
+                        <Form.Control required={true}
+       type="text" name="competition" placeholder="Tanlovni kiriting" />
                       </Form.Group>
-                      <Form.Group controlId="orin">
-                        <Form.Control type="text" placeholder="O'rinni kiriting" />
+                      <Form.Group controlId="formBasicresult">
+                        <Form.Control required={true}
+       type="text" name="result" placeholder="O'rinni kiriting" />
                       </Form.Group>
+                      <Form.Group required={true}
+       controlId="formBasictext" className="mb-3" style={{width:"100%"}}>
+    {/* <Form.Label></Form.Label> */}
+    <br/><Form.Control
+    required={true}
+      
+      as="textarea"
+      name="text"
+      placeholder="Yutuq haqida qisqacha yozing..."
+      style={{ height: '200px'}}
+    />
+  </Form.Group>
                       <Form.Group controlId="rasm">
-                        <Form.Control type="file" placeholder="Rasm kiriting"  />
+                        <Form.Control type="file" required={true}  onChange={this.customRequest} placeholder="Rasm kiriting"  />
                       </Form.Group>
-                      <Button variant="primary" className={styles.inputFormBtn} onClick={this.saveTeacher}>
+                      <Button variant="primary" className={styles.inputFormBtn} type="submit">
                         O'zgarishlarni saqlash
                       </Button>
                       <Button variant="primary" className={styles.inputFormBtn1} onClick={this.reset1}>
@@ -177,7 +234,7 @@ return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
               </Row>
             </Col>
             <Col lg={12}>
-              <Table style={{ backgroundColor: "white", border: "none", boxShadow: "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px", borderRadius: "5px" }}>
+              {/* <Table style={{ backgroundColor: "white", border: "none", boxShadow: "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px", borderRadius: "5px" }}>
                 <thead style={{ borderBottom: "none" }}>
                   <tr style={{ borderBottom: "none" }}>
                     <th>#</th>
@@ -212,7 +269,7 @@ return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
                     );
                   })}
                 </tbody>
-              </Table>
+              </Table> */}
             </Col>
           </Row>
         </Container>
