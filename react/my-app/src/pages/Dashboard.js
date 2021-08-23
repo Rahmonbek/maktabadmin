@@ -51,7 +51,7 @@ console.log(e.target.name)
   </Form.Group>
    
      </Col>
-     <Col lg={5}><Button variant="danger" onClick={this.setState({input:!this.state.input})}>Parolni ko'rish</Button></Col>
+     <Col lg={5} style={{display:"flex", alignItems:'center', justifyContent:'center'}}><Button style={{position:'relative', top:'20px'}} variant="danger" onClick={()=>{this.setState({input:!this.state.input})}}>Parolni ko'rish</Button></Col>
    </Row>
       </Form>    
     <Form style={{backgroundColor:'white', padding:'20px', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'}}>
