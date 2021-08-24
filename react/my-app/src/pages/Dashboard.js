@@ -282,7 +282,6 @@ formData.append("q_hujjat_t3", this.state.images.q_hujjat_t3)
       if(this.state.images.school_name){
         formData.append("school_name", this.state.images.school_name)
       }
-         console.log( this.state.images.school_number)
   if(this.state.images.school_number){
     formData.append("school_number", Number(this.state.images.school_number))
   }
@@ -1000,8 +999,7 @@ addLessonParol=(e)=>{
       <Button className="btnFormIn" onClick={this.addLesson} variant="primary">
     Ma'lumotlarni qo'shish
   </Button>
-    </Form></div>)}
-    </div>
+    </Form></div>)}</div>
       
     )
   }

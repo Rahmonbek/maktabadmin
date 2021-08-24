@@ -12,7 +12,7 @@ import "antd/dist/antd.css";
 import Top from "./pages/Top";
 import { Container, Row, Col } from "react-bootstrap";
 import { Menu } from "antd";
-import { AppstoreOutlined, UserOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, } from "@ant-design/icons";
 import { BiNews } from "react-icons/bi";
 import { FaRibbon } from "react-icons/fa";
 import { isArray } from "lodash";
