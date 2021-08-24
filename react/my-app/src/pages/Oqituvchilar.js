@@ -184,6 +184,7 @@ export default class Oqituvchilar extends Component {
   };
   reset = () => {
     document.getElementById("fullname").value = "";
+    document.getElementById("img").value = "";
     document.getElementById("username").value = "";
     document.getElementById("password").value = "";
     document.getElementById("confirmPassword").value = "";
@@ -409,7 +410,7 @@ export default class Oqituvchilar extends Component {
 
             <Form.Group className="mb-3" controlId="image">
               <Form.Label>Rasm</Form.Label>
-              <Input onChange={this.customRequest} type="file" required={false} style={{ marginBottom: "20px" }} accept="image/jpg, image/jpeg, image/png" />
+              <Input id="img" onChange={this.customRequest} type="file" required={false} style={{ marginBottom: "20px" }} accept="image/jpg, image/jpeg, image/png" />
               {this.state.previewImage ? ImageDemo(this.state.imageUrl) : ""}
             </Form.Group>
 
