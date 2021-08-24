@@ -3,12 +3,8 @@ import "./css/sidebar.css";
 import { Switch, Link } from "react-router-dom";
 import RouteWithSubRoutes from "./utils/RouteWithSubRoutes";
 import styles from "./css/Menu.module.css";
-import { BiBasketball } from "react-icons/bi";
-import { DiJavascript1 } from "react-icons/di";
-import { FiMusic, FiUsers } from "react-icons/fi";
-import { FaCrown, FaDatabase, FaRegCalendarAlt } from "react-icons/fa";
-import { CgBowl } from "react-icons/cg";
-import { GiHeartPlus } from "react-icons/gi";
+import { FiUsers } from "react-icons/fi";
+import { FaCrown, FaDatabase} from "react-icons/fa";
 import { MdSecurity } from "react-icons/md";
 import { HiUserGroup } from "react-icons/hi";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,8 +18,11 @@ import { FaRibbon } from "react-icons/fa";
 import { isArray } from "lodash";
 import GLOBAL from "./host/Global";
 import {Redirect} from 'react-router-dom'
+import axios from "axios";
+import { url } from "./host/Host";
 const Home = ({ routes }) => {
     const [collapsed, setCollapsed] = useState(false);
+    const [school, setSchool] = useState(null);
     const menu = [
         {
             id: 1,
@@ -39,7 +38,7 @@ const Home = ({ routes }) => {
         // { id: 6, path: "/home/musiqatogaraklari/uz", name: "Musiqa to'garaklari", icon: <FiMusic /> },
         // { id: 7, path: "/home/axborottexnologiyalari/uz", name: "Axborot texnologiyalari", icon: <DiJavascript1 /> },
         { id: 8, path: "/home/oqituvchilar/uz", name: "O'qituvchilar", icon: <FiUsers /> },
-        { id: 9, path: "/home/alochioquvchilar/uz", name: "A'lochi o'quvchilar", icon: <FaCrown /> },
+        { id: 9, path: "/home/alochioquvchilar/uz", name: "A'lochi o'quvchilar", icon: <MdSecurity /> },
         { id: 14, path: "/home/yutuqlar/uz", name: "Yutuqlar", icon: <FaCrown /> },
         { id: 15, path: "/home/sinflar/uz", name: "Sinflar", icon: <HiUserGroup /> },
         // { id: 10, path: "/home/darsjadvali/uz", name: "Dars jadvali", icon: <FaRegCalendarAlt /> },
@@ -50,6 +49,9 @@ const Home = ({ routes }) => {
     useEffect(() => {
         window.addEventListener("resize", resize.bind(this));
         resize();
+        axios.get(`${url}/school-by-admin/${GLOBAL.user}`).then(res=>{
+            setSchool(res.data)
+        })
     }, []);
 
     const resize = () => {
@@ -68,7 +70,8 @@ const Home = ({ routes }) => {
                             <Col xl={2} lg={3} md={4} sm={2} xs={2}>
                                 <div style={{ position: "sticky", top: "0px", height: "100vh", boxShadow: "0 0.46875rem 2.1875rem rgb(4 9 20 / 3%), 0 0.9375rem 1.40625rem rgb(4 9 20 / 3%), 0 0.25rem 0.53125rem rgb(4 9 20 / 5%), 0 0.125rem 0.1875rem rgb(4 9 20 / 3%)", zIndex: "10000000" }}>
                                     <div className={styles.topMenu}>
-                                        <h1>Star admin</h1>
+                                    <h1>{school!==null?school.school_number:''} - maktab</h1>
+                                    <p>{school!==null?school.type:''}</p>
                                         <span className={styles.crown}>
                                             <FaCrown style={{ fontSize: "30px" }} />
                                         </span>
