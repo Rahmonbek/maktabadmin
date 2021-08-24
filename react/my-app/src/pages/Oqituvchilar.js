@@ -37,6 +37,7 @@ export default class Oqituvchilar extends Component {
     image: null,
     imageUrl: null,
     speciality: [],
+    teach:{}
   };
   openModal = () => {
     this.setState({
@@ -47,9 +48,17 @@ export default class Oqituvchilar extends Component {
     this.setState({
       visible: false,
       speciality: [],
-      image: {},
+      image: null,
+      edit: null,
+      imageUrl: null,
+      teach:{}
+   
     });
-    this.reset();
+   document.getElementById("fullname").value="";
+   
+   document.getElementById("phone").value="";
+   document.getElementById("description").value="";
+   document.getElementById("position").value="";
   };
   echoOptions=(a)=>{
     var g=""
@@ -83,38 +92,25 @@ export default class Oqituvchilar extends Component {
   }; 
    
   editXodim = (key) => {
-    axios
-      .get(`${url}/staff/`)
-      .then((res) => {
-    
-        document.getElementById("fullname").value = res.data[key].full_name;
-        document.getElementById("user").style.display = "none";
-        document.getElementById("phone").value = res.data[key].phone;
-        document.getElementById("description").value = res.data[key].description;
-        document.getElementById("position").value = res.data[key].position;
+   
         this.setState({
-          edit: res.data[key].id,
-          imageUrl: res.data[key].image,
-          speciality: res.data[key].speciality,
+        teach:this.state.teachers[key],
+          edit: this.state.teachers[key].id,
+          imageUrl: this.state.teachers[key].image,
+          speciality: this.state.teachers[key].speciality,
         });
-      })
-      .catch((err) => console.log(err));
+    
+      
     this.openModal();
   };
   saveXodim = () => {
     var full_name = document.getElementById("fullname").value;
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
-    var confirmPassword = document.getElementById("confirmPassword").value;
+   
     var phone = document.getElementById("phone").value;
     var description = document.getElementById("description").value;
     var position = document.getElementById("position").value;
     var speciality = this.state.speciality;
-    if (confirmPassword !== password) {
-      document.querySelector(".confirm").style.display = "block";
-      return (document.getElementById("confirmPassword").style.backgroundColor = "red");
-    }
-
+   
     let formData = new FormData();
 
     formData.append("position", position ?? "");
@@ -143,6 +139,16 @@ export default class Oqituvchilar extends Component {
         })
         .catch((err) => message.error("Xodim o'zgartilmadi"));
     } else {
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+      var confirmPassword = document.getElementById("confirmPassword").value;
+     
+      if (confirmPassword !== password) {
+        document.querySelector(".confirm").style.display = "block";
+        return (document.getElementById("confirmPassword").style.backgroundColor = "red");
+      }
+  
+     
       formData.append("image", this.state.image ?? "");
       register({ username, password })
         .then((res) => {
@@ -181,24 +187,6 @@ export default class Oqituvchilar extends Component {
       })
       .catch((err) =>                   message.error("Xodim o'chirilmadi")
       );
-  };
-  reset = () => {
-    document.getElementById("fullname").value = "";
-    document.getElementById("img").value = "";
-    document.getElementById("username").value = "";
-    document.getElementById("password").value = "";
-    document.getElementById("confirmPassword").value = "";
-    document.getElementById("phone").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("position").value = "";
-    document.getElementById("user").style.display = "block";
-    document.querySelector(".registerRed").style.display = "none";
-    document.querySelector(".confirm").style.display = "none";
-    document.getElementById("confirmPassword").style.backgroundColor = "white";
-    this.setState({
-      image: null,
-      speciality: [],
-    });
   };
   customRequest = (e) => {
     let image = e.target.files[0];
@@ -405,7 +393,7 @@ export default class Oqituvchilar extends Component {
           <Form>
             <Form.Group className="mb-3" controlId="fullname">
               <Form.Label>F.I.O.</Form.Label>
-              <Form.Control  className="formInput" placeholder="F.I.O." />
+              <Form.Control defaultValue={this.state.teach.full_name} className="formInput" placeholder="F.I.O." />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="image">
@@ -413,32 +401,34 @@ export default class Oqituvchilar extends Component {
               <Input id="img" onChange={this.customRequest} type="file" required={false} style={{ marginBottom: "20px" }} accept="image/jpg, image/jpeg, image/png" />
               {this.state.previewImage ? ImageDemo(this.state.imageUrl) : ""}
             </Form.Group>
-
+{this.state.edit===null?
             <div id="user">
-              <Form.Group className="mb-3" controlId="username">
-                <Form.Label>Login</Form.Label>
-                <Form.Control  className="formInput" placeholder="Login" />
-              </Form.Group>
-              <p style={{ color: "red", fontSize: "14px", display: "none" }} className="registerRed">
-                Bu login tizimda bor boshqa login kiriting
-              </p>
-              <Form.Group className="mb-3 red" controlId="password">
-                <Form.Label>Parol</Form.Label>
-                <Form.Control  className="formInput" type="password" placeholder="Parol" />
-              </Form.Group>
+            <Form.Group className="mb-3" controlId="username">
+              <Form.Label>Login</Form.Label>
+              <Form.Control  className="formInput" placeholder="Login" />
+            </Form.Group>
+            <p style={{ color: "red", fontSize: "14px", display: "none" }} className="registerRed">
+              Bu login tizimda bor boshqa login kiriting
+            </p>
+            <Form.Group className="mb-3 red" controlId="password">
+              <Form.Label>Parol</Form.Label>
+              <Form.Control  className="formInput" type="password" placeholder="Parol" />
+            </Form.Group>
 
-              <Form.Group className="mb-3 red" controlId="confirmPassword">
-                <Form.Label>Parol tekshirish</Form.Label>
-                <Form.Control  className="formInput" placeholder="Parol tekshirish" type="password" />
-              </Form.Group>
-              <p style={{ color: "red", fontSize: "14px", display: "none" }} className="confirm">
-                Parollar mos kelmadi!
-              </p>
-            </div>
+            <Form.Group className="mb-3 red" controlId="confirmPassword">
+              <Form.Label>Parol tekshirish</Form.Label>
+              <Form.Control  className="formInput" placeholder="Parol tekshirish" type="password" />
+            </Form.Group>
+            <p style={{ color: "red", fontSize: "14px", display: "none" }} className="confirm">
+              Parollar mos kelmadi!
+            </p>
+          </div>:''
 
+
+}
             <Form.Group className="mb-3" controlId="position">
               <Form.Label>Soha</Form.Label>
-              <Form.Control  className="formInput" placeholder="Soha" />
+              <Form.Control defaultValue={this.state.teach.position}  className="formInput" placeholder="Soha" />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="speciality">
@@ -458,12 +448,12 @@ export default class Oqituvchilar extends Component {
 
             <Form.Group className="mb-3" controlId="phone">
               <Form.Label>Telefon raqam</Form.Label>
-              <Form.Control  className="formInput" placeholder="Telefon raqam" />
+              <Form.Control defaultValue={this.state.teach.phone}  className="formInput" placeholder="Telefon raqam" />
             </Form.Group>
 
             <Form.Group className="mb-3" style={{ width: "100%" }} controlId="description">
               <Form.Label>Qo'shimcha ma'lumot</Form.Label>
-              <Form.Control  className="formInput" as="textarea" placeholder="Qo'shimcha ma'lumot" style={{ height: "200px" }} />
+              <Form.Control  defaultValue={this.state.teach.description} className="formInput" as="textarea" placeholder="Qo'shimcha ma'lumot" style={{ height: "200px" }} />
             </Form.Group>
             <br />
             <Button

@@ -227,6 +227,18 @@ export default class Yangiliklar extends Component {
         ...this.getColumnSearchProps("title"),
       },
       {
+        title: "Yangilik sanasi",
+        dataIndex: "published_time",
+        key: "time",
+        ...this.getColumnSearchProps("published_time"),
+        render: (text) => {
+          return (
+            <p><i class="far fa-calendar-alt"></i> {text.substring(0, 10)}   </p>
+          
+          );
+        },
+      },
+      {
         title: "Yangilik matni",
         dataIndex: "text",
         key: "text",

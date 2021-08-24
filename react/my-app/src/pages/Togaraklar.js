@@ -22,7 +22,20 @@ export default class Togaraklar extends Component {
     image: "",
     courses: [],
     course: {},
+    edit:null,
   };
+  echoPupil=(id)=>{
+
+    var f=''
+    if(this.state.curators!==null){this.state.curators.map(item=>{
+ if(item.id===id){
+  f=item.full_name
+}
+
+    })}
+    return(f)
+
+  }
   getCourses = () => {
     getCourses(Global.id)
       .then((res) => {
@@ -39,10 +52,11 @@ export default class Togaraklar extends Component {
     this.setState({ show: true });
   };
   handleCancel = () => {
-    this.setState({ show: false, previewImage: false, edit: null });
+    this.setState({ show: false, previewImage: false, edit: null, curator:null });
     document.getElementById("title").value = "";
     document.getElementById("address").value = "";
     document.getElementById("text").value = "";
+    document.getElementById("image").value = "";
   };
   customRequest = (e) => {
     this.setState({ previewImage: false, image: e.target.files[0] });
@@ -57,6 +71,7 @@ export default class Togaraklar extends Component {
       document.getElementById("text").value = res.data[key].text;
       this.setState({ course: res.data[key], curator: res.data[key].mentor, imageUrl: res.data[key].image, edit: res.data[key].id, previewImage: true });
     });
+
     this.openModal();
   };
   saveCourses = () => {
@@ -132,8 +147,8 @@ export default class Togaraklar extends Component {
                 ? this.state.courses.map((item, key) => {
                     return (
                       <Col lg={4} md={6} sm={12} style={{ marginTop: "20px" }}>
-                        <div className={styles.card}>
-                          <div className={(styles.card, styles.cardone)}>
+                        <div className={styles.card}  style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                          <div className={(styles.card, styles.cardone)} >
                             <header>
                               <div className={styles.avatar}>
                                 <img src={item.image !== null ? item.image : admin} alt="" />
@@ -142,9 +157,9 @@ export default class Togaraklar extends Component {
 
                             <h3 className={styles.headerName}>{item.title}</h3>
                             <div className={styles.desc}>
-                              <p>O'qituvchi: {item.mentor}</p>
-                              <p style={{ marginTop: "-40px", fontWeight: "800" }}>Manzili: {item.address}</p>
-                              <p style={{ marginTop: "-40px", fontWeight: "800" }}>Qo'shimcha ma'lumot: {item.text}</p>
+                              <p><b>O'qituvchi:</b> {this.echoPupil(item.mentor)}</p>
+                              <p style={{ marginTop: "-40px", }}><b>Manzil:</b> {item.address}</p>
+                              <p style={{ marginTop: "-40px", }}><b>Qo'shimcha ma'lumot:</b> {item.text}</p>
                             </div>
 
                             <footer className={styles.footer} style={{ marginTop: "-40px", fontWeight: "800" }}>
@@ -166,7 +181,7 @@ export default class Togaraklar extends Component {
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="mentor">
                   <Form.Label>To'garak rahbari</Form.Label>
-                  <Select style={{ width: "100%" }} defaultValue={this.state.curator} onChange={this.selected} optionLabelProp="label">
+                  <Select style={{ width: "100%" }} value={this.state.curator} onChange={this.selected} optionLabelProp="label">
                     {this.state.curators !== null
                       ? this.state.curators.map((item) => {
                           return (
