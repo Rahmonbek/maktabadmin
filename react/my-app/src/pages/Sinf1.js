@@ -116,7 +116,6 @@ export default class Sinf1 extends Component {
         this.OpenModal()
     }
 
-
     render() {
         const { schedules, show } = this.state
         return (

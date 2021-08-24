@@ -55,7 +55,7 @@ text:text
         imageUrl: null,
         date:[],
         time:[]
-    })
+    }) 
     document.getElementById('formBasicimage').value=""
     document.getElementById('formBasictext').value=""
     document.getElementById('formBasictitle').value=""

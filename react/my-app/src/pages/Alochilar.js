@@ -48,17 +48,17 @@ export default class Yutuqlar extends Component {
   componentDidMount(){
 
 axios.get(`${url}/pupil/`).then(res=>{
-  console.log('f')
+ 
   this.setState({
    students:res.data
  })
  axios.get(`${url}/class/`).then(res1=>{
   var clas=[]
-  console.log('f')
+ 
   res1.data.map(fer=>{
   if(fer.school===GLOBAL.id){
     clas.push(fer)
-    console.log(fer)
+   
   }
   
 })
@@ -95,7 +95,7 @@ addYutuq=()=>{
      })
    }
   fer=(clasa, st)=>{
-    console.log('f')
+    
     var clas=[]
     clasa.map(item=>{
 var f=[]
@@ -112,7 +112,7 @@ if(f.length==0){
 
 }
     })
-    console.log(clas, clasa,this.state.sinf, st)
+  
     this.setState({students:clas, sinf:0})
      
   

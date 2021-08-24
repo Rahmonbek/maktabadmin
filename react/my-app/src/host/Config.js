@@ -148,7 +148,7 @@ export const getSpec = () => {
 
 export const getClass = () => {
   var config = {
-    url: `${url}/class/${GLOBAL.id}`,
+    url: `${url}/class-by-school/${GLOBAL.id}`,
     method: "get",
   };
   return httpRequest(config);
@@ -181,9 +181,9 @@ export const editClass = (configs, idM) => {
   return httpRequest(config);
 };
 
-export const getCourses = () => {
+export const getCourses = (id) => {
   var config = {
-    url: `${url}/course/`,
+    url: `${url}/course/${id}/`,
     method: "get",
   };
   return httpRequest(config);
@@ -191,7 +191,7 @@ export const getCourses = () => {
 
 export const getSchools = () => {
   var config = {
-    url: `${url}/school`,
+    url: `${url}/school/`,
     method: "get",
   };
   return httpRequest(config);
@@ -199,8 +199,34 @@ export const getSchools = () => {
 
 export const getStaff = () => {
   var config = {
-    url: `${url}/staff-by-school/${GLOBAL.id}`,
+    url: `${url}/staff-by-school/${GLOBAL.id}/`,
     method: "get",
+  };
+  return httpRequest(config);
+};
+
+export const createCourses = (configs) => {
+  var config = {
+    url: `${url}/course/`,
+    method: "post",
+    data: configs,
+  };
+  return httpRequest(config);
+};
+
+export const deleteCourse = (id) => {
+  var config = {
+    url: `${url}/course/${id}/`,
+    method: "delete",
+  };
+  return httpRequest(config);
+};
+
+export const editCourse = (data, id) => {
+  var config = {
+    url: `${url}/course/${id}/`,
+    method: "put",
+    data: data,
   };
   return httpRequest(config);
 };

@@ -27,7 +27,6 @@ img:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAkFBMV
   }
  getSchool=()=>{
   axios.get(`${url}/school-by-admin/${GLOBAL.user}`).then(res=>{
-    console.log(res.data) 
        this.setState({school:res.data,loading:false})
      })
  }
@@ -63,7 +62,7 @@ formData.append("email", this.state.images.email)
   if(this.state.images.tel){
 formData.append("tel", this.state.images.tel)
   }
-  console.log(!this.state.images.b_r1)
+
   if(this.state.images.b_r1){
 formData.append("b_r1", this.state.images.b_r1)
   }
@@ -283,7 +282,6 @@ formData.append("q_hujjat_t3", this.state.images.q_hujjat_t3)
       if(this.state.images.school_name){
         formData.append("school_name", this.state.images.school_name)
       }
-         console.log( this.state.images.school_number)
   if(this.state.images.school_number){
     formData.append("school_number", Number(this.state.images.school_number))
   }
@@ -327,7 +325,7 @@ formData.append("q_hujjat_t3", this.state.images.q_hujjat_t3)
 axios.put(`${url}/school/${GLOBAL.id}/`, formData).then(res=>{this.getSchool(); message.success("Ma'lumot qo'shildi")}).catch(err=>message.error("Ma'lumot qo'shilmadi"))
 }
 addLessonParol=(e)=>{
-  console.log(document.getElementById('pass').value)
+ 
     e.preventDefault();
     const formData = new FormData(e.target)
   formData.append('id', GLOBAL.user)
@@ -338,7 +336,7 @@ addLessonParol=(e)=>{
         user_id:GLOBAL.user,
           password:document.getElementById('pass').value,
         }
-        console.log(config)
+       
       // formDataObj.school=Number(formDataObj.school)
       axios.post(`${url}/reset-password/`, config).then(res=>{message.success("Parol saqlandi");}).catch(err=>{message.error("Parol saqlanmadi")})
   
@@ -346,7 +344,7 @@ addLessonParol=(e)=>{
   render() {
     return (
 
-      <div>
+      <div>{this.state.loading===true?(<Loader/>):(<div>
     <Form  onSubmit={this.addLessonParol} style={{backgroundColor:'white', padding:'20px', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', marginBottom:'30px'}}>
    <Row>
      <Col lg={7}>
@@ -1001,7 +999,7 @@ addLessonParol=(e)=>{
       <Button className="btnFormIn" onClick={this.addLesson} variant="primary">
     Ma'lumotlarni qo'shish
   </Button>
-    </Form></div>
+    </Form></div>)}</div>
       
     )
   }

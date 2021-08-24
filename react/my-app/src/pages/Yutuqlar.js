@@ -3,7 +3,7 @@ import styles from "../css/admin.module.css";
 import { Form, Button, Table } from "react-bootstrap";
 import { message, Select } from "antd";
 import { Container, Row, Col } from "react-bootstrap";
-import rasm from "../img/school19.jpg";
+
 import { url } from "../host/Host";
 import axios from "axios";
 import GLOBAL from "../host/Global";
@@ -21,13 +21,12 @@ export default class Yutuqlar extends Component {
 yutuqlar:null,
 stu:null,
 yutuq:{},
-edit:null
   };
   echoPupil=(id)=>{
 
     var f=''
     if(this.state.stu!==null){this.state.stu.map(item=>{
-if(item.id===id){
+ if(item.id===id){
   f=item.full_name
 }
 
