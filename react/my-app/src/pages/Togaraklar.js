@@ -40,10 +40,11 @@ export default class Togaraklar extends Component {
   };
   getCourses = () => {
     getCourses()
-      .then((res) => console.log(res.data)) 
-      
-      .catch((err) => console.log(err));
+      .then((res) => 
       this.setState({loading:false})
+      ) 
+      .catch((err) => console.log(err));
+     
   };
   openModal = () => {
     this.setState({ show: true }); 

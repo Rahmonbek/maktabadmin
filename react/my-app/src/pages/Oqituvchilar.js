@@ -76,10 +76,10 @@ export default class Oqituvchilar extends Component {
         this.setState({
           teachers:res.data
         })
-    
+     this.setState({loading:false}) 
       })
       .catch((err) => console.log(err));
-     this.setState({loading:false}) 
+    
   }; 
    
   editXodim = (key) => {

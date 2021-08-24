@@ -7,9 +7,11 @@ import { Form } from "react-bootstrap";
 import { createClass, deleteClass, editClass, getClass, getStaff } from "../host/Config";
 import { url } from "../host/Host";
 import GLOBAL from "../host/Global";
+import Loader from "./Loader";
 
 export default class Sinflar extends Component {
   state = {
+    loading:true,
     classes: [],
     show: false,
     editId: null,
@@ -28,6 +30,7 @@ export default class Sinflar extends Component {
     getStaff()
       .then((res) => this.setState({ curators: res.data }))
       .catch((err) => console.log(err));
+   
   };
   echoTeacher=(id)=>{
 
@@ -67,8 +70,10 @@ if(item.id===id){
         this.setState({
           classes: classes,
         });
+          this.setState({loading:false})
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err)); 
+      
   };
   editClass = (id) => {
     axios
@@ -115,6 +120,7 @@ if(item.id===id){
   componentDidMount() {
     this.getCurator();
     this.getClass();
+  
   }
   render() {
     const columns = [
@@ -176,7 +182,8 @@ if(item.id===id){
     ];
     const { Option } = Select;
     return (
-      <div>
+      <div>{this.state.loading===true?(<Loader/>):(
+     <div>
         <Button type="primary" width="60%" onClick={this.openModal}>
           Sinf yaratish
         </Button>
@@ -219,7 +226,9 @@ if(item.id===id){
               Saqlash
             </Button>
           </Form>
-        </Modal>
+        </Modal></div> 
+      )
+        }
       </div>
     );
   }

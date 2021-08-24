@@ -46,7 +46,7 @@ export default class Yutuqlar extends Component {
     });
   };
   componentDidMount(){
-    
+
 axios.get(`${url}/pupil/`).then(res=>{
   console.log('f')
   this.setState({
@@ -70,8 +70,9 @@ setTimeout(()=>{
 
   this.fer(clas, res.data)
 
-},500);
-this.setState({loadig:false})
+},500)
+this.setState({loading:false}) 
+
 })
 
 })
@@ -113,6 +114,8 @@ if(f.length==0){
     })
     console.log(clas, clasa,this.state.sinf, st)
     this.setState({students:clas, sinf:0})
+     
+  
   }
   render() {
     const { Option } = Select;
