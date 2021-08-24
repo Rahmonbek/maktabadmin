@@ -19,9 +19,11 @@ import { isArray } from "lodash";
 import GLOBAL from "./host/Global";
 import {Redirect} from 'react-router-dom'
 import axios from "axios";
+import Loader from "./pages/LoaderHome";
 import { url } from "./host/Host";
 const Home = ({ routes }) => {
     const [collapsed, setCollapsed] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [school, setSchool] = useState(null);
     const menu = [
         {
@@ -51,6 +53,7 @@ const Home = ({ routes }) => {
         resize();
         axios.get(`${url}/school-by-admin/${GLOBAL.user}`).then(res=>{
             setSchool(res.data)
+            setLoading(true);
         })
     }, []);
 
@@ -62,7 +65,7 @@ const Home = ({ routes }) => {
         }
     };
     return (GLOBAL.id!==null?
-        <>
+        <div>{loading===false?(<Loader/>):(<div>
             <Container fluid style={{ padding: "0", position: "relative" }}>
                 <Row>
                     <Col lg={12} style={{ position: "sticky" }}>
@@ -106,8 +109,8 @@ const Home = ({ routes }) => {
                         </Row>
                     </Col>
                 </Row>
-            </Container>
-        </>:<Redirect to="/login"/>
+            </Container></div>)}
+        </div>:<Redirect to="/login"/>
     );
 };
 
