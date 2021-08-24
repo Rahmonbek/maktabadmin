@@ -30,7 +30,7 @@ const Home = ({ routes }) => {
             name: "Dashboard",
             icon: <AppstoreOutlined />, // name that appear in Sidebar
         },
-        { id: 2, path: "/home/admin/uz", name: "Maktab", icon: <UserOutlined /> },
+        // { id: 2, path: "/home/admin/uz", name: "Maktab", icon: <UserOutlined /> },
         { id: 3, path: "/home/yangiliklar/uz", name: "Yangiliklar", icon: <BiNews /> },
         { id: 4, path: "/home/tadbirlar/uz", name: "Tadbirlar", icon: <FaRibbon /> },
         { id: 16, path: "/home/togaraklar/uz", name: "To'garaklar", icon: <FaDatabase /> },
