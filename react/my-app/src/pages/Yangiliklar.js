@@ -202,9 +202,9 @@ for(let i=0; i<news.length; i++){
         this.setState({ 
     news:res.data
 })
-  
+   this.setState({loading:false})
       }).catch(err=>{
-       this.setState({loading:false})
+      
       })
      
   }

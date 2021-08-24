@@ -40,11 +40,14 @@ export default class Togaraklar extends Component {
   };
   getCourses = () => {
     getCourses()
-      .then((res) => console.log(res.data))
+      .then((res) => console.log(res.data)) 
+      
       .catch((err) => console.log(err));
+      this.setState({loading:false})
   };
   openModal = () => {
-    this.setState({ show: true });
+    this.setState({ show: true }); 
+   
   };
   handleCancel = () => {
     this.setState({ show: false });
@@ -54,7 +57,7 @@ export default class Togaraklar extends Component {
   };
   componentDidMount() {
     this.getCourses();
-    this.setState({loading:false})
+   
   }
   render() {
     return (
