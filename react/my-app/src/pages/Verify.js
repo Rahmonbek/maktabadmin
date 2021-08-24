@@ -158,10 +158,10 @@ export default class Verify extends Component {
                   }}
                   className={style.Forminput}
                 >
-                  <option value="IDUM">IDUM</option>
-                  <option value="DUM">DUM</option>
-                  <option value="Xususiy">Xususiy</option>
-                  <option value="Prezident">Prezident</option>
+                  <option value="Iqtisoslashtirilgan davlat umuta'lim maktabi">Iqtisoslashtirilgan davlat umuta'lim maktabi</option>
+                  <option value="Dalat umumta'lim maktabi">Dalat umumta'lim maktabi</option>
+                  <option value="Xususiy maktab">Xususiy maktab</option>
+                  <option value="Prezident maktabi">Prezident maktabi</option>
                 </select>
                 <Form.Text className="text-muted">Maktab qaysi tuman tarkibiga kirishini tanlang</Form.Text>
               </Form.Group>

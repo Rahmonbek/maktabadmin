@@ -1,15 +1,12 @@
 import React, { Component} from 'react';
 import styles from '../css/Menu.module.css'
 import {BiBasketball} from 'react-icons/bi'
-import {DiJavascript1} from 'react-icons/di'
-import {FiMusic,FiUsers} from 'react-icons/fi'
+import {FiUsers} from 'react-icons/fi'
 import {FaCrown,FaRegCalendarAlt,FaRegNewspaper} from 'react-icons/fa'
 import {CgBowl} from 'react-icons/cg'
-import {GiHeartPlus} from 'react-icons/gi'
-import {MdSecurity} from 'react-icons/md'
-import { Menu, Button } from 'antd';
+import { Menu } from 'antd';
 import GLOBAL from '../host/Global'
-import {Link,Redirect,useRouteMatch} from'react-router-dom'
+import {Link,Redirect} from'react-router-dom'
 import {
   AppstoreOutlined,
   MenuUnfoldOutlined,

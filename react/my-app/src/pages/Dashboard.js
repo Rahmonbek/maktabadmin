@@ -400,18 +400,18 @@ addLessonParol=(e)=>{
   <select
   className="formInput" style={{width:'100%'}}  name="type" type="text" value={!this.state.images.type?"":this.state.images.type}  onChange={(e)=>this.customText(e)} 
 >
-  <option value="IDUM">IDUM</option>
-  <option value="DUM">DUM</option>
-  <option value="Xususiy">Xususiy</option>
-  <option value="Prezident">Prezident</option>
+<option value="Iqtisoslashtirilgan davlat umuta'lim maktabi">Iqtisoslashtirilgan davlat umuta'lim maktabi</option>
+                  <option value="Dalat umumta'lim maktabi">Dalat umumta'lim maktabi</option>
+                  <option value="Xususiy maktab">Xususiy maktab</option>
+                  <option value="Prezident maktabi">Prezident maktabi</option>
 </select>:
 <select
                   className="formInput" style={{width:'100%'}}  name="type" type="text" value={this.state.school!==null?this.state.school.type:''}  onChange={(e)=>{this.customText(e);}} 
                 >
-                  <option value="IDUM">IDUM</option>
-                  <option value="DUM">DUM</option>
-                  <option value="Xususiy">Xususiy</option>
-                  <option value="Prezident">Prezident</option>
+                  <option value="Iqtisoslashtirilgan davlat umuta'lim maktabi">Iqtisoslashtirilgan davlat umuta'lim maktabi</option>
+                  <option value="Dalat umumta'lim maktabi">Dalat umumta'lim maktabi</option>
+                  <option value="Xususiy maktab">Xususiy maktab</option>
+                  <option value="Prezident maktabi">Prezident maktabi</option>
                 </select>  
   }
     
