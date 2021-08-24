@@ -23,13 +23,14 @@ img:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAkFBMV
   }
   componentDidMount(){
  this.getSchool()
-    
+     this.setState({loading:false})
   }
  getSchool=()=>{
   axios.get(`${url}/school-by-admin/${GLOBAL.user}`).then(res=>{
     console.log(res.data) 
-       this.setState({school:res.data,loading:false})
+        this.setState({school:res.data})
      })
+  
  }
   
   customRequest = (e) => {

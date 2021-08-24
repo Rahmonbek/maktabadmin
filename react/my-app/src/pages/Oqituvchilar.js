@@ -22,9 +22,10 @@ import axios from "axios";
 import { url } from "../host/Host";
 import { Option } from "antd/lib/mentions";
 import GLOBAL from "../host/Global";
-
+import Loader from "./Loader";
 export default class Oqituvchilar extends Component {
   state = {
+    loading:true,
     mutaxassislik: [],
     visible: false,
     selectedFile: null,
@@ -67,6 +68,7 @@ export default class Oqituvchilar extends Component {
     
       })
       .catch((err) => console.log(err));
+      
   };
   getXodim = () => {
     getStaff()
@@ -77,7 +79,9 @@ export default class Oqituvchilar extends Component {
     
       })
       .catch((err) => console.log(err));
-  };
+     this.setState({loading:false}) 
+  }; 
+   
   editXodim = (key) => {
     axios
       .get(`${url}/staff/`)
@@ -219,11 +223,13 @@ export default class Oqituvchilar extends Component {
     this.getXodim();
 
     this.getSpec();
+  
   }
  
   render() {
     return (
-      <div>
+      <div>{
+        this.state.loading===true?(<Loader/>):(<div>
         <Container fluid>
           <br />
           <br />
@@ -480,6 +486,7 @@ export default class Oqituvchilar extends Component {
             </Button>
           </Form>
         </Modal>
+        </div>)}
       </div>
     );
   }

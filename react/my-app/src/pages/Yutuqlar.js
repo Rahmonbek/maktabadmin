@@ -7,9 +7,10 @@ import rasm from "../img/school19.jpg";
 import { url } from "../host/Host";
 import axios from "axios";
 import GLOBAL from "../host/Global";
-
+import Loader from "./Loader";
 export default class Yutuqlar extends Component {
   state = {
+    loading:true,
     edit: null,
     teachers: null,
     student:[],
@@ -99,10 +100,11 @@ setTimeout(()=>{
   this.fer(clas, res.data)
 
 },500)
-
+this.setState({loading:false})
 })
 })
       this.getYutuq()
+      
 }
 getYutuq=()=>{
   axios.get(`${url}/achiviment/`).then(res=>{
@@ -110,6 +112,7 @@ getYutuq=()=>{
     this.setState({
      yutuqlar:res.data
    })}) 
+   
 }   
 addYutuq=(e)=>{
   e.preventDefault();
@@ -194,7 +197,7 @@ st.map(item1=>{
     f.push(item1)
   }
 })
-if(f.length==0){
+if(f.length===0){
   clas.push(null)
 
 }else{
@@ -208,7 +211,7 @@ if(f.length==0){
   render() {
     const { Option } = Select;
     return (
-      <div>
+      <div> {this.state.loading===true?(<Loader/>):(<div>
         <Container fluid>
           <Row>
             <Col lg={12} id="1">
@@ -325,7 +328,7 @@ return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
               </Table>
             </Col>
           </Row>
-        </Container>
+        </Container></div>)}
       </div>
     );
   }
