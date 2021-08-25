@@ -39,9 +39,12 @@ export default class Togaraklar extends Component {
   getCourses = () => {
     getCourses(Global.id)
       .then((res) => {
-        this.setState({ courses: res.data });
+        this.setState({ courses: res.data  });
+        this.setState({ loading: false });
+
       })
       .catch((err) => message.error("Ma'lumot topilmadi"));
+
   };
   getMentors = () => {
     getStaff().then((res) => {
@@ -127,7 +130,6 @@ export default class Togaraklar extends Component {
   componentDidMount() {
     this.getCourses();
     this.getMentors();
-    this.setState({ loading: false });
   }
   render() {
     return (
