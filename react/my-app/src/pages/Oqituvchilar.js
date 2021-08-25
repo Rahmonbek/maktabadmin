@@ -427,12 +427,12 @@ export default class Oqituvchilar extends Component {
 
 }
             <Form.Group className="mb-3" controlId="position">
-              <Form.Label>Soha</Form.Label>
-              <Form.Control defaultValue={this.state.teach.position}  className="formInput" placeholder="Soha" />
+            <Form.Label>Mutaxassislik</Form.Label>
+               <Form.Control defaultValue={this.state.teach.position}  className="formInput" placeholder="Soha" />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="speciality">
-              <Form.Label>Mutaxassislik</Form.Label>
+            <Form.Label>Soha</Form.Label>
               <Select placeholder="Mutaxassislik" value={this.state.speciality !== [] ? this.state.speciality : ""} mode="multiple" style={{ width: "100%" }} onChange={this.handleChange} optionLabelProp="label">
                 {this.state.options !== null
                   ? this.state.options.map((item) => {
