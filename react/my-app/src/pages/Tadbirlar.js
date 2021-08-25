@@ -221,7 +221,9 @@ if(this.state.edit!==null) {
         })
          this.setState({loading:false})
       }).catch(err=>{
-        
+        this.setState({
+          loading: false
+         });
       })
   }
 deleteEvent=(id)=>{

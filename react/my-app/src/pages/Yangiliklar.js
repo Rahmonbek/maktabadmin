@@ -184,10 +184,13 @@ export default class Yangiliklar extends Component {
         }
         this.setState({
           news: res.data,
+          loading: false
         });
-        this.setState({ loading: false });
+       
       })
-      .catch((err) => {});
+      .catch((err) => {  this.setState({
+       loading: false
+      });});
   };
   deleteNew = (id) => {
     deleteNew(id)

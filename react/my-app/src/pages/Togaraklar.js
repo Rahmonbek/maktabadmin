@@ -43,7 +43,10 @@ export default class Togaraklar extends Component {
         this.setState({ loading: false });
 
       })
-      .catch((err) => message.error("Ma'lumot topilmadi"));
+      .catch((err) => {message.error("Ma'lumot topilmadi");
+         this.setState({
+        loading: false
+       });});
 
   };
   getMentors = () => {

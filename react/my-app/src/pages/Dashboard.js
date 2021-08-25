@@ -554,7 +554,7 @@ addLessonParol=(e)=>{
   <Row style={{marginTop:'20px'}}>
 
 <Col sm={4} style={{alignItems:'center', justifyContent:'center'}} md={4} lg={4}>
-<YouTube videoId={this.state.school!==null?this.state.school.video.slice(this.state.school.video.indexOf("youtu.be/")+9):''} opts={{ 
+<YouTube videoId={this.state.school!==null?this.state.school.video!==null?this.state.school.video.slice(this.state.school.video.indexOf("youtu.be/")+9):'':''} opts={{ 
       width: '100%',
       height:"100%",
       playerVars: {

@@ -119,6 +119,8 @@ if(f.length==0){
   }
   render() {
     const { Option } = Select;
+    console.log(this.state.sinf,
+      this.state.students)
     return (
      
       <div> {this.state.loading===true?(<Loader/>):(<div>
@@ -149,9 +151,10 @@ if(f.length==0){
 
     
     {this.state.sinf!==null && this.state.students!==null && this.state.students[this.state.sinf]!==null?
+    this.state.students.length!==0?
     this.state.students[this.state.sinf].map(item=>{
 return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
-    }):''}
+    }):'':''}
                         </Select>
                       </Form.Group>
                   <Button variant="primary" className={styles.inputFormBtn} onClick={this.addYutuq}>

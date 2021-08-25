@@ -246,11 +246,12 @@ if(f.length===0){
       onChange={this.handleChange}
     > 
     {this.state.sinf!==null?this.state.sinf!==null && this.state.students!==null && this.state.students[this.state.sinf]!==null?
+    this.state.students.length!==0?
     this.state.students[this.state.sinf].map(item=>{
 return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
     }):'':this.state.stu!==null?this.state.stu.map(item=>{
 return(<Option value={item.id} label={item.full_name}>{item.full_name}</Option>)
-    }):''}
+    }):'':''}
                         </Select>
                       </Form.Group>
                       <Form.Group controlId="formBasiccompetition">
