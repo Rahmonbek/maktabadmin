@@ -52,7 +52,7 @@ img:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAkFBMV
 
 addLesson=()=>{
   const formData = new FormData()
-
+this.setState({loading:true})
 
 
 if(this.state.images.email){
@@ -322,7 +322,7 @@ formData.append("q_hujjat_t3", this.state.images.q_hujjat_t3)
                           if(this.state.images.foto7){
                             formData.append("foto7", this.state.images.foto7)
                               }
-axios.put(`${url}/school/${GLOBAL.id}/`, formData).then(res=>{this.getSchool(); message.success("Ma'lumot qo'shildi")}).catch(err=>message.error("Ma'lumot qo'shilmadi"))
+axios.put(`${url}/school/${GLOBAL.id}/`, formData).then(res=>{this.getSchool(); message.success("Ma'lumot qo'shildi")}).catch(err=>{message.error("Ma'lumot qo'shilmadi"); this.setState({loading:false})})
 }
 addLessonParol=(e)=>{
  
@@ -690,7 +690,9 @@ addLessonParol=(e)=>{
 <Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
 <Form.Group controlId="formFile" className="mb-3">
     <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Maktab hayoti sahifasidagi 306 gradusli rasm uchun matn</Form.Label>
-    <Form.Control className="formInput"  name="m_h_k_t" type="text" defaultValue={this.state.school!==null?this.state.school.m_h_k_t:''}  onChange={(e)=>this.customText(e)} />
+    <Form.Control className="formInput"  name="m_h_k_t"  as="textarea" 
+      placeholder="Matn kiriting..."
+      style={{ height: '100px' }}     defaultValue={this.state.school!==null?this.state.school.m_h_k_t:''}  onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
 </Row>    
 
@@ -887,7 +889,7 @@ addLessonParol=(e)=>{
 <Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
 <Form.Group controlId="formFile" className="mb-3">
     <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Qabul sahifasining forma to'ldirish matni</Form.Label>
-    <Form.Control className="formInput"  name="q_j_forma"  as="textarea" defaultValue={this.state.school!==null?this.state.school.q_j_forma:''}
+    <Form.Control className="formInput"  name="q_j_forma" defaultValue={this.state.school!==null?this.state.school.q_j_forma:''} as="textarea" 
       placeholder="Matn kiriting..."
       style={{ height: '100px' }}    onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
