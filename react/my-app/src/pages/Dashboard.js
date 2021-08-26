@@ -567,7 +567,7 @@ addLessonParol=(e)=>{
 
 <Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
 <Form.Group controlId="formFile" className="mb-3">
-    <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Bosh sahifadagi yozuv ostidagi yozuv</Form.Label>
+    <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Bosh sahifadagi video ostidagi yozuv</Form.Label>
     <Form.Control className="formInput"  name="address" type="text" defaultValue={this.state.school!==null?this.state.school.address:''}  onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
 </Row>    
