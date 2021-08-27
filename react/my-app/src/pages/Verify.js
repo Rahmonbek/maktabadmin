@@ -158,6 +158,7 @@ export default class Verify extends Component {
                     this.onChange(e.target.value);
                   }}
                   className={style.Forminput}
+                
                 >
                   <option value="Iqtisoslashtirilgan davlat umuta'lim maktabi">Iqtisoslashtirilgan davlat umuta'lim maktabi</option>
                   <option value="Dalat umumta'lim maktabi">Davlat umumta'lim maktabi</option>
