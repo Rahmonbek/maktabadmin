@@ -923,7 +923,7 @@ addLessonParol=(e)=>{
 <Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
 <Form.Group controlId="formFile" className="mb-3">
     <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Qabul sahifasining so'ngi qaror matni</Form.Label>
-    <Form.Control className="formInput"  name="q_j_qaror" type="text" defaultValue={this.state.school!==null?this.state.school.q_j_qaror:''}  onChange={(e)=>this.customText(e)} />
+    <Form.Control className="formInput"  name="q_j_qaror"  as="textarea" style={{height:'100px'}} placeholder="Matn kiriting..."   defaultValue={this.state.school!==null?this.state.school.q_j_qaror:''}  onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
 </Row>    
 <Row style={{marginTop:'20px'}}>
