@@ -666,8 +666,9 @@ addLessonParol=(e)=>{
 <Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
 <Form.Group controlId="formFile" className="mb-3">
     <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Maktab hayoti sahifasining transport xizmati uchun rasm</Form.Label>
-    <Form.Control className="formInput"  name="m_h_t_t" as="textarea" defaultValue={this.state.school!==null?this.state.school.m_h_t_t:''}
-      placeholder="Matn kiriting..."
+    <Form.Control className="formInput"  name="m_h_t_t" defaultValue={this.state.school!==null?this.state.school.m_h_t_t:''}
+      as="textarea"
+     placeholder="Matn kiriting..."
       style={{ height: '100px' }}  onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
 </Row>    
@@ -706,7 +707,9 @@ addLessonParol=(e)=>{
 <Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
 <Form.Group controlId="formFile" className="mb-3">
     <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Maktab hayoti sahifasidagi oshxona matni</Form.Label>
-    <Form.Control className="formInput"  name="m_h_oshxona_t" type="text" defaultValue={this.state.school!==null?this.state.school.m_h_oshxona_t:''}  onChange={(e)=>this.customText(e)} />
+    <Form.Control className="formInput"  name="m_h_oshxona_t"  as="textarea"
+     placeholder="Matn kiriting..."
+      style={{ height: '100px' }}  defaultValue={this.state.school!==null?this.state.school.m_h_oshxona_t:''}  onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
 </Row>     
 <Row style={{marginTop:'20px'}}>
@@ -724,7 +727,9 @@ addLessonParol=(e)=>{
 <Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
 <Form.Group controlId="formFile" className="mb-3">
     <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Maktab hayoti sahifasidagi musiqa matni</Form.Label>
-    <Form.Control className="formInput"  name="m_h_musiqa_t" type="text" defaultValue={this.state.school!==null?this.state.school.m_h_musiqa_t:''}  onChange={(e)=>this.customText(e)} />
+    <Form.Control className="formInput"  name="m_h_musiqa_t"  as="textarea"
+     placeholder="Matn kiriting..."
+      style={{ height: '100px' }}  defaultValue={this.state.school!==null?this.state.school.m_h_musiqa_t:''}  onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
 </Row>    
 <Row style={{marginTop:'20px'}}>
@@ -741,7 +746,9 @@ addLessonParol=(e)=>{
 <Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
 <Form.Group controlId="formFile" className="mb-3">
     <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Maktab hayoti sahifasidagi sport matni</Form.Label>
-    <Form.Control className="formInput"  name="m_h_sport_t" type="text" defaultValue={this.state.school!==null?this.state.school.m_h_sport_t:''}  onChange={(e)=>this.customText(e)} />
+    <Form.Control className="formInput"  name="m_h_sport_t"  as="textarea"
+     placeholder="Matn kiriting..."
+      style={{ height: '100px' }}  defaultValue={this.state.school!==null?this.state.school.m_h_sport_t:''}  onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
 </Row>    
 <Row style={{marginTop:'20px'}}>
@@ -759,7 +766,9 @@ addLessonParol=(e)=>{
 <Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
 <Form.Group controlId="formFile" className="mb-3">
     <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Maktab hayoti sahifasidagi axborot matni</Form.Label>
-    <Form.Control className="formInput"  name="m_h_axborot_t" type="text" defaultValue={this.state.school!==null?this.state.school.m_h_axborot_t:''}  onChange={(e)=>this.customText(e)} />
+    <Form.Control className="formInput"  name="m_h_axborot_t"  as="textarea"
+     placeholder="Matn kiriting..."
+      style={{ height: '100px' }}  defaultValue={this.state.school!==null?this.state.school.m_h_axborot_t:''}  onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
 </Row>            
       <Row style={{marginTop:'20px'}}>
@@ -777,7 +786,9 @@ addLessonParol=(e)=>{
 <Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
 <Form.Group controlId="formFile" className="mb-3">
     <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Maktab hayoti sahifasidagi xavfsizlik matni</Form.Label>
-    <Form.Control className="formInput"  name="m_h_xavfsizlik_t" type="text" defaultValue={this.state.school!==null?this.state.school.m_h_xavfsizlik_t:''}  onChange={(e)=>this.customText(e)} />
+    <Form.Control className="formInput"  name="m_h_xavfsizlik_t"  as="textarea"
+     placeholder="Matn kiriting..."
+      style={{ height: '100px' }}  defaultValue={this.state.school!==null?this.state.school.m_h_xavfsizlik_t:''}  onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
 </Row>    
 <Row style={{marginTop:'20px'}}>
@@ -794,7 +805,9 @@ addLessonParol=(e)=>{
 <Col sm={12} style={{alignItems:'center', justifyContent:'center'}} md={12} lg={12}> 
 <Form.Group controlId="formFile" className="mb-3">
     <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Maktab hayoti sahifasidagi tibbiyot matni</Form.Label>
-    <Form.Control className="formInput"  name="m_h_tibbiyot_t" type="text" defaultValue={this.state.school!==null?this.state.school.m_h_tibbiyot_t:''}  onChange={(e)=>this.customText(e)} />
+    <Form.Control className="formInput"  name="m_h_tibbiyot_t"  as="textarea"
+     placeholder="Matn kiriting..."
+      style={{ height: '100px' }}  defaultValue={this.state.school!==null?this.state.school.m_h_tibbiyot_t:''}  onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
 </Row>    
 
@@ -983,17 +996,6 @@ addLessonParol=(e)=>{
     <Form.Control className="formInput"  name="q_hujjat_t3" type="text" defaultValue={this.state.school!==null?this.state.school.q_hujjat_t3:''}  onChange={(e)=>this.customText(e)} />
   </Form.Group></Col>
 </Row>    
-<Row style={{marginTop:'20px'}}>
-<Col sm={8} style={{alignItems:'center', justifyContent:'center'}} md={8} lg={8}> 
-<Form.Group controlId="formFile" className="mb-3">
-    <Form.Label style={{borderBottom:'1px solid black', marginBottom:'20px', fontSize:"16px"}}>Qabul sahifasining qabul jarayoni uchun rasm</Form.Label>
-    <Form.Control className="formInput" accept=".jpg, .jpeg, .png" name="q" type="file"  onChange={this.customRequest} />
-  </Form.Group></Col>
-<Col sm={4} style={{alignItems:'center', justifyContent:'center'}} md={4} lg={4}>
-<img alt="..." src={this.state.school!==null?this.state.school.q!==null?this.state.school.q:this.state.img:''} style={{width:"70px"}}/>
-</Col>
-</Row>    
-
       </Col>
       </Row>
       <Button className="btnFormIn" onClick={this.addLesson} variant="primary">
