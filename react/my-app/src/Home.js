@@ -74,7 +74,7 @@ const Home = ({ routes }) => {
                                 <div style={{ position: "sticky", top: "0px", height: "100vh", boxShadow: "0 0.46875rem 2.1875rem rgb(4 9 20 / 3%), 0 0.9375rem 1.40625rem rgb(4 9 20 / 3%), 0 0.25rem 0.53125rem rgb(4 9 20 / 5%), 0 0.125rem 0.1875rem rgb(4 9 20 / 3%)", zIndex: "10000000" }}>
                                     <div className={styles.topMenu}>
                                     <h1>{school!==null?school.school_number:''} - maktab</h1>
-                                    <p style={{fontSize:"12px"}}>{school!==null?school.type:''}</p>
+                                   
                                         <span className={styles.crown}>
                                             <FaCrown style={{ fontSize: "30px" }} />
                                         </span>
