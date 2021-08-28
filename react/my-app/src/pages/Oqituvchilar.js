@@ -1,6 +1,24 @@
 import React, { Component } from "react";
-import { Button, Col, Container, Image, OverlayTrigger, Row, Tooltip, Form } from "react-bootstrap";
-import { createXodim, deleteXodim, getSpec, editXodim, getXodim, patchXodim, register, getStaff } from "../host/Config";
+import {
+  Button,
+  Col,
+  Container,
+  Image,
+  OverlayTrigger,
+  Row,
+  Tooltip,
+  Form,
+} from "react-bootstrap";
+import {
+  createXodim,
+  deleteXodim,
+  getSpec,
+  editXodim,
+  getXodim,
+  patchXodim,
+  register,
+  getStaff,
+} from "../host/Config";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -25,7 +43,7 @@ import GLOBAL from "../host/Global";
 import Loader from "./Loader";
 export default class Oqituvchilar extends Component {
   state = {
-    loading:true,
+    loading: true,
     mutaxassislik: [],
     visible: false,
     selectedFile: null,
@@ -37,7 +55,11 @@ export default class Oqituvchilar extends Component {
     image: null,
     imageUrl: null,
     speciality: [],
-    teach:{}
+    teach: {},
+    fullname: "",
+    position: "",
+    phone: "",
+    description: "",
   };
   openModal = () => {
     this.setState({
@@ -51,78 +73,70 @@ export default class Oqituvchilar extends Component {
       image: null,
       edit: null,
       imageUrl: null,
-      teach:{}
-   
+      teach: {},
+      previewImage: false,
+      fullname: "",
+      phone: "",
+      position: "",
+      description: "",
     });
-   document.getElementById("fullname").value="";
-   
-   document.getElementById("phone").value="";
-   document.getElementById("description").value="";
-   document.getElementById("position").value="";
   };
-  echoOptions=(a)=>{
-    var g=""
-    this.state.options.map(item=>{
-      if(item.id===a){
-        g=item.name
+  echoOptions = (a) => {
+    var g = "";
+    this.state.options.map((item) => {
+      if (item.id === a) {
+        g = item.name;
       }
-
-    })
-    return(g)
-  }
+    });
+    return g;
+  };
   getSpec = () => {
     getSpec()
       .then((res) => {
         this.setState({ options: res.data });
-    
       })
       .catch((err) => console.log(err));
-      
   };
   getXodim = () => {
     getStaff()
       .then((res) => {
         this.setState({
-          teachers:res.data
-        })
-     this.setState({loading:false}) 
+          teachers: res.data,
+        });
+        this.setState({ loading: false });
       })
       .catch((err) => console.log(err));
-    
-  }; 
-   
+  };
+
   editXodim = (key) => {
-   
-        this.setState({
-        teach:this.state.teachers[key],
-          edit: this.state.teachers[key].id,
-          imageUrl: this.state.teachers[key].image,
-          speciality: this.state.teachers[key].speciality,
-        });
-    
-      
+    this.setState({
+      fullname: this.state.teachers[key].full_name,
+      phone: this.state.teachers[key].phone,
+      position: this.state.teachers[key].position,
+      description: this.state.teachers[key].description,
+      edit: this.state.teachers[key].id,
+      imageUrl: this.state.teachers[key].image,
+      speciality: this.state.teachers[key].speciality,
+      previewImage: true,
+    });
+
     this.openModal();
   };
   saveXodim = () => {
+    console.log(document.getElementById("fullname").value);
     var full_name = document.getElementById("fullname").value;
-   
     var phone = document.getElementById("phone").value;
     var description = document.getElementById("description").value;
     var position = document.getElementById("position").value;
     var speciality = this.state.speciality;
-   
+
     let formData = new FormData();
 
     formData.append("position", position ?? "");
     formData.append("full_name", full_name ?? "");
-    // formData.append(
-    //   'password',
-    //  password ?? ''
-    // )
     formData.append("phone", phone ?? "");
     formData.append("school", GLOBAL.id ?? "");
     formData.append("description", description ?? "");
-    
 
     if (this.state.edit !== null) {
       if (this.state.image !== null) {
@@ -130,47 +144,46 @@ export default class Oqituvchilar extends Component {
       }
       editXodim(formData, this.state.edit)
         .then((res) => {
-    editXodim({speciality:this.state.speciality}, this.state.edit).then(res2=>{
-  message.success("Xodim o'zgartildi")
-      this.hideModal();
-      this.getXodim();
-  
-    })
+          editXodim(
+            { speciality: this.state.speciality },
+            this.state.edit
+          ).then((res2) => {
+            message.success("Xodim o'zgartildi");
+            this.hideModal();
+            this.getXodim();
+          });
         })
         .catch((err) => message.error("Xodim o'zgartilmadi"));
     } else {
       var username = document.getElementById("username").value;
       var password = document.getElementById("password").value;
       var confirmPassword = document.getElementById("confirmPassword").value;
-     
+
       if (confirmPassword !== password) {
         document.querySelector(".confirm").style.display = "block";
-        return (document.getElementById("confirmPassword").style.backgroundColor = "red");
+        return (document.getElementById(
+          "confirmPassword"
+        ).style.backgroundColor = "red");
       }
-  
-     
+
       formData.append("image", this.state.image ?? "");
       register({ username, password })
         .then((res) => {
           formData.append("user", res.data.user.id ?? "");
           createXodim(formData)
             .then((res) => {
-          
               patchXodim({ speciality: speciality }, res.data.id)
                 .then((res1) => {
                   this.hideModal();
                   this.getXodim();
-                  message.success("Xodim saqlandi")
-  
+                  message.success("Xodim saqlandi");
                 })
                 .catch((err1) => {
-                  message.error("Xodim saqlanmadi")
-              
+                  message.error("Xodim saqlanmadi");
                 });
             })
             .catch((err) => {
-              message.error("Xodim saqlanmadi")
-          
+              message.error("Xodim saqlanmadi");
             });
         })
         .catch((err) => {
@@ -182,17 +195,51 @@ export default class Oqituvchilar extends Component {
     deleteXodim(id)
       .then((res) => {
         this.getXodim();
-        message.success("Xodim o'chirildi")
-        
+        message.success("Xodim o'chirildi");
       })
-      .catch((err) =>                   message.error("Xodim o'chirilmadi")
-      );
+      .catch((err) => message.error("Xodim o'chirilmadi"));
   };
   customRequest = (e) => {
     let image = e.target.files[0];
     this.setState({
       image: image,
     });
+  };
+  fullName = (e) => {
+    var data = "";
+    if (e.nativeEvent.data !== null) {
+      data = e.target.defaultValue + e.nativeEvent.data;
+    } else {
+      data = e.target.defaultValue.substr(0, e.target.defaultValue.length - 1);
+    }
+    this.setState({ fullname: data });
+  };
+  position = (e) => {
+    var data = "";
+    if (e.nativeEvent.data !== null) {
+      data = e.target.defaultValue + e.nativeEvent.data;
+    } else {
+      data = e.target.defaultValue.substr(0, e.target.defaultValue.length - 1);
+    }
+    this.setState({ position: data });
+  };
+  phone = (e) => {
+    var data = "";
+    if (e.nativeEvent.data !== null) {
+      data = e.target.defaultValue + e.nativeEvent.data;
+    } else {
+      data = e.target.defaultValue.substr(0, e.target.defaultValue.length - 1);
+    }
+    this.setState({ phone: data });
+  };
+  description = (e) => {
+    var data = "";
+    if (e.nativeEvent.data !== null) {
+      data = e.target.defaultValue + e.nativeEvent.data;
+    } else {
+      data = e.target.defaultValue.substr(0, e.target.defaultValue.length - 1);
+    }
+    this.setState({ description: data });
   };
   handleExpandClick = (id) => {
     var a = this.state.expanded;
@@ -210,274 +257,377 @@ export default class Oqituvchilar extends Component {
   };
   componentDidMount() {
     this.getXodim();
-
     this.getSpec();
-  
   }
- 
+
   render() {
     return (
-      <div>{
-        this.state.loading===true?(<Loader/>):(<div>
-        <Container fluid>
-          <br />
-          <br />
-          <Button
-            type="primary"
-            onClick={() => {
-              this.openModal();
-            }}
-          >
-            Xodim qo'shish
-          </Button>
-          <Row>
-            {this.state.teachers !== []
-              ? this.state.teachers.map((item, key) => {
-                  return (
-                    <Col lg={4} md={6} sm={12} style={{ marginTop: "20px" }}>
-                      <Card className={style.root}>
-                        <CardHeader title="Xodim" />
-                        {item.image !== null ? <CardMedia className={style.media} image={item.image} title={item.full_name} /> : ""}
-                        <CardContent>
-                          <Typography variant="body2" color="textSecondary" component="p">
-                            <p>
-                              <b>F.I.O: </b>
-                              {item.full_name}
-                            </p>
-                            <p>
-                              <b>Sohasi: </b>
-                              {item.speciality.map((item1) => {
-                                return this.echoOptions(item1)+' ';
-                              })}
-                            </p>
-                            <p>
-                              <b>Mutaxassislik: </b>
-                              {item.position}
-                            </p>
-                            <p>
-                              <b>Telefon raqami: </b>
-                              {item.phone}
-                            </p>
-                          </Typography>
-                        </CardContent>
-                        <CardActions
-                          disableSpacing
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-around",
-                          }}
+      <div>
+        {this.state.loading === true ? (
+          <Loader />
+        ) : (
+          <div>
+            <Container fluid>
+              <br />
+              <br />
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.openModal();
+                }}
+              >
+                Xodim qo'shish
+              </Button>
+              <Row>
+                {this.state.teachers !== []
+                  ? this.state.teachers.map((item, key) => {
+                      return (
+                        <Col
+                          lg={4}
+                          md={6}
+                          sm={12}
+                          style={{ marginTop: "20px" }}
                         >
-                          <OverlayTrigger
-                            placement="bottom"
-                            overlay={
-                              <Tooltip
-                                id="button-tooltip-2"
-                                style={{
-                                  marginTop: "15px",
-                                }}
-                              >
-                                O'zgartirish
-                              </Tooltip>
-                            }
-                          >
-                            {({ ref, ...triggerHandler }) => (
-                              <Button
-                                onClick={() => {
-                                  this.editXodim(key);
-                                }}
-                                variant="blue"
-                                {...triggerHandler}
-                                className="d-inline-flex align-items-center"
-                              >
-                                <Image ref={ref} />
-
-                                <IconButton>
-                                  <BorderColorIcon />
-                                </IconButton>
-                              </Button>
+                          <Card className={style.root}>
+                            <CardHeader title="Xodim" />
+                            {item.image !== null ? (
+                              <CardMedia
+                                className={style.media}
+                                image={item.image}
+                                title={item.full_name}
+                              />
+                            ) : (
+                              ""
                             )}
-                          </OverlayTrigger>
-
-                          <OverlayTrigger
-                            placement="bottom"
-                            overlay={
-                              <Tooltip
-                                id="button-tooltip-2"
-                                style={{
-                                  marginTop: "15px",
-                                }}
+                            <CardContent>
+                              <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="p"
                               >
-                                O'chirish
-                              </Tooltip>
-                            }
-                          >
-                            {({ ref, ...triggerHandler }) => (
-                              <Button
-                                onClick={() => {
-                                  this.deleteXodim(item.id);
-                                }}
-                                variant="#f70707d9"
-                                {...triggerHandler}
-                                className="d-inline-flex align-items-center"
-                              >
-                                <Image ref={ref} />
-
-                                <IconButton>
-                                  <DeleteIcon />
-                                </IconButton>
-                              </Button>
-                            )}
-                          </OverlayTrigger>
-
-                          <OverlayTrigger
-                            placement="bottom"
-                            overlay={
-                              <Tooltip
-                                id="button-tooltip-2"
-                                style={{
-                                  marginTop: "15px",
-                                }}
-                              >
-                                Xodim haqida batafsil ma'lumot
-                              </Tooltip>
-                            }
-                          >
-                            {({ ref, ...triggerHandler }) => (
-                              <Button variant="#F2F2F2" {...triggerHandler} className="d-inline-flex align-items-center">
-                                <Image ref={ref} />
-                                <IconButton
-                                  className={clsx(styles.expand, {
-                                    [styles.expandOpen]: this.state.expanded[key],
+                                <p>
+                                  <b>F.I.Sh.: </b>
+                                  {item.full_name}
+                                </p>
+                                <p>
+                                  <b>Sohasi: </b>
+                                  {item.speciality.map((item1) => {
+                                    return this.echoOptions(item1) + " ";
                                   })}
-                                  onClick={() => {
-                                    this.handleExpandClick(key);
-                                  }}
-                                  aria-expanded={this.state.expanded[key]}
-                                  aria-label="show more"
-                                >
-                                  <ExpandMoreIcon />
-                                </IconButton>
-                              </Button>
-                            )}
-                          </OverlayTrigger>
-                        </CardActions>
-                        <Collapse in={this.state.expanded[key]} timeout="auto" unmountOnExit>
-                          <CardContent>
-                            <Typography
-                              paragraph
+                                </p>
+                                <p>
+                                  <b>Mutaxassislik: </b>
+                                  {item.position}
+                                </p>
+                                <p>
+                                  <b>Telefon raqami: </b>
+                                  {item.phone}
+                                </p>
+                              </Typography>
+                            </CardContent>
+                            <CardActions
+                              disableSpacing
                               style={{
-                                fontSize: "16px",
+                                display: "flex",
+                                justifyContent: "space-around",
                               }}
                             >
-                              <p>Qo'shimcha ma'lumot</p>
-                              <p>{item.description}</p>
-                            </Typography>
-                          </CardContent>
-                        </Collapse>
-                      </Card>
-                    </Col>
-                  );
-                })
-              : ""}
-          </Row>
-        </Container>
-        <Modal
-          title="Xodim"
-          width="70%"
-          visible={this.state.visible}
-          footer={false}
-          onCancel={() => {
-            this.hideModal();
-          }}
-        >
-          <Form>
-            <Form.Group className="mb-3" controlId="fullname">
-              <Form.Label>F.I.O.</Form.Label>
-              <Form.Control defaultValue={this.state.teach.full_name} className="formInput" placeholder="F.I.O." />
-            </Form.Group>
+                              <OverlayTrigger
+                                placement="bottom"
+                                overlay={
+                                  <Tooltip
+                                    id="button-tooltip-2"
+                                    style={{
+                                      marginTop: "15px",
+                                    }}
+                                  >
+                                    O'zgartirish
+                                  </Tooltip>
+                                }
+                              >
+                                {({ ref, ...triggerHandler }) => (
+                                  <Button
+                                    onClick={() => {
+                                      this.editXodim(key);
+                                    }}
+                                    variant="blue"
+                                    {...triggerHandler}
+                                    className="d-inline-flex align-items-center"
+                                  >
+                                    <Image ref={ref} />
 
-            <Form.Group className="mb-3" controlId="image">
-              <Form.Label>Rasm</Form.Label>
-              <Input id="img" onChange={this.customRequest} type="file" required={false} style={{ marginBottom: "20px" }} accept="image/jpg, image/jpeg, image/png" />
-              {this.state.previewImage ? ImageDemo(this.state.imageUrl) : ""}
-            </Form.Group>
-{this.state.edit===null?
-            <div id="user">
-            <Form.Group className="mb-3" controlId="username">
-              <Form.Label>Login</Form.Label>
-              <Form.Control  className="formInput" placeholder="Login" />
-            </Form.Group>
-            <p style={{ color: "red", fontSize: "14px", display: "none" }} className="registerRed">
-              Bu login tizimda bor boshqa login kiriting
-            </p>
-            <Form.Group className="mb-3 red" controlId="password">
-              <Form.Label>Parol</Form.Label>
-              <Form.Control  className="formInput" type="password" placeholder="Parol" />
-            </Form.Group>
+                                    <IconButton>
+                                      <BorderColorIcon />
+                                    </IconButton>
+                                  </Button>
+                                )}
+                              </OverlayTrigger>
 
-            <Form.Group className="mb-3 red" controlId="confirmPassword">
-              <Form.Label>Parol tekshirish</Form.Label>
-              <Form.Control  className="formInput" placeholder="Parol tekshirish" type="password" />
-            </Form.Group>
-            <p style={{ color: "red", fontSize: "14px", display: "none" }} className="confirm">
-              Parollar mos kelmadi!
-            </p>
-          </div>:''
+                              <OverlayTrigger
+                                placement="bottom"
+                                overlay={
+                                  <Tooltip
+                                    id="button-tooltip-2"
+                                    style={{
+                                      marginTop: "15px",
+                                    }}
+                                  >
+                                    O'chirish
+                                  </Tooltip>
+                                }
+                              >
+                                {({ ref, ...triggerHandler }) => (
+                                  <Button
+                                    onClick={() => {
+                                      this.deleteXodim(item.id);
+                                    }}
+                                    variant="#f70707d9"
+                                    {...triggerHandler}
+                                    className="d-inline-flex align-items-center"
+                                  >
+                                    <Image ref={ref} />
 
+                                    <IconButton>
+                                      <DeleteIcon />
+                                    </IconButton>
+                                  </Button>
+                                )}
+                              </OverlayTrigger>
 
-}
-            <Form.Group className="mb-3" controlId="position">
-            <Form.Label>Mutaxassislik</Form.Label>
-               <Form.Control defaultValue={this.state.teach.position}  className="formInput" placeholder="Soha" />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="speciality">
-            <Form.Label>Soha</Form.Label>
-              <Select placeholder="Mutaxassislik" value={this.state.speciality !== [] ? this.state.speciality : ""} mode="multiple" style={{ width: "100%" }} onChange={this.handleChange} optionLabelProp="label">
-                {this.state.options !== null
-                  ? this.state.options.map((item) => {
-                      return (
-                        <Option value={item.id} label={item.name}>
-                          {item.name}
-                        </Option>
+                              <OverlayTrigger
+                                placement="bottom"
+                                overlay={
+                                  <Tooltip
+                                    id="button-tooltip-2"
+                                    style={{
+                                      marginTop: "15px",
+                                    }}
+                                  >
+                                    Xodim haqida batafsil ma'lumot
+                                  </Tooltip>
+                                }
+                              >
+                                {({ ref, ...triggerHandler }) => (
+                                  <Button
+                                    variant="#F2F2F2"
+                                    {...triggerHandler}
+                                    className="d-inline-flex align-items-center"
+                                  >
+                                    <Image ref={ref} />
+                                    <IconButton
+                                      className={clsx(styles.expand, {
+                                        [styles.expandOpen]:
+                                          this.state.expanded[key],
+                                      })}
+                                      onClick={() => {
+                                        this.handleExpandClick(key);
+                                      }}
+                                      aria-expanded={this.state.expanded[key]}
+                                      aria-label="show more"
+                                    >
+                                      <ExpandMoreIcon />
+                                    </IconButton>
+                                  </Button>
+                                )}
+                              </OverlayTrigger>
+                            </CardActions>
+                            <Collapse
+                              in={this.state.expanded[key]}
+                              timeout="auto"
+                              unmountOnExit
+                            >
+                              <CardContent>
+                                <Typography
+                                  paragraph
+                                  style={{
+                                    fontSize: "16px",
+                                  }}
+                                >
+                                  <p>Qo'shimcha ma'lumot</p>
+                                  <p>{item.description}</p>
+                                </Typography>
+                              </CardContent>
+                            </Collapse>
+                          </Card>
+                        </Col>
                       );
                     })
                   : ""}
-              </Select>
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="phone">
-              <Form.Label>Telefon raqam</Form.Label>
-              <Form.Control defaultValue={this.state.teach.phone}  className="formInput" placeholder="Telefon raqam" />
-            </Form.Group>
-
-            <Form.Group className="mb-3" style={{ width: "100%" }} controlId="description">
-              <Form.Label>Qo'shimcha ma'lumot</Form.Label>
-              <Form.Control  defaultValue={this.state.teach.description} className="formInput" as="textarea" placeholder="Qo'shimcha ma'lumot" style={{ height: "200px" }} />
-            </Form.Group>
-            <br />
-            <Button
-              variant="danger"
-              htmlType="button"
-              style={{ marginRight: "20px" }}
-              onClick={() => {
+              </Row>
+            </Container>
+            <Modal
+              title="Xodim"
+              width="70%"
+              visible={this.state.visible}
+              footer={false}
+              onCancel={() => {
                 this.hideModal();
               }}
             >
-              Bekor qilish
-            </Button>
-            <Button
-              variant="primary"
-              htmlType="button"
-              onClick={() => {
-                this.saveXodim();
-              }}
-            >
-              Yaratish
-            </Button>
-          </Form>
-        </Modal>
-        </div>)}
+              <Form>
+                <Form.Group className="mb-3" controlId="fullname">
+                  <Form.Label>F.I.Sh.</Form.Label>
+                  <Form.Control
+                    onChange={this.fullName}
+                    value={this.state.fullname}
+                    className="formInput"
+                    placeholder="F.I.Sh."
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="image">
+                  <Row>
+                    <Col lg={9}>
+                      <Form.Label>Rasm</Form.Label>
+                      <Input
+                        id="img"
+                        onChange={this.customRequest}
+                        type="file"
+                        required={false}
+                        style={{ marginBottom: "20px" }}
+                        accept="image/jpg, image/jpeg, image/png"
+                      />
+                    </Col>
+                    <Col lg={3}>
+                      {this.state.previewImage
+                        ? ImageDemo(this.state.imageUrl)
+                        : ""}
+                    </Col>
+                  </Row>
+                </Form.Group>
+                {this.state.edit === null ? (
+                  <div id="user">
+                    <Form.Group className="mb-3" controlId="username">
+                      <Form.Label>Login</Form.Label>
+                      <Form.Control className="formInput" placeholder="Login" />
+                    </Form.Group>
+                    <p
+                      style={{
+                        color: "red",
+                        fontSize: "14px",
+                        display: "none",
+                      }}
+                      className="registerRed"
+                    >
+                      Bu login tizimda bor boshqa login kiriting
+                    </p>
+                    <Form.Group className="mb-3 red" controlId="password">
+                      <Form.Label>Parol</Form.Label>
+                      <Form.Control
+                        className="formInput"
+                        type="password"
+                        placeholder="Parol"
+                      />
+                    </Form.Group>
+
+                    <Form.Group
+                      className="mb-3 red"
+                      controlId="confirmPassword"
+                    >
+                      <Form.Label>Parol tekshirish</Form.Label>
+                      <Form.Control
+                        className="formInput"
+                        placeholder="Parol tekshirish"
+                        type="password"
+                      />
+                    </Form.Group>
+                    <p
+                      style={{
+                        color: "red",
+                        fontSize: "14px",
+                        display: "none",
+                      }}
+                      className="confirm"
+                    >
+                      Parollar mos kelmadi!
+                    </p>
+                  </div>
+                ) : (
+                  ""
+                )}
+                <Form.Group className="mb-3" controlId="position">
+                  <Form.Label>Mutaxassislik</Form.Label>
+                  <Form.Control
+                    onChange={this.position}
+                    value={this.state.position}
+                    className="formInput"
+                    placeholder="Mutaxassislik"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="speciality">
+                  <Form.Label>Soha</Form.Label>
+                  <Select
+                    placeholder="Soha"
+                    value={
+                      this.state.speciality !== [] ? this.state.speciality : ""
+                    }
+                    mode="multiple"
+                    style={{ width: "100%" }}
+                    onChange={this.handleChange}
+                    optionLabelProp="label"
+                  >
+                    {this.state.options !== null
+                      ? this.state.options.map((item) => {
+                          return (
+                            <Option value={item.id} label={item.name}>
+                              {item.name}
+                            </Option>
+                          );
+                        })
+                      : ""}
+                  </Select>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="phone">
+                  <Form.Label>Telefon raqam</Form.Label>
+                  <Form.Control
+                    onChange={this.phone}
+                    value={this.state.phone}
+                    className="formInput"
+                    placeholder="Telefon raqam"
+                  />
+                </Form.Group>
+
+                <Form.Group
+                  className="mb-3"
+                  style={{ width: "100%" }}
+                  controlId="description"
+                >
+                  <Form.Label>Qo'shimcha ma'lumot</Form.Label>
+                  <Form.Control
+                    onChange={this.description}
+                    value={this.state.description}
+                    className="formInput"
+                    as="textarea"
+                    placeholder="Qo'shimcha ma'lumot"
+                    style={{ height: "200px" }}
+                  />
+                </Form.Group>
+                <br />
+                <Button
+                  variant="danger"
+                  htmlType="button"
+                  style={{ marginRight: "20px" }}
+                  onClick={() => {
+                    this.hideModal();
+                  }}
+                >
+                  Bekor qilish
+                </Button>
+                <Button
+                  variant="primary"
+                  htmlType="button"
+                  onClick={() => {
+                    this.saveXodim();
+                  }}
+                >
+                  Yaratish
+                </Button>
+              </Form>
+            </Modal>
+          </div>
+        )}
       </div>
     );
   }
