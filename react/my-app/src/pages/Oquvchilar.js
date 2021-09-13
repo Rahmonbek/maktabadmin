@@ -614,7 +614,6 @@ export default class Oquvchilar extends Component {
           footer={false}
           style={{ top: "0px" }}
           onCancel={this.handleClose}
-          width="50%"
         >
           <Form>
             <Form.Group className="mb-3" controlId="formBasicfullname">
