@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Input, Button, Space, Modal, message } from "antd";
+import { Table, Input, Button, Space, Modal, message, Select } from "antd";
 import { Form } from "react-bootstrap";
 import Highlighter from "react-highlight-words";
 import { SearchOutlined, FormOutlined } from "@ant-design/icons";
@@ -12,6 +12,7 @@ import {
   getPupils,
 } from "../host/Config";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
+import { Option } from "antd/lib/mentions";
 export default class Oquvchilar extends Component {
   state = {
     show: false,
@@ -24,6 +25,8 @@ export default class Oquvchilar extends Component {
     motherName: "",
     motherNumber: "",
     student: "",
+    clas: null,
+    classes: [],
     date: "2021-01-01",
     students: [
       //   {
@@ -228,6 +231,7 @@ export default class Oquvchilar extends Component {
   getPupils = () => {
     getClass()
       .then((res) => {
+        this.setState({ classes: res.data, clas: res.data[0].id });
         for (let j = 0; j < res.data.length; j++) {
           getPupils(res.data[j].id).then((res1) => {
             var pupils = this.state.students;
@@ -248,7 +252,6 @@ export default class Oquvchilar extends Component {
       })
       .catch((err) => message.error("Sinflar topilmadi!"));
   };
-
   openModal = () => {
     this.setState({
       show: true,
@@ -259,7 +262,7 @@ export default class Oquvchilar extends Component {
     var formData = new FormData();
     formData.append("full_name", this.state.student ?? "");
     formData.append("birth_day", this.state.date ?? null);
-    formData.append("clas", 2 ?? null);
+    formData.append("clas", this.state.clas ?? null);
     formData.append("father_name", this.state.fatherName ?? "");
     formData.append("father_tel", this.state.fatherNumber ?? "");
     formData.append("mother_name", this.state.motherName ?? "");
@@ -330,6 +333,7 @@ export default class Oquvchilar extends Component {
       date: "2021-01-01",
       imageUrl: null,
       previewImage: false,
+      clas: this.state.classes[0].id,
     });
     document.getElementById("formBasicimage").value = "";
   };
@@ -471,6 +475,10 @@ export default class Oquvchilar extends Component {
     this.setState({ motherNumber: e.target.value });
   };
 
+  changeClass = (e) => {
+    this.setState({ clas: e });
+  };
+
   render() {
     const columns = [
       {
@@ -576,13 +584,30 @@ export default class Oquvchilar extends Component {
           icon={<FormOutlined style={{ transform: "translate(0px, -2px)" }} />}
         >
           O'quvchi qo'shish
-        </Button>
-        <Table
-          columns={columns}
-          dataSource={this.state.students}
-          bordered="true"
-          style={{ marginTop: "20px" }}
-        />
+        </Button>{" "}
+        {this.state.classes !== [] ? (
+          <>
+            <Table
+              columns={columns}
+              dataSource={this.state.students}
+              bordered="true"
+              style={{ marginTop: "20px" }}
+            />{" "}
+          </>
+        ) : (
+          <div
+            style={{
+              marginTop: "30px",
+              textAlign: "center",
+              color: "red",
+              fontSize: "25px",
+              backgroundColor: "white",
+              padding: "20px",
+            }}
+          >
+            Iltimos avval sinflarni tashkil eting!
+          </div>
+        )}
         <Modal
           title="O'quvchi qo'shish"
           visible={this.state.show}
@@ -626,6 +651,32 @@ export default class Oquvchilar extends Component {
               {this.state.previewImage ? ImageDemo(this.state.imageUrl) : ""}
             </Form.Group>
             <hr />
+
+            {this.state.classes !== [] ? (
+              <>
+                <Form.Group className="mb-3" controlId="formBasicclas">
+                  <Form.Label>O'quvchining sinfi</Form.Label>
+                  <Select
+                    placeholder="Select a person"
+                    style={{ width: "100%" }}
+                    onSelect={this.changeClass}
+                    value={this.state.clas}
+                  >
+                    {this.state.classes.map((item) => {
+                      return (
+                        <Option value={item.id}>
+                          {item.class_number}-{item.class_char}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                  ,
+                </Form.Group>
+                <hr />
+              </>
+            ) : (
+              ""
+            )}
 
             <Form.Group className="mb-3" controlId="formBasicfather">
               <Form.Label>O'quvchining otasining F.I.Sh.i</Form.Label>
