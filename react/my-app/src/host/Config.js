@@ -230,3 +230,37 @@ export const editCourse = (data, id) => {
   };
   return httpRequest(config);
 };
+
+export const getPupils = (id) => {
+  var config = {
+    url: `${url}/pupil/${id}/`,
+    method: "get",
+  };
+  return httpRequest(config);
+};
+
+export const createPupils = (data) => {
+  var config = {
+    url: `${url}/pupil/`,
+    method: "post",
+    data: data,
+  };
+  return httpRequest(config);
+};
+
+export const editPupils = (data, id) => {
+  var config = {
+    url: `${url}/pupil/${id}/`,
+    method: "patch",
+    data: data,
+  };
+  return httpRequest(config);
+};
+
+export const deletePupils = (id) => {
+  var config = {
+    url: `${url}/pupil/${id}/`,
+    method: "delete",
+  };
+  return httpRequest(config);
+};

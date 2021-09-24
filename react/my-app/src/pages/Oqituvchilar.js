@@ -206,40 +206,16 @@ export default class Oqituvchilar extends Component {
     });
   };
   fullName = (e) => {
-    var data = "";
-    if (e.nativeEvent.data !== null) {
-      data = e.target.defaultValue + e.nativeEvent.data;
-    } else {
-      data = e.target.defaultValue.substr(0, e.target.defaultValue.length - 1);
-    }
-    this.setState({ fullname: data });
+    this.setState({ fullname: e.target.value });
   };
   position = (e) => {
-    var data = "";
-    if (e.nativeEvent.data !== null) {
-      data = e.target.defaultValue + e.nativeEvent.data;
-    } else {
-      data = e.target.defaultValue.substr(0, e.target.defaultValue.length - 1);
-    }
-    this.setState({ position: data });
+    this.setState({ position: e.target.value });
   };
   phone = (e) => {
-    var data = "";
-    if (e.nativeEvent.data !== null) {
-      data = e.target.defaultValue + e.nativeEvent.data;
-    } else {
-      data = e.target.defaultValue.substr(0, e.target.defaultValue.length - 1);
-    }
-    this.setState({ phone: data });
+    this.setState({ phone: e.target.value });
   };
   description = (e) => {
-    var data = "";
-    if (e.nativeEvent.data !== null) {
-      data = e.target.defaultValue + e.nativeEvent.data;
-    } else {
-      data = e.target.defaultValue.substr(0, e.target.defaultValue.length - 1);
-    }
-    this.setState({ description: data });
+    this.setState({ description: e.target.value });
   };
   handleExpandClick = (id) => {
     var a = this.state.expanded;
