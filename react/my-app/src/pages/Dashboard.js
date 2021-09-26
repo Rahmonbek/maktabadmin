@@ -400,7 +400,7 @@ addLessonParol=(e)=>{
   className="formInput" style={{width:'100%'}}  name="type" type="text" value={!this.state.images.type?"":this.state.images.type}  onChange={(e)=>this.customText(e)} 
 >
 <option value="Iqtisoslashtirilgan davlat umuta'lim maktabi">Iqtisoslashtirilgan davlat umuta'lim maktabi</option>
-                  <option value="Dalat umumta'lim maktabi">Dalat umumta'lim maktabi</option>
+                  <option value="Davlat umumta'lim maktabi">Davlat umumta'lim maktabi</option>
                   <option value="Xususiy maktab">Xususiy maktab</option>
                   <option value="Prezident maktabi">Prezident maktabi</option>
 </select>:

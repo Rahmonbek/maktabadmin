@@ -163,7 +163,7 @@ export default class Verify extends Component {
                 
                 >
                   <option value="Iqtisoslashtirilgan davlat umuta'lim maktabi">Iqtisoslashtirilgan davlat umuta'lim maktabi</option>
-                  <option value="Dalat umumta'lim maktabi">Davlat umumta'lim maktabi</option>
+                  <option value="Davlat umumta'lim maktabi">Davlat umumta'lim maktabi</option>
                   <option value="Xususiy maktab">Xususiy maktab</option>
                   <option value="Prezident maktabi">Prezident maktabi</option>
                 </select>
