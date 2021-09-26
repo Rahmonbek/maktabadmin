@@ -98,6 +98,8 @@ export default class Verify extends Component {
     formDataObj.school_number = Number(formDataObj.school_number);
     formDataObj.region = Number(formDataObj.region);
     formDataObj.admin = Number(formDataObj.admin);
+    formDataObj.params = { "longitude": 0,
+    "latitude": 0};
     
     console.log(e.target.value, formDataObj, this.state.id, this.state.tuman);
     axios
