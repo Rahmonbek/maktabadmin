@@ -26,7 +26,7 @@ export default class Oquvchilar extends Component {
     motherNumber: "",
     student: "",
     clas: null,
-    classes: [],
+    classes: null,
     date: "2021-01-01",
     students: [
       //   {
@@ -333,7 +333,7 @@ export default class Oquvchilar extends Component {
       date: "2021-01-01",
       imageUrl: null,
       previewImage: false,
-      clas: this.state.classes[0].id,
+      clas: this.state.classes!==null?this.state.classes[0].id:null,
     });
     document.getElementById("formBasicimage").value = "";
   };
@@ -585,7 +585,7 @@ export default class Oquvchilar extends Component {
         >
           O'quvchi qo'shish
         </Button>{" "}
-        {this.state.classes !== [] ? (
+        {this.state.classes !== null ? (
           <>
             <Table
               columns={columns}
@@ -651,7 +651,7 @@ export default class Oquvchilar extends Component {
             </Form.Group>
             <hr />
 
-            {this.state.classes !== [] ? (
+            {this.state.classes !== null ? (
               <>
                 <Form.Group className="mb-3" controlId="formBasicclas">
                   <Form.Label>O'quvchining sinfi</Form.Label>
