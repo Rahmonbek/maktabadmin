@@ -559,8 +559,8 @@ export default class Admin extends Component {
                             <option value="Ixtisoslashtirilgan davlat umuta'lim maktabi">
                               Ixtisoslashtirilgan davlat umumta'lim maktabi
                             </option>
-                            <option value="Ayrim fanlar chuqur o'rganiladigan davlat ixtisoslashtirilgan maktabi">
-                              Ayrim fanlar chuqur o'rganiladigan davlat
+                            <option value="ayrim fanlar chuqur o'rganiladigan davlat ixtisoslashtirilgan maktabi">
+                              ayrim fanlar chuqur o'rganiladigan davlat
                               ixtisoslashtirilgan maktabi
                             </option>
                             <option value="Davlat umumta'lim maktabi">
@@ -588,8 +588,8 @@ export default class Admin extends Component {
                               this.customText(e);
                             }}
                           >
-                            <option value="Ayrim fanlar chuqur o'rganiladigan davlat ixtisoslashtirilgan maktabi">
-                              Ayrim fanlar chuqur o'rganiladigan davlat
+                            <option value="ayrim fanlar chuqur o'rganiladigan davlat ixtisoslashtirilgan maktabi">
+                              ayrim fanlar chuqur o'rganiladigan davlat
                               ixtisoslashtirilgan maktabi
                             </option>
                             <option value="Ixtisoslashtirilgan davlat umuta'lim maktabi">
