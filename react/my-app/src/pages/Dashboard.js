@@ -556,11 +556,11 @@ export default class Admin extends Component {
                             }
                             onChange={(e) => this.customText(e)}
                           >
-                            <option value="Ixtisoslashtirilgan davlat umuta'lim maktabi">
-                              Ixtisoslashtirilgan davlat umumta'lim maktabi
+                            <option value="Ixtisoslashtirilgan Davlat umuta'lim maktabi">
+                              Ixtisoslashtirilgan Davlat umumta'lim maktabi
                             </option>
-                            <option value="ayrim fanlar chuqur o'rganiladigan davlat ixtisoslashtirilgan maktabi">
-                              ayrim fanlar chuqur o'rganiladigan davlat
+                            <option value="ayrim fanlar chuqur o'rganiladigan Davlat ixtisoslashtirilgan maktabi">
+                              ayrim fanlar chuqur o'rganiladigan Davlat
                               ixtisoslashtirilgan maktabi
                             </option>
                             <option value="Davlat umumta'lim maktabi">
@@ -588,12 +588,12 @@ export default class Admin extends Component {
                               this.customText(e);
                             }}
                           >
-                            <option value="ayrim fanlar chuqur o'rganiladigan davlat ixtisoslashtirilgan maktabi">
-                              ayrim fanlar chuqur o'rganiladigan davlat
+                            <option value="ayrim fanlar chuqur o'rganiladigan Davlat ixtisoslashtirilgan maktabi">
+                              ayrim fanlar chuqur o'rganiladigan Davlat
                               ixtisoslashtirilgan maktabi
                             </option>
-                            <option value="Ixtisoslashtirilgan davlat umuta'lim maktabi">
-                              Ixtisoslashtirilgan davlat umuta'lim maktabi
+                            <option value="Ixtisoslashtirilgan Davlat umuta'lim maktabi">
+                              Ixtisoslashtirilgan Davlat umuta'lim maktabi
                             </option>
                             <option value="Davlat umumta'lim maktabi">
                               Davlat umumta'lim maktabi
