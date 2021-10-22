@@ -333,7 +333,8 @@ export default class Oquvchilar extends Component {
       date: "2021-01-01",
       imageUrl: null,
       previewImage: false,
-      clas: this.state.classes!==null?this.state.classes[0].id:null,
+      clas: this.state.classes !== null ? this.state.classes[0].id : null,
+      editId: null,
     });
     document.getElementById("formBasicimage").value = "";
   };
