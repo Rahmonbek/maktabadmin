@@ -3,11 +3,11 @@ import React, { useState, useEffect } from "react";
 import { Container, Card, Button } from "react-bootstrap";
 import styles from "../css/murojat.module.css";
 import RasmBuImg from "../img/lalla.jpg";
-import { url } from "../host/Host";
 import GLOBAL from "../host/Global";
 import { deleteMurojat } from "../host/Config";
 import { IoIosCall, IoMdTime } from "react-icons/io";
 import { message } from "antd";
+import { httpRequest, url } from "../host/Host";
 
 export default function Murojat() {
   const [getUser, setGetUser] = useState([]);
@@ -15,7 +15,7 @@ export default function Murojat() {
 
   useEffect(() => {
     axios
-      .get(`http://143.244.209.138/murojaat/${GLOBAL.id}`)
+      .get(`http://143.244.209.138/murojaat/2`)
       .then((res) => {
         console.log("ResDAta", res.data);
         setGetUser(res.data);
@@ -23,17 +23,29 @@ export default function Murojat() {
       .catch((err) => {
         console.log(err);
       });
+    deleteMurojat();
   }, []);
-  const deleteMurojat = (id) => {
-    deleteMurojat(id)
+  const deleteMurojat = (idM) => {
+    axios
+      .delete(`http://143.244.209.138/murojaat/2/${idM}`)
       .then((res) => {
-        message.success(" o'chirildi");
-        this.getNews();
+        console.log("delete", res.data);
       })
       .catch((err) => {
-        message.err(" o'chirilmadi");
+        console.log(err);
       });
   };
+  //   const deleteMurojat = (e) => {
+  //     e.preventDefault();
+  //     axios
+  //       .delete(`http://143.244.209.138/murojaat/${GLOBAL.id}/${id}`)
+  //       .then((res) => {
+  //         console.log("Deleted", res.data);
+  //       })
+  //       .catch((err) => {
+  //         console.log("errorDelete", err);
+  //       });
+  //   };
   console.log("====================================");
   console.log("GlobalID", GLOBAL.id);
 
@@ -64,7 +76,7 @@ export default function Murojat() {
                   </Card.Link>
                 </Card.Body>
                 <Card.Footer id={styles.CommentButtonGroup}>
-                  <p>Delete</p>
+                  <p onClick={(e) => deleteMurojat(item.id,e)}>Delete</p>
                   {itemME ? (
                     <p key={item.id} onClick={() => setItem(false)}>
                       Ko'rish
