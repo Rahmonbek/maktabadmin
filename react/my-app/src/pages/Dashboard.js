@@ -50,6 +50,18 @@ export default class Admin extends Component {
     const formData = new FormData();
     this.setState({ loading: true });
 
+    if (this.state.images.instagram) {
+      formData.append("instagram", this.state.images.instagram);
+    }
+    if (this.state.images.telegram) {
+      formData.append("telegram", this.state.images.telegram);
+    }
+    if (this.state.images.facebook) {
+      formData.append("facebook", this.state.images.facebook);
+    }
+    if (this.state.images.youtube) {
+      formData.append("youtube", this.state.images.youtube);
+    }
     if (this.state.images.email) {
       formData.append("email", this.state.images.email);
     }
@@ -559,10 +571,9 @@ export default class Admin extends Component {
                             <option value="Ixtisoslashtirilgan Davlat umuta'lim maktabi">
                               Ixtisoslashtirilgan Davlat umumta'lim maktabi
                             </option>
-                            <option value="ayrim fanlar chuqur o'rganiladigan Davlat ixtisoslashtirilgan maktabi">
-                              ayrim fanlar chuqur o'rganiladigan Davlat
-                              ixtisoslashtirilgan maktabi
-                            </option>
+                            <option value="Ayrim fanlar chuqur o'rganiladigan ixtisoslashtirilgan davlat umumiy o'rta ta'lim maktabi">
+                              Ayrim fanlar chuqur o'rganiladigan ixtisoslashtirilgan davlat umumiy o'rta ta'lim maktabi</option>
+
                             <option value="Davlat umumta'lim maktabi">
                               Davlat umumta'lim maktabi
                             </option>
@@ -588,10 +599,8 @@ export default class Admin extends Component {
                               this.customText(e);
                             }}
                           >
-                            <option value="ayrim fanlar chuqur o'rganiladigan Davlat ixtisoslashtirilgan maktabi">
-                              ayrim fanlar chuqur o'rganiladigan Davlat
-                              ixtisoslashtirilgan maktabi
-                            </option>
+                            <option value="Ayrim fanlar chuqur o'rganiladigan ixtisoslashtirilgan davlat umumiy o'rta ta'lim maktabi">Ayrim fanlar chuqur o'rganiladigan ixtisoslashtirilgan davlat umumiy o'rta ta'lim maktabi</option>
+
                             <option value="Ixtisoslashtirilgan Davlat umuta'lim maktabi">
                               Ixtisoslashtirilgan Davlat umuta'lim maktabi
                             </option>
@@ -640,6 +649,135 @@ export default class Admin extends Component {
                       </Form.Group>
                     </Col>
                   </Row>
+
+                  <Row style={{ marginTop: "20px" }}>
+                    <Col
+                      sm={12}
+                      style={{ alignItems: "center", justifyContent: "center" }}
+                      md={12}
+                      lg={12}
+                    >
+                      <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label
+                          style={{
+                            borderBottom: "1px solid black",
+                            marginBottom: "20px",
+                            fontSize: "16px",
+                          }}
+                        >
+                          Maktab instagram sahifasining ssilkasini kiriting
+                        </Form.Label>
+                        <Form.Control
+                          className="formInput"
+                          name="instagram"
+                          type="url"
+                          defaultValue={
+                            this.state.school !== null
+                              ? this.state.school.instagram
+                              : ""
+                          }
+                          onChange={(e) => this.customText(e)}
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row style={{ marginTop: "20px" }}>
+                    <Col
+                      sm={12}
+                      style={{ alignItems: "center", justifyContent: "center" }}
+                      md={12}
+                      lg={12}
+                    >
+                      <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label
+                          style={{
+                            borderBottom: "1px solid black",
+                            marginBottom: "20px",
+                            fontSize: "16px",
+                          }}
+                        >
+                          Maktab telegram sahifasining ssilkasini kiriting
+                        </Form.Label>
+                        <Form.Control
+                          className="formInput"
+                          name="telegram"
+                          type="url"
+                          defaultValue={
+                            this.state.school !== null
+                              ? this.state.school.telegram
+                              : ""
+                          }
+                          onChange={(e) => this.customText(e)}
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row style={{ marginTop: "20px" }}>
+                    <Col
+                      sm={12}
+                      style={{ alignItems: "center", justifyContent: "center" }}
+                      md={12}
+                      lg={12}
+                    >
+                      <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label
+                          style={{
+                            borderBottom: "1px solid black",
+                            marginBottom: "20px",
+                            fontSize: "16px",
+                          }}
+                        >
+                          Maktab facebook sahifasining ssilkasini kiriting
+                        </Form.Label>
+                        <Form.Control
+                          className="formInput"
+                          name="facebook"
+                          type="url"
+                          defaultValue={
+                            this.state.school !== null
+                              ? this.state.school.facebook
+                              : ""
+                          }
+                          onChange={(e) => this.customText(e)}
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row style={{ marginTop: "20px" }}>
+                    <Col
+                      sm={12}
+                      style={{ alignItems: "center", justifyContent: "center" }}
+                      md={12}
+                      lg={12}
+                    >
+                      <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label
+                          style={{
+                            borderBottom: "1px solid black",
+                            marginBottom: "20px",
+                            fontSize: "16px",
+                          }}
+                        >
+                          Maktab youtube sahifasining ssilkasini kiriting
+                        </Form.Label>
+                        <Form.Control
+                          className="formInput"
+                          name="youtube"
+                          type="url"
+                          defaultValue={
+                            this.state.school !== null
+                              ? this.state.school.youtube
+                              : ""
+                          }
+                          onChange={(e) => this.customText(e)}
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
 
                   <Row style={{ marginTop: "20px" }}>
                     <Col
