@@ -15,7 +15,7 @@ export default function Murojat() {
 
   useEffect(() => {
     axios
-      .get(`http://143.244.209.138/murojaat/2`)
+      .get(`http://143.244.209.138/murojaat/${GLOBAL.id}`)
       .then((res) => {
         console.log("ResDAta", res.data);
         setGetUser(res.data);
@@ -27,7 +27,7 @@ export default function Murojat() {
   }, []);
   const deleteMurojat = (idM) => {
     axios
-      .delete(`http://143.244.209.138/murojaat/2/${idM}`)
+      .delete(`http://143.244.209.138/murojaat/${GLOBAL.id}/${idM}`)
       .then((res) => {
         console.log("delete", res.data);
       })
@@ -35,21 +35,6 @@ export default function Murojat() {
         console.log(err);
       });
   };
-  //   const deleteMurojat = (e) => {
-  //     e.preventDefault();
-  //     axios
-  //       .delete(`http://143.244.209.138/murojaat/${GLOBAL.id}/${id}`)
-  //       .then((res) => {
-  //         console.log("Deleted", res.data);
-  //       })
-  //       .catch((err) => {
-  //         console.log("errorDelete", err);
-  //       });
-  //   };
-  console.log("====================================");
-  console.log("GlobalID", GLOBAL.id);
-
-  console.log("====================================");
 
   return (
     <div className={styles.ContainerMe}>
@@ -76,7 +61,7 @@ export default function Murojat() {
                   </Card.Link>
                 </Card.Body>
                 <Card.Footer id={styles.CommentButtonGroup}>
-                  <p onClick={(e) => deleteMurojat(item.id,e)}>Delete</p>
+                  <p onClick={(e) => deleteMurojat(item.id, e)}>Delete</p>
                   {itemME ? (
                     <p key={item.id} onClick={() => setItem(false)}>
                       Ko'rish
