@@ -4,7 +4,14 @@ import { Switch, Link } from "react-router-dom";
 import RouteWithSubRoutes from "./utils/RouteWithSubRoutes";
 import styles from "./css/Menu.module.css";
 import { FiUsers } from "react-icons/fi";
-import { FaCrown, FaDatabase, FaUserGraduate } from "react-icons/fa";
+import { CgCommunity } from "react-icons/cg";
+
+import {
+  FaCrown,
+  FaDatabase,
+  FaUserGraduate,
+  FaComments,
+} from "react-icons/fa";
 import { MdSecurity } from "react-icons/md";
 import { HiUserGroup } from "react-icons/hi";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -78,6 +85,12 @@ const Home = ({ routes }) => {
       path: "/home/sinflar/uz",
       name: "Sinflar",
       icon: <HiUserGroup />,
+    },
+    {
+      id: 18,
+      path: "/home/murojaatlar/uz",
+      name: "Murojaatlar",
+      icon: <FaComments />,
     },
     // { id: 10, path: "/home/darsjadvali/uz", name: "Dars jadvali", icon: <FaRegCalendarAlt /> },
     // { id: 11, path: "/home/maktaboshxonasi/uz", name: "Maktab oshxonasi", icon: <CgBowl /> },

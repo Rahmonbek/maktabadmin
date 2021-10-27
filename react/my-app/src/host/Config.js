@@ -8,6 +8,13 @@ export const getNews = () => {
   };
   return httpRequest(config);
 };
+export const GetMurojaat = () => {
+  var config = {
+    url: `${url}/murojaat/${GLOBAL.id}`,
+    method: "get",
+  };
+  return httpRequest(config);
+};
 
 export const getSubject = () => {
   var config = {
@@ -33,6 +40,13 @@ export const createNew = (config) => {
 export const deleteNew = (idD) => {
   var config = {
     url: `${url}/new/${idD}`,
+    method: "delete",
+  };
+  return httpRequest(config);
+};
+export const deleteMurojat = (idM) => {
+  var config = {
+    url: `${url}/murojaat/${GLOBAL.id}/${idM}`,
     method: "delete",
   };
   return httpRequest(config);

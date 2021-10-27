@@ -18,6 +18,7 @@ import Yangiliklar from "./pages/Yangiliklar";
 import Sinflar from "./pages/Sinflar";
 import Togaraklar from "./pages/Togaraklar";
 import Oquvchilar from "./pages/Oquvchilar";
+import Murojatlar from "./pages/Murojat";
 const routes = [
   {
     path: "/login",
@@ -30,6 +31,10 @@ const routes = [
       {
         path: "/home/dashboard/uz",
         component: Dashboard,
+      },
+      {
+        path: "/home/murojaatlar/uz",
+        component: Murojatlar,
       },
       {
         path: "/home/oquvchilar/uz",

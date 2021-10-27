@@ -4,14 +4,20 @@ import Modal from "antd/lib/modal/Modal";
 import axios from "axios";
 import React, { Component } from "react";
 import { Form } from "react-bootstrap";
-import { createClass, deleteClass, editClass, getClass, getStaff } from "../host/Config";
+import {
+  createClass,
+  deleteClass,
+  editClass,
+  getClass,
+  getStaff,
+} from "../host/Config";
 import { url } from "../host/Host";
 import GLOBAL from "../host/Global";
 import Loader from "./Loader";
 
 export default class Sinflar extends Component {
   state = {
-    loading:true,
+    loading: true,
     classes: [],
     show: false,
     editId: null,
@@ -30,20 +36,18 @@ export default class Sinflar extends Component {
     getStaff()
       .then((res) => this.setState({ curators: res.data }))
       .catch((err) => console.log(err));
-   
   };
-  echoTeacher=(id)=>{
-
-    var f=''
-    if(this.state.curators!==null){this.state.curators.map(item=>{
-if(item.id===id){
-  f=item.full_name
-}
-
-    })}
-    return(f)
-
-  }
+  echoTeacher = (id) => {
+    var f = "";
+    if (this.state.curators !== null) {
+      this.state.curators.map((item) => {
+        if (item.id === id) {
+          f = item.full_name;
+        }
+      });
+    }
+    return f;
+  };
   getClass = () => {
     console.log(this.state.curators);
     // getClass()
@@ -70,10 +74,9 @@ if(item.id===id){
         this.setState({
           classes: classes,
         });
-          this.setState({loading:false})
+        this.setState({ loading: false });
       })
-      .catch((err) => console.log(err)); 
-      
+      .catch((err) => console.log(err));
   };
   editClass = (id) => {
     axios
@@ -120,7 +123,6 @@ if(item.id===id){
   componentDidMount() {
     this.getCurator();
     this.getClass();
-  
   }
   render() {
     const columns = [
@@ -133,7 +135,9 @@ if(item.id===id){
         title: "Sinf rahbari",
         dataIndex: "curator",
         key: "curator",
-        render:(curator)=>{return(this.echoTeacher(curator))}
+        render: (curator) => {
+          return this.echoTeacher(curator);
+        },
       },
       {
         title: "Sinf raqami",
@@ -182,53 +186,92 @@ if(item.id===id){
     ];
     const { Option } = Select;
     return (
-      <div>{this.state.loading===true?(<Loader/>):(
-     <div>
-        <Button type="primary" width="60%" onClick={this.openModal}>
-          Sinf yaratish
-        </Button>
-        <br />
-        <br />
-        <Table style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }} columns={columns} dataSource={this.state.classes} />
-        <Modal title="Sinf yaratish" visible={this.state.show} onCancel={this.handleCancel} footer={false}>
-          <Form>
-            <Form.Group className="mb-3" controlId="curator">
-              <Form.Label>Sinf rahbari</Form.Label>
-              <Select style={{ width: "100%" }} value={this.state.curator !== null ? this.state.curator : ""} onChange={this.selected} optionLabelProp="label">
-                {this.state.curators !== null
-                  ? this.state.curators.map((item) => {
-                      return (
-                        <Option value={item.id} label={item.full_name}>
-                          {item.full_name}
-                        </Option>
-                      );
-                    })
-                  : ""}
-              </Select>
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="classNumber">
-              <Form.Label>Sinf raqami</Form.Label>
-              <Form.Control  className="formInput" type="number" min="1" max="11" placeholder="1" />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="classChar">
-              <Form.Label>Sinf harfi</Form.Label>
-              <Form.Control  className="formInput" type="text" placeholder="A" pattern="[A-Z]{1}" />
-            </Form.Group>
-
+      <div>
+        {this.state.loading === true ? (
+          <Loader />
+        ) : (
+          <div>
+            <Button type="primary" width="60%" onClick={this.openModal}>
+              Sinf yaratish
+            </Button>
             <br />
+            <br />
+            <Table
+              style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
+              columns={columns}
+              dataSource={this.state.classes}
+            />
+            <Modal
+              title="Sinf yaratish"
+              visible={this.state.show}
+              onCancel={this.handleCancel}
+              footer={false}
+            >
+              <Form>
+                <Form.Group className="mb-3" controlId="curator">
+                  <Form.Label>Sinf rahbari</Form.Label>
+                  <Select
+                    style={{ width: "100%" }}
+                    value={
+                      this.state.curator !== null ? this.state.curator : ""
+                    }
+                    onChange={this.selected}
+                    optionLabelProp="label"
+                  >
+                    {this.state.curators !== null
+                      ? this.state.curators.map((item) => {
+                          return (
+                            <Option value={item.id} label={item.full_name}>
+                              {item.full_name}
+                            </Option>
+                          );
+                        })
+                      : ""}
+                  </Select>
+                </Form.Group>
 
-            <Button type="danger" htmlType="button" style={{ marginRight: "10px" }} onClick={this.handleCancel}>
-              Bekor qilish
-            </Button>
-            <Button type="primary" htmlType="button" onClick={this.createClass}>
-              Saqlash
-            </Button>
-          </Form>
-        </Modal></div> 
-      )
-        }
+                <Form.Group className="mb-3" controlId="classNumber">
+                  <Form.Label>Sinf raqami</Form.Label>
+                  <Form.Control
+                    className="formInput"
+                    type="number"
+                    min="1"
+                    max="11"
+                    placeholder="1"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="classChar">
+                  <Form.Label>Sinf harfi</Form.Label>
+                  <Form.Control
+                    className="formInput"
+                    type="text"
+                    placeholder="A"
+                    pattern="[A-Z]{1}"
+                  />
+                </Form.Group>
+
+                <br />
+
+                <Button
+                  type="danger"
+                  htmlType="button"
+                  style={{ marginRight: "10px" }}
+                  onClick={this.handleCancel}
+                >
+                  Bekor qilish
+                </Button>
+                <Button
+                  type="primary"
+                  htmlType="button"
+                  onClick={this.createClass}
+                >
+                  Saqlash
+                </Button>
+              </Form>
+            </Modal>
+          </div>
+        )}
       </div>
     );
   }
