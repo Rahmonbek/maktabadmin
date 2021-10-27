@@ -161,6 +161,7 @@ export default class Verify extends Component {
                   className={style.Forminput}
                 
                 >
+                  <option value="Ayrim fanlar chuqur o'rganiladigan ixtisoslashtirilgan davlat umumiy o'rta ta'lim maktabi">Ayrim fanlar chuqur o'rganiladigan ixtisoslashtirilgan davlat umumiy o'rta ta'lim maktabi</option>
                   <option value="Iqtisoslashtirilgan davlat umuta'lim maktabi">Iqtisoslashtirilgan davlat umuta'lim maktabi</option>
                   <option value="Davlat umumta'lim maktabi">Davlat umumta'lim maktabi</option>
                   <option value="Xususiy maktab">Xususiy maktab</option>
