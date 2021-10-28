@@ -85,7 +85,7 @@ export default function Murojat() {
                       onClick={(e) => deleteMurojat(item.id, e)}
                       type="primary"
                     >
-                      Delete
+                      O'chirish
                     </Button>
                   </Card.Footer>
                 </Card>
