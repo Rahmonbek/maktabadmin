@@ -42,14 +42,20 @@
     display: flex;
 }
 
-#CommentButtonGroup p:nth-child(1) {
-    border-radius: 5px;
+.CommentButtonGroupItem {
     padding: 4px 10%;
+    border-radius: 5px;
     background-color: red;
-    font-weight: bolder;
-    cursor: pointer;
-    color: white;
     font-size: 16px;
+    border: 1px solid red;
+    }
+
+    .CommentButtonGroupItem:hover,
+    .CommentButtonGroupItem::after,
+    .CommentButtonGroupItem::before {
+        background-color: red;
+        border: 1px solid red;
+
 }
 
 #CommentPhoneNumber {
@@ -58,7 +64,7 @@
     align-content: flex-end;
 }
 
-#CommentButtonGroup p:nth-child(2) {
+#CommentButtonGroup p:nth-child(1) {
     border-radius: 5px;
     padding: 4px 10%;
     background-color: blue;
