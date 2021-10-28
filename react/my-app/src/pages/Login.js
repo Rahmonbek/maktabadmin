@@ -29,7 +29,6 @@ export default class Login extends Component {
       axios
         .post(`${url}/login/`, formDataObj)
         .then((res) => {
-          console.log(res);
           this.state.schools.map((item) => {
             return item.admin === res.data.id ? (GLOBAL.id = item.id) : "";
           });
