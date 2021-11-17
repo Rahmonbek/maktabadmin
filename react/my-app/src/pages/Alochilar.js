@@ -52,13 +52,18 @@ export default class Yutuqlar extends Component {
   //   });
   // };
   deleteExcellent = (id) => {
+    this.setState({ loading: true});
+
     axios
       .delete(`${url}/excellent/${id}/`)
       .then((res) => {
         this.getExcellent();
         message.success("Ma'lumot o'chirildi.");
       })
-      .catch((err) => message.error("Ma'lumot o'chirilmadi!"));
+      .catch((err) => {
+    this.setState({ loading: false});
+        
+        message.error("Ma'lumot o'chirilmadi!")});
   };
   editExcellent = (id) => {
     var clas = this.state.students[id].clas;
@@ -80,6 +85,8 @@ export default class Yutuqlar extends Component {
         this.setState({ loading: false, students: res.data });
       })
       .catch((err) => {
+        this.setState({ loading: false});
+
         message.error("Ma'lumot topilmadi! Iltimos qaytatdan urinib ko'ring!");
       });
   };
@@ -131,6 +138,8 @@ export default class Yutuqlar extends Component {
     this.setState({ fullname: e.target.value });
   };
   addYutuq = () => {
+    this.setState({ loading: true});
+
     var clas = "";
     clas = this.state.sinf + ' - "' + this.state.sinfA + '" sinf';
     var formData = new FormData();
@@ -148,6 +157,8 @@ export default class Yutuqlar extends Component {
           this.reset1();
         })
         .catch((err) => {
+    this.setState({ loading: false});
+
           message.error("Ma'lumot qo'shilmadi!");
         });
     } else {
@@ -162,6 +173,8 @@ export default class Yutuqlar extends Component {
           this.reset1();
         })
         .catch((err) => {
+    this.setState({ loading: false});
+
           message.error("Ma'lumot qo'shilmadi!");
         });
     }

@@ -59,6 +59,7 @@ export default class Yangiliklar extends Component {
     document.getElementById("formBasictitle").value = "";
   };
   editNew = (key) => {
+   
     axios
       .get(`${url}/new/${GLOBAL.id}`)
       .then((res) => {
@@ -71,7 +72,6 @@ export default class Yangiliklar extends Component {
           previewImage: true,
         });
       })
-      .catch((err) => console.log(err));
     this.openModal();
   };
   customRequest = (e) => {
@@ -83,6 +83,9 @@ export default class Yangiliklar extends Component {
     });
   };
   createNew = () => {
+    this.setState({
+      loading:true
+    })
     let formData = new FormData();
 
     formData.append("title", document.getElementById("formBasictitle").value ?? "");
@@ -96,10 +99,15 @@ export default class Yangiliklar extends Component {
 
       editNew(formData, this.state.edit)
         .then((res) => {
+         
           message.success("Yangilik o'gartirildi");
           this.getNews();
+
         })
         .catch((err) => {
+          this.setState({
+            loading: false
+          });
           message.err("Yangilik o'zgartirilmadi");
         });
     } else {
@@ -107,10 +115,14 @@ export default class Yangiliklar extends Component {
 
       createNew(formData)
         .then((res) => {
+        
           message.success("Yangilik yaratildi");
           this.getNews();
         })
         .catch((err) => {
+          this.setState({
+            loading: false
+          });
           message.error("Yangilik yaratilmadi");
         });
     }
@@ -193,12 +205,19 @@ export default class Yangiliklar extends Component {
       });});
   };
   deleteNew = (id) => {
+    this.setState({
+      loading: true
+    });
+   
     deleteNew(id)
       .then((res) => {
         message.success("Yangilik o'chirildi");
         this.getNews();
       })
       .catch((err) => {
+        this.setState({
+          loading: false
+        });
         message.err("Yangilik o'chirilmadi");
       });
   };

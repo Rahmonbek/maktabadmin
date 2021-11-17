@@ -20,15 +20,7 @@ const routes = [
             path: '/dashboard/yangiliklar/uz',
             component: News,
             },
-            {
-                path: '/dashboard/togaraklar/uz',
-                component: Togaraklar,
-                },
                
-                {
-                    path: '/dashboard/darsjadvali/uz',
-                    component: DarsJadvali,
-                    },
                     {
                         path: '/dashboard/maktaboshxona/uz',
                         component: Maktab,

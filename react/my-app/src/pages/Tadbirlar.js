@@ -86,6 +86,9 @@ customRequest = (e) => {
   })
 };
 createEvent=()=>{
+  this.setState({
+    loading:true
+  })
 let formData = new FormData();
 formData.append(
   "title",
@@ -117,7 +120,10 @@ if(this.state.edit!==null) {
     if(this.state.image!==null){
         formData.append("image", this.state.image ?? "");
     }
-  editEvent(formData, this.state.edit).then(res=>{message.success('Tadbir o\'zgartirildi'); this.getEvent()}).catch(err=>{message.error('Tadbir o\'zgartirilmadi');})
+  editEvent(formData, this.state.edit).then(res=>{message.success('Tadbir o\'zgartirildi'); this.getEvent()}).catch(err=>{  this.setState({
+    loading:false
+  });
+  message.error('Tadbir o\'zgartirilmadi');})
   this.getEvent()
 } else {
     formData.append("image", this.state.image ?? "");
@@ -125,6 +131,9 @@ if(this.state.edit!==null) {
       message.success('Tadbir saqlandi');
         this.getEvent()
         }).catch(err=>{
+          this.setState({
+            loading:false
+          });
           message.error('Tadbir saqlanmadi')
         })
         this.getEvent()
@@ -217,9 +226,10 @@ if(this.state.edit!==null) {
             events[i].key=i+1
         }
         this.setState({ 
-            events:res.data
+            events:res.data,
+            loading:false
         })
-         this.setState({loading:false})
+        
       }).catch(err=>{
         this.setState({
           loading: false
@@ -227,7 +237,13 @@ if(this.state.edit!==null) {
       })
   }
 deleteEvent=(id)=>{
-    deleteEvent(id).then(res=>{message.success('Tadbir o\'chirildi'); this.getEvent()}).catch(err=>{message.error('Tadbir o\'chiirilmadi')})
+  this.setState({
+    loading:true
+  })
+    deleteEvent(id).then(res=>{message.success('Tadbir o\'chirildi'); this.getEvent()}).catch(err=>{  this.setState({
+      loading:false
+    });
+    message.error('Tadbir o\'chiirilmadi')})
 }
   componentDidMount(){
       this.getEvent()

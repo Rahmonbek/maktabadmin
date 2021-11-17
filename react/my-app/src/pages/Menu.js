@@ -65,7 +65,7 @@ class Navbar extends Component {
         {/* <Menu.Item key="14" icon={<UserOutlined />}><p style={{color:'black'}}>Admin</p></Menu.Item> */}
         <Menu.Item key="2" icon={<FaRegNewspaper />}><Link to="/dashboard/yangiliklar/uz">Yangiliklar</Link></Menu.Item>
         <Menu.Item key="3" icon={<CarryOutOutlined />}>Tadbirlar</Menu.Item>       
-        <Menu.Item key="5" icon={<BiBasketball />}><Link to="/dashboard/togaraklar/uz">Togaraklar</Link></Menu.Item>
+        {/* <Menu.Item key="5" icon={<BiBasketball />}><Link to="/dashboard/togaraklar/uz">Togaraklar</Link></Menu.Item> */}
         {/* <Menu.Item key="6" icon={<FiMusic/>}>Musiqa to'garaklari</Menu.Item>
         <Menu.Item key="7" icon={<DiJavascript1/>}>Axborot texnologiyalari</Menu.Item>          */}
         <Menu.Item key="8" icon={<FiUsers/>}><Link to="/dashboard/rahbariyat/uz">Rahbariyat</Link></Menu.Item>
