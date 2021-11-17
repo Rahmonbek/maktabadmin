@@ -17,13 +17,13 @@ export default function Murojat() {
   useEffect(() => {
     setTimeout(() => {
       setIsLoaded(false);
-    },2000);
+    }, 2000);
   }, []);
   useEffect(() => {
     axios
-      .get(`http://143.244.209.138/murojaat/${GLOBAL.id}`)
+      .get(`http://143.244.209.138/murojaat/${GLOBAL.id}/`)
       .then((res) => {
-        console.log("ResDAta", res.data);
+        console.log("ResData", res.data);
         setGetUser(res.data);
       })
       .catch((err) => {
@@ -33,7 +33,7 @@ export default function Murojat() {
   }, []);
   const deleteMurojat = (idM) => {
     axios
-      .delete(`http://143.244.209.138/murojaat/${GLOBAL.id}/${idM}`)
+      .delete(`http://143.244.209.138/murojaat/${GLOBAL.id}/${idM}/`)
       .then((res) => {
         console.log("delete", res.data);
       })
