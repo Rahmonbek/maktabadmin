@@ -119,11 +119,9 @@ export default class Oqituvchilar extends Component {
       speciality: this.state.teachers[key].speciality,
       previewImage: true,
     });
-
     this.openModal();
   };
   saveXodim = () => {
-    console.log(document.getElementById("fullname").value);
     var full_name = document.getElementById("fullname").value;
     var phone = document.getElementById("phone").value;
     var description = document.getElementById("description").value;
@@ -148,46 +146,28 @@ export default class Oqituvchilar extends Component {
             { speciality: this.state.speciality },
             this.state.edit
           ).then((res2) => {
-            message.success("Xodim o'zgartildi");
+            message.success("Xodim o'zgartildi.");
             this.hideModal();
             this.getXodim();
           });
         })
-        .catch((err) => message.error("Xodim o'zgartilmadi"));
+        .catch((err) => message.error("Xodim o'zgartilmadi!"));
     } else {
-      var username = document.getElementById("username").value;
-      var password = document.getElementById("password").value;
-      var confirmPassword = document.getElementById("confirmPassword").value;
-
-      if (confirmPassword !== password) {
-        document.querySelector(".confirm").style.display = "block";
-        return (document.getElementById(
-          "confirmPassword"
-        ).style.backgroundColor = "red");
-      }
-
       formData.append("image", this.state.image ?? "");
-      register({ username, password })
+      createXodim(formData)
         .then((res) => {
-          formData.append("user", res.data.user.id ?? "");
-          createXodim(formData)
-            .then((res) => {
-              patchXodim({ speciality: speciality }, res.data.id)
-                .then((res1) => {
-                  this.hideModal();
-                  this.getXodim();
-                  message.success("Xodim saqlandi");
-                })
-                .catch((err1) => {
-                  message.error("Xodim saqlanmadi");
-                });
+          patchXodim({ speciality: speciality }, res.data.id)
+            .then((res1) => {
+              this.hideModal();
+              this.getXodim();
+              message.success("Xodim saqlandi.");
             })
-            .catch((err) => {
-              message.error("Xodim saqlanmadi");
+            .catch((err1) => {
+              message.error("Xodim saqlanmadi!");
             });
         })
         .catch((err) => {
-          document.querySelector(".registerRed").style.display = "block";
+          message.error("Xodim saqlanmadi!");
         });
     }
   };
@@ -195,15 +175,25 @@ export default class Oqituvchilar extends Component {
     deleteXodim(id)
       .then((res) => {
         this.getXodim();
-        message.success("Xodim o'chirildi");
+        message.success("Xodim o'chirildi.");
       })
-      .catch((err) => message.error("Xodim o'chirilmadi"));
+      .catch((err) => message.error("Xodim o'chirilmadi!"));
   };
   customRequest = (e) => {
-    let image = e.target.files[0];
-    this.setState({
-      image: image,
-    });
+    console.log(e.target.files[0].name);
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        this.setState({
+          imageUrl: reader.result,
+          previewImage: true,
+          image: e.target.files[0],
+        });
+      }
+    };
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
   };
   fullName = (e) => {
     this.setState({ fullname: e.target.value });
@@ -441,37 +431,18 @@ export default class Oqituvchilar extends Component {
               }}
             >
               <Form>
-                <Form.Group className="mb-3" controlId="fullname">
-                  <Form.Label>F.I.Sh.</Form.Label>
-                  <Form.Control
-                    onChange={this.fullName}
-                    value={this.state.fullname}
-                    className="formInput"
-                    placeholder="F.I.Sh."
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="image">
-                  <Row>
-                    <Col lg={9}>
-                      <Form.Label>Rasm</Form.Label>
-                      <Input
-                        id="img"
-                        onChange={this.customRequest}
-                        type="file"
-                        required={false}
-                        style={{ marginBottom: "20px" }}
-                        accept="image/jpg, image/jpeg, image/png"
+                <Row>
+                  <Col>
+                    <Form.Group className="mb-3" controlId="fullname">
+                      <Form.Label>F.I.Sh.</Form.Label>
+                      <Form.Control
+                        onChange={this.fullName}
+                        value={this.state.fullname}
+                        className="formInput"
+                        placeholder="F.I.Sh."
                       />
-                    </Col>
-                    <Col lg={3}>
-                      {this.state.previewImage
-                        ? ImageDemo(this.state.imageUrl)
-                        : ""}
-                    </Col>
-                  </Row>
-                </Form.Group>
-                {this.state.edit === null ? (
+                    </Form.Group>
+                    {/* {this.state.edit === null ? (
                   <div id="user">
                     <Form.Group className="mb-3" controlId="username">
                       <Form.Label>Login</Form.Label>
@@ -520,17 +491,46 @@ export default class Oqituvchilar extends Component {
                   </div>
                 ) : (
                   ""
-                )}
-                <Form.Group className="mb-3" controlId="position">
-                  <Form.Label>Mutaxassislik</Form.Label>
-                  <Form.Control
-                    onChange={this.position}
-                    value={this.state.position}
-                    className="formInput"
-                    placeholder="Mutaxassislik"
-                  />
-                </Form.Group>
+                )} */}
+                    <Form.Group className="mb-3" controlId="phone">
+                      <Form.Label>Telefon raqam</Form.Label>
+                      <Form.Control
+                        onChange={this.phone}
+                        value={this.state.phone}
+                        className="formInput"
+                        placeholder="Telefon raqam"
+                      />
+                    </Form.Group>
 
+                    <Form.Group className="mb-3" controlId="position">
+                      <Form.Label>Mutaxassislik</Form.Label>
+                      <Form.Control
+                        onChange={this.position}
+                        value={this.state.position}
+                        className="formInput"
+                        placeholder="Mutaxassislik"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group className="mb-3" controlId="image">
+                      <Form.Label>Rasm</Form.Label>
+                      <Form.Control
+                        onChange={this.customRequest}
+                        type="file"
+                        required={false}
+                        style={{ marginBottom: "20px" }}
+                        accept="image/jpg, image/jpeg, image/png"
+                      />
+                      {/* <Input
+                        id="img"
+                      /> */}
+                      {this.state.previewImage
+                        ? ImageDemo(this.state.imageUrl)
+                        : ""}
+                    </Form.Group>
+                  </Col>
+                </Row>
                 <Form.Group className="mb-3" controlId="speciality">
                   <Form.Label>Soha</Form.Label>
                   <Select
@@ -553,16 +553,6 @@ export default class Oqituvchilar extends Component {
                         })
                       : ""}
                   </Select>
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="phone">
-                  <Form.Label>Telefon raqam</Form.Label>
-                  <Form.Control
-                    onChange={this.phone}
-                    value={this.state.phone}
-                    className="formInput"
-                    placeholder="Telefon raqam"
-                  />
                 </Form.Group>
 
                 <Form.Group
@@ -598,7 +588,7 @@ export default class Oqituvchilar extends Component {
                     this.saveXodim();
                   }}
                 >
-                  Yaratish
+                  Saqlash
                 </Button>
               </Form>
             </Modal>

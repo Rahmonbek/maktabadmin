@@ -112,7 +112,6 @@ export const createXodim = (config) => {
     method: "post",
     data: config,
   };
-  console.log(config);
   return httpRequest(configs);
 };
 
