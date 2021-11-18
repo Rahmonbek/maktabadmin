@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styles from "../css/admin.module.css";
 import { Form, Button, Table } from "react-bootstrap";
-import { message, Select } from "antd";
+import { message, Select, Image } from "antd";
 import { Container, Row, Col } from "react-bootstrap";
 import ImageDemo from "./ImageDemo";
 import { url } from "../host/Host";
@@ -9,6 +9,7 @@ import axios from "axios";
 import GLOBAL from "../host/Global";
 import Loader from "./Loader";
 import Global from "../host/Global";
+import user from "../img/user.png";
 export default class Yutuqlar extends Component {
   state = {
     loading: true,
@@ -19,26 +20,32 @@ export default class Yutuqlar extends Component {
     students: null,
     sinf: null,
     image: null,
+    imageData: null,
     yutuqlar: null,
     stu: null,
     yutuq: {},
+    competition: "",
+    result: "",
+    text: "",
+    school: Global.id,
+    pupils: "",
   };
-  echoPupil = (id) => {
-    var f = "";
-    if (this.state.stu !== null) {
-      this.state.stu.map((item) => {
-        if (item.id === id) {
-          f = item.full_name;
-        }
-      });
-    }
-    return f;
-  };
-  setUstoz = (value) => {
-    this.setState({
-      sinf: value,
-    });
-  };
+  // echoPupil = (id) => {
+  //   var f = "";
+  //   if (this.state.stu !== null) {
+  //     this.state.stu.map((item) => {
+  //       if (item.id === id) {
+  //         f = item.full_name;
+  //       }
+  //     });
+  //   }
+  //   return f;
+  // };
+  // setUstoz = (value) => {
+  //   this.setState({
+  //     sinf: value,
+  //   });
+  // };
   deleteTeacher = (id) => {
     axios
       .delete(`${url}/achiviment/${id}`)
@@ -57,22 +64,32 @@ export default class Yutuqlar extends Component {
       sinf: null,
       edit: null,
       yutuq: {},
+      imageData: null,
+      pupils: "",
+      text: "",
+      competition: "",
+      result: "",
     });
-    document.getElementById("formBasiccompetition").value = "";
-    document.getElementById("formBasictext").value = "";
-    document.getElementById("formBasicresult").value = "";
+    // document.getElementById("formBasiccompetition").value = "";
+    // document.getElementById("formBasictext").value = "";
+    // document.getElementById("formBasicresult").value = "";
   };
   editTeacher = (id) => {
     this.setState({
       student: this.state.yutuqlar[id].pupils,
       edit: this.state.yutuqlar[id].id,
+      pupils: this.state.yutuqlar[id].pupils,
+      text: this.state.yutuqlar[id].text,
+      competition: this.state.yutuqlar[id].competition,
+      result: this.state.yutuqlar[id].result,
+      imageData: this.state.yutuqlar[id].image,
     });
-    document.getElementById("formBasiccompetition").value =
-      this.state.yutuqlar[id].competition;
-    document.getElementById("formBasictext").value =
-      this.state.yutuqlar[id].text;
-    document.getElementById("formBasicresult").value =
-      this.state.yutuqlar[id].result;
+    // document.getElementById("formBasiccompetition").value =
+    //   this.state.yutuqlar[id].competition;
+    // document.getElementById("formBasictext").value =
+    //   this.state.yutuqlar[id].text;
+    // document.getElementById("formBasicresult").value =
+    //   this.state.yutuqlar[id].result;
   };
 
   componentDidMount() {
@@ -98,7 +115,7 @@ export default class Yutuqlar extends Component {
     this.getYutuq();
   }
   getYutuq = () => {
-    axios.get(`${url}/achiviment/${Global.id}`).then((res) => {
+    axios.get(`${url}/achiviment/${this.state.school}`).then((res) => {
       this.setState({
         yutuqlar: res.data,
         loading: false,
@@ -106,111 +123,134 @@ export default class Yutuqlar extends Component {
     });
   };
   addYutuq = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
+    // e.preventDefault();
+    const formData = new FormData();
 
     formData.append(
       "competition",
-      document.getElementById("formBasiccompetition").value ?? ""
+      // document.getElementById("formBasiccompetition").value ?? ""
+      this.state.competition ?? ""
     );
     formData.append(
       "text",
-      document.getElementById("formBasictext").value ?? ""
+      // document.getElementById("formBasictext").value ?? ""
+      this.state.text ?? ""
     );
     formData.append(
       "result",
-      document.getElementById("formBasicresult").value ?? ""
+      // document.getElementById("formBasicresult").value ?? ""
+      this.state.result ?? ""
     );
-    formData.append("school", Number(GLOBAL.id));
+    formData.append("pupils", this.state.pupils ?? null);
+    formData.append("school", this.state.school ?? null);
 
-    var formDataObj = Object.fromEntries(formData.entries());
+    // var formDataObj = Object.fromEntries(formData.entries());
 
-    formDataObj.id = Number(formDataObj.id);
+    // formDataObj.id = Number(formDataObj.id);
 
     if (this.state.edit !== null) {
-      formData.append("image", this.state.image ?? "");
-
+      if (this.state.image !== null)
+        formData.append("image", this.state.image ?? "");
       axios
-        .put(`${url}/achiviment/${this.state.edit}/`, formData)
+        .patch(`${url}/achiviment/${this.state.edit}/`, formData)
         .then((res) => {
-          if (this.state.student.lenght !== 0) {
-            axios
-              .put(`${url}/achiviment/${this.state.edit}/`, {
-                pupils: this.state.student,
-              })
-              .then((res) => {
-                this.reset();
-                message.success("Ma'lumot qo'shildi");
-                this.getYutuq();
-              })
-              .catch((err) => {
-                message.success("Ma'lumot o'zgartirilmadi");
-              });
-          } else {
-            this.reset();
-            this.getYutuq();
-            message.success("Ma'lumot o'gartirildi");
-          }
+          this.getYutuq();
+          this.reset();
+          message.success("Ma'lumot o'zgartirildi.");
+          // if (this.state.student.lenght !== 0) {
+          //   axios
+          //     .put(`${url}/achiviment/${this.state.edit}/`, {
+          //       pupils: this.state.student,
+          //     })
+          //     .then((res) => {
+          //       this.reset();
+          //       message.success("Ma'lumot qo'shildi.");
+          //       this.getYutuq();
+          //     })
+          //     .catch((err) => {
+          //       message.success("Ma'lumot o'zgartirilmadi!");
+          //     });
+          // } else {
+          //   this.reset();
+          //   this.getYutuq();
+          //   message.success("Ma'lumot o'gartirildi.");
+          // }
         })
         .catch((err) => {
-          message.success("Ma'lumot o'zgartirilmadi");
+          message.success("Ma'lumot o'zgartirilmadi!");
         });
     } else {
       formData.append("image", this.state.image ?? "");
-      if (this.state.student.length !== 0) {
-        axios
-          .post(`${url}/achiviment/`, formData)
-          .then((res) => {
-            axios
-              .put(`${url}/achiviment/${res.data.id}/`, {
-                pupils: this.state.student,
-              })
-              .then((res) => {
-                this.reset();
-                message.success("Ma'lumot qo'shildi");
-                this.getYutuq();
-              })
-              .catch((err) => {
-                message.error("Ma'lumot qo'shilmadi");
-              });
-          })
-          .catch((err) => {
-            message.error("Ma'lumot qo'shilmadi");
-          });
-      }
+      axios
+        .post(`${url}/achiviment/`, formData)
+        .then((res) => {
+          //   axios
+          //     .put(`${url}/achiviment/${res.data.id}/`, {
+          //       pupils: this.state.student,
+          //     })
+          //     .then((res) => {
+          //       this.reset();
+          //       message.success("Ma'lumot qo'shildi");
+          //       this.getYutuq();
+          //     })
+          //     .catch((err) => {
+          //       message.error("Ma'lumot qo'shilmadi");
+          //     });
+          message.success("Ma'lumot qo'shildi.");
+          this.getYutuq();
+        })
+        .catch((err) => {
+          message.error("Ma'lumot qo'shilmadi!");
+        });
     }
   };
   customRequest = (e) => {
-    let image = e.target.files[0];
-    this.setState({
-      image: image,
-    });
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        this.setState({ imageData: reader.result, image: e.target.files[0] });
+      }
+    };
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
   };
   handleChange = (value) => {
     this.setState({
       student: value,
     });
   };
-  fer = (clasa, st) => {
-    var clas = [];
-    clasa.map((item) => {
-      var f = [];
-      st.map((item1) => {
-        if (item.id === item1.clas) {
-          f.push(item1);
-        }
-      });
-      if (f.length === 0) {
-        clas.push(null);
-      } else {
-        clas.push(f);
-      }
-    });
-
-    this.setState({ students: clas, sinf: 0 });
+  // fer = (clasa, st) => {
+  //   var clas = [];
+  //   clasa.map((item) => {
+  //     var f = [];
+  //     st.map((item1) => {
+  //       if (item.id === item1.clas) {
+  //         f.push(item1);
+  //       }
+  //     });
+  //     if (f.length === 0) {
+  //       clas.push(null);
+  //     } else {
+  //       clas.push(f);
+  //     }
+  //   });
+  //   this.setState({ students: clas, sinf: 0 });
+  // };
+  changeCompetition = (e) => {
+    this.setState({ competition: e.target.value });
+  };
+  changeResult = (e) => {
+    this.setState({ result: e.target.value });
+  };
+  changePupils = (e) => {
+    this.setState({ pupils: e.target.value });
+  };
+  changeText = (e) => {
+    this.setState({ text: e.target.value });
   };
   render() {
-    const { Option } = Select;
+    // const { Option } = Select;
     return (
       <div>
         {" "}
@@ -231,8 +271,8 @@ export default class Yutuqlar extends Component {
                     <Col lg={12}>
                       <div className={styles.formAdmin}>
                         <h4>Yutuq kiritish</h4>
-                        <Form onSubmit={this.addYutuq}>
-                          <Form.Group required={true} controlId="sinf">
+                        <Form>
+                          {/* <Form.Group required={true} controlId="sinf">
                             <Select
                               required={true}
                               showSearch
@@ -263,9 +303,9 @@ export default class Yutuqlar extends Component {
                                   })
                                 : ""}
                             </Select>
-                          </Form.Group>
+                          </Form.Group> */}
 
-                          <Form.Group required={true} controlId="name">
+                          {/* <Form.Group required={true} controlId="name">
                             <Select
                               mode="multiple"
                               allowClear
@@ -307,61 +347,120 @@ export default class Yutuqlar extends Component {
                                   : ""
                                 : ""}
                             </Select>
-                          </Form.Group>
-                          <Form.Group controlId="formBasiccompetition">
-                            <Form.Control
-                              className="formInput"
-                              required={true}
-                              type="text"
-                              name="competition"
-                              placeholder="Tanlovni kiriting"
-                            />
-                          </Form.Group>
-                          <Form.Group controlId="formBasicresult">
-                            <Form.Control
-                              className="formInput"
-                              required={true}
-                              type="text"
-                              name="result"
-                              placeholder="O'rinni kiriting"
-                            />
-                          </Form.Group>
+                          </Form.Group> */}
+                          <Row>
+                            <Col>
+                              <Form.Group
+                                className="mb-3"
+                                controlId="formBasiccompetition"
+                              >
+                                <Form.Label>Tanlov nomini kiriting</Form.Label>
+                                <Form.Control
+                                  className="formInput"
+                                  required={true}
+                                  type="text"
+                                  name="competition"
+                                  value={this.state.competition}
+                                  onChange={this.changeCompetition}
+                                  placeholder="Tanlov nomini kiriting"
+                                />
+                              </Form.Group>
+                              <Form.Group
+                                className="mb-3"
+                                controlId="formBasicresult"
+                              >
+                                <Form.Label>
+                                  Tanlovda olgan o'rnini kiriting
+                                </Form.Label>
+                                <Form.Control
+                                  className="formInput"
+                                  required={true}
+                                  type="text"
+                                  name="result"
+                                  value={this.state.result}
+                                  onChange={this.changeResult}
+                                  placeholder="Tanlovda olgan o'rnini kiriting"
+                                />
+                              </Form.Group>
+                              <Form.Group
+                                required={true}
+                                controlId="formBasictext"
+                                className="mb-3"
+                              >
+                                <Form.Label>
+                                  Tanlovda ishtirok etgan o'quvchilar
+                                </Form.Label>
+                                <Form.Control
+                                  className="formInput"
+                                  required={true}
+                                  as="textarea"
+                                  name="pupils"
+                                  row={2}
+                                  placeholder="Tanlovda ishtirok etgan o'quvchilar"
+                                  value={this.state.pupils}
+                                  onChange={this.changePupils}
+                                />
+                              </Form.Group>
+                            </Col>
+                            <Col>
+                              <Form.Group controlId="rasm" className="mb-3">
+                                <Form.Label>Tanlov rasmini kiriting</Form.Label>
+                                <Form.Control
+                                  className="formInput"
+                                  type="file"
+                                  required={
+                                    this.state.edit === null ? true : false
+                                  }
+                                  onChange={this.customRequest}
+                                  placeholder="Rasm kiriting"
+                                />
+                              </Form.Group>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Image
+                                  src={
+                                    this.state.imageData !== null
+                                      ? this.state.imageData
+                                      : user
+                                  }
+                                  height={160}
+                                />
+                              </div>
+                            </Col>
+                          </Row>
                           <Form.Group
                             required={true}
                             controlId="formBasictext"
                             className="mb-3"
-                            style={{ width: "100%" }}
                           >
-                            <br />
+                            <Form.Label>Qo'shimcha ma'lumot</Form.Label>
                             <Form.Control
                               className="formInput"
                               required={true}
                               as="textarea"
                               name="text"
+                              value={this.state.text}
+                              onChange={this.changeText}
                               placeholder="Yutuq haqida qisqacha yozing..."
                               style={{ height: "200px" }}
-                            />
-                          </Form.Group>
-                          <Form.Group controlId="rasm">
-                            <Form.Control
-                              className="formInput"
-                              type="file"
-                              required={this.state.edit === null ? true : false}
-                              onChange={this.customRequest}
-                              placeholder="Rasm kiriting"
                             />
                           </Form.Group>
                           <Button
                             variant="primary"
                             className={styles.inputFormBtn}
-                            type="submit"
+                            onClick={this.addYutuq}
                           >
                             O'zgarishlarni saqlash
                           </Button>
                           <Button
                             variant="primary"
                             className={styles.inputFormBtn1}
-                            onClick={this.reset1}
+                            onClick={this.reset}
                           >
                             Bekor qilish
                           </Button>
@@ -383,7 +482,7 @@ export default class Yutuqlar extends Component {
                     <thead style={{ borderBottom: "none" }}>
                       <tr style={{ borderBottom: "none" }}>
                         <th>#</th>
-                        <th>O'quvchilar</th>
+                        <th>O'quvchi(lar)</th>
                         <th>Tanlov</th>
                         <th>O'rin</th>
                         <th>Rasm</th>
@@ -397,11 +496,7 @@ export default class Yutuqlar extends Component {
                             return (
                               <tr>
                                 <td>{key + 1}</td>
-                                <td>
-                                  {item.pupils.map((item1) => {
-                                    return <p>{this.echoPupil(item1)}</p>;
-                                  })}
-                                </td>
+                                <td>{item.pupils}</td>
                                 <td>{item.competition}</td>
                                 <td>{item.result}</td>
                                 <td>
