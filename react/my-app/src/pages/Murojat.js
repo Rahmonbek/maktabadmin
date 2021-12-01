@@ -1,99 +1,171 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { Container, Card } from "react-bootstrap";
-import styles from "../css/murojat.module.css";
-import RasmBuImg from "../img/lalla.jpg";
-import GLOBAL from "../host/Global";
-import { deleteMurojat } from "../host/Config";
-import { IoIosCall, IoMdTime } from "react-icons/io";
-import { message } from "antd";
-import { httpRequest, url } from "../host/Host";
-import { Button } from "antd";
-import Loader from "./Loader";
-export default function Murojat() {
-  const [getUser, setGetUser] = useState([]);
-  const [itemME, setItem] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoaded(false);
-    }, 2000);
-  }, []);
-  useEffect(() => {
-    axios
-      .get(`http://143.244.209.138/murojaat/${GLOBAL.id}/`)
-      .then((res) => {
-        console.log("ResData", res.data);
-        setGetUser(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    deleteMurojat();
-  }, []);
-  const deleteMurojat = (idM) => {
-    axios
-      .delete(`http://143.244.209.138/murojaat/${GLOBAL.id}/${idM}/`)
-      .then((res) => {
-        console.log("delete", res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+import axios from 'axios'
+import React, { Component } from 'react'
+import Global from '../host/Global'
+import { url } from '../host/Host'
+import Loader from './Loader'
+import {Row, Col} from 'react-bootstrap'
+import style from '../css/murojat.module.css';
+import {Button, message} from 'antd'
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 
-  return (
-    <div className={styles.ContainerMe}>
-      {isLoaded ? (
-        <Loader />
-      ) : (
-        <Container>
-          <div className={styles.ContainerComment}>
-            {getUser.map((item) => {
-              return (
-                <Card style={{ width: "18rem", marginTop: "10px" }}>
-                  <Card.Body>
-                    <Card.Title>{item.name}</Card.Title>
 
-                    <Card.Text>{item.text}</Card.Text>
-                    <Card.Link id={styles.CommentPhoneNumber}>
-                      <p>
-                        <IoIosCall />
-                      </p>
-                      <p>{item.phone}</p>
-                    </Card.Link>
-                    <Card.Link id={styles.CommentPhoneNumber}>
-                      <p>
-                        <IoMdTime />
-                      </p>
-                      <p>{item.date_sent}</p>
-                    </Card.Link>
-                  </Card.Body>
-                  <Card.Footer id={styles.CommentButtonGroup}>
-                    {itemME ? (
-                      <p key={item.id} onClick={() => setItem(false)}>
-                        Ko'rish
-                      </p>
-                    ) : (
-                      <p key={item.id} onClick={() => setItem(true)}>
-                        Ko'rildi
-                      </p>
-                    )}
-
-                    <Button
-                      className={styles.CommentButtonGroupItem}
-                      onClick={(e) => deleteMurojat(item.id, e)}
-                      type="primary"
-                    >
-                      O'chirish
-                    </Button>
-                  </Card.Footer>
-                </Card>
-              );
-            })}
-          </div>
-        </Container>
-      )}
-    </div>
-  );
+export default class Murojat extends Component {
+ state={
+   loader:true,
+   murojat:null,
+   seen:false,
+   butD:[],
+   butK:[],
+ }
+ editButD=(id, key)=>{
+  var butD=this.state.butD
+  butD[key]=true
+  this.setState({
+    butD:butD
+  })
+  this.editMurojat(id, key)
 }
+editButK=(id, key)=>{
+  var butK=this.state.butK
+  butK[key]=true
+  this.setState({
+    butK:butK
+  })
+  this.deleteMurojat(id, key)
+}
+getMurojat=()=>{
+  axios.get(`${url}/murojaat/${Global.id}`).then((res)=>{
+   var butD=[]
+   var butK=[]
+    res.data.map(item=>{
+butD.push(false)
+butK.push(false)
+    })
+    this.setState({
+      murojat:res.data,
+    loader:false,
+    butD:butD,
+    butK:butK,
+    })
+
+    console.log(res.data)
+  })
+}
+editMurojat=(id, key)=>{
+  axios.put(`${url}/murojaat/${id}`, {seen:true}).then((res)=>{
+    message.succes("Ma'lumot saqlandi");
+    var butD=this.state.butD
+    butD[key]=false
+    this.setState({
+      butD:butD
+    })
+  }).catch((err)=>{
+    message.succes("Ma'lumot saqlanmadi");
+    var butD=this.state.butD
+    butD[key]=false
+    this.setState({
+      butD:butD
+    })
+  })
+
+}
+deleteMurojat=(id, key)=>{
+  axios.delete(`${url}/murojaat/${id}`).then((res)=>{
+    message.succes("Ma'lumot o'chirildi");
+    var butK=this.state.butK
+    butK[key]=false
+    this.setState({
+      butK:butK
+    })
+  }).catch((err=>{
+    message.succes("Ma'lumot o'chirilmadi");
+    var butK=this.state.butK
+    butK[key]=false
+    this.setState({
+      butK:butK
+    })
+  }))
+
+}
+componentDidMount(){
+  this.getMurojat()
+}
+  render() {
+    return (
+      <div>
+        {this.state.loader?
+        <Loader/>:
+        <div>
+         <div className={style.tomosha}>
+         <div className={style.tomosha_item}>
+  <button className={style.but} onClick={()=>{this.setState({seen:false})}}>Ko'rilmaganlar</button>
+</div>
+<div className={style.tomosha_item}>
+  <button className={style.but}  onClick={()=>{this.setState({seen:true})}}>Ko'rilganlar</button>
+</div>
+         </div>
+          <Row>
+         
+          {this.state.murojat!==null?
+          this.state.murojat.map((item, key)=>{
+          if(!this.state.seen && !item.seen){
+           return(
+<Col lg={4} md={6} sm={2}>
+<div className={style.cardT}>
+ <h1>{item.name}</h1>
+ <p><i className="fa fa-time"></i> {item.date_sent}</p>
+ <p><i className="fa fa-phone"></i> {item.phone}</p>
+ <p> {item.text}</p>
+ <div className={style.butlar}>
+ <Button
+            type="danger"
+            icon={<DeleteOutlined />}
+            loading={this.state.butD[key]}
+            onClick={()=>{this.editButD(item.id ,key)}}
+          >
+            O'chirish
+          </Button>
+          <Button
+            type="primary"
+            icon={<EyeOutlined />}
+            loading={this.state.butK[key]}
+            onClick={()=>{this.editButK(item.id ,key)}}
+          >
+            Ko'rildi
+          </Button>
+
+ </div>
+</div>
+
+            </Col> 
+           )
+          }else{
+            if(this.state.seen && item.seen){
+              return(
+                <Col lg={4} md={6} sm={2}>
+                <div className={style.cardT}>
+                  Salom
+                </div>
+                
+                            </Col> 
+                           )
+            }
+           
+            }
+           
+  }):''}
+          </Row>
+          </div>}
+      </div>
+    )
+  }
+}
+
+// date_sent: "2021-10-27"
+// id: 9
+// name: "Aliyev Husniddin"
+// phone: "+998971661186"
+// school: 2
+// seen: false
+// text: "Proyekt qanday ketepti???"
+ 
