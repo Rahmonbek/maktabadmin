@@ -56,10 +56,10 @@ const routes = [
         path: "/home/sinflar/uz",
         component: Sinflar,
       },
-      {
-        path: "/home/sportmashgulotlari/uz",
-        component: Sport,
-      },
+      // {
+      //   path: "/home/sportmashgulotlari/uz",
+      //   component: Sport,
+      // },
       {
         path: "/home/yangiliklar/uz",
         component: Yangiliklar,
