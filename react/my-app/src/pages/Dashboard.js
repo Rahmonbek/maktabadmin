@@ -44,7 +44,7 @@ export default class Admin extends Component {
         domain: res.data.domain,
         loading: false,
       });
-    });
+    }).catch(err=>{console.log(err)});
   };
 
   customRequest = (e) => {
@@ -362,7 +362,10 @@ export default class Admin extends Component {
       formData.append("foto7", this.state.images.foto7);
     }
     axios
-      .put(`${url}/school/${GLOBAL.id}/`, formData)
+      .put(`${url}/school/${GLOBAL.id}/`, formData, {
+        headers: {
+          'Authorization': `Token ${window.localStorage.getItem('token')}` 
+        }})
       .then((res) => {
         this.getSchool();
         message.success("Ma'lumot qo'shildi");
@@ -465,7 +468,7 @@ export default class Admin extends Component {
                 </Col>
               </Row>
             </Form>
-            <div
+            {/* <div
               style={{
                 backgroundColor: "white",
                 marginBottom: "30px",
@@ -520,7 +523,7 @@ export default class Admin extends Component {
                   <ZoomControl options={{ float: "left" }} />
                 </Map>
               </YMaps>
-            </div>
+            </div> */}
 
             <Form
               style={{
@@ -660,6 +663,9 @@ export default class Admin extends Component {
                             <option value="Ixtisoslashtirilgan Davlat umuta'lim maktabi">
                               Ixtisoslashtirilgan Davlat umumta'lim maktabi
                             </option>
+                            <option value="Umumiy o'rta ta'lim maktabi">
+                            Umumiy o'rta ta'lim maktabi
+                            </option>
                             <option value="Ayrim fanlar chuqur o'rganiladigan ixtisoslashtirilgan davlat umumiy o'rta ta'lim maktabi">
                               Ayrim fanlar chuqur o'rganiladigan
                               ixtisoslashtirilgan davlat umumiy o'rta ta'lim
@@ -696,7 +702,9 @@ export default class Admin extends Component {
                               ixtisoslashtirilgan davlat umumiy o'rta ta'lim
                               maktabi
                             </option>
-
+                            <option value="Umumiy o'rta ta'lim maktabi">
+                            Umumiy o'rta ta'lim maktabi
+                            </option>
                             <option value="Ixtisoslashtirilgan Davlat umuta'lim maktabi">
                               Ixtisoslashtirilgan Davlat umuta'lim maktabi
                             </option>

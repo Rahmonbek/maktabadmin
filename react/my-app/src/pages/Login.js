@@ -29,6 +29,7 @@ export default class Login extends Component {
       axios
         .post(`${url}/login/`, formDataObj)
         .then((res) => {
+       
           this.state.schools.map((item) => {
             return item.admin === res.data.id ? (GLOBAL.id = item.id) : "";
           });
@@ -37,6 +38,7 @@ export default class Login extends Component {
             window.localStorage.setItem("token", res.data.token);
             this.setState({ login: true });
           } else {
+         
             message.error(
               "Login yoki parolni xato kiritdingiz. Iltimos tekshirib qaytatdan kiriting."
             );
