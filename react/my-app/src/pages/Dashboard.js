@@ -75,9 +75,9 @@ export default class Admin extends Component {
         const formData = new FormData();
         this.setState({ loading: true });
 
-        if (this.state.params !== null) {
-            formData.append("params", this.state.params);
-        }
+        // if (this.state.params !== null) {
+        //     formData.append("params", this.state.params);
+        // }
         if (this.state.domain !== null) {
             formData.append("domain", this.state.domain);
         }
@@ -367,8 +367,25 @@ export default class Admin extends Component {
                 },
             })
             .then((res) => {
-                this.getSchool();
-                message.success("Ma'lumot qo'shildi");
+                if (this.state.params !== null) {
+                    axios
+                        .patch(
+                            `${url}/school/${GLOBAL.id}/`,
+                            { params: this.state.params },
+                            {
+                                headers: {
+                                    Authorization: `Token ${window.localStorage.getItem("token")}`,
+                                },
+                            }
+                        )
+                        .catch((err) =>
+                            message.error("Joylashgan hudud qabul qilinmadi! Iltimos qayta urinib ko'ring!")
+                        );
+                }
+                setTimeout(() => {
+                    this.getSchool();
+                    message.success("Ma'lumot qo'shildi");
+                }, 1000);
             })
             .catch((err) => {
                 message.error("Ma'lumot qo'shilmadi");
