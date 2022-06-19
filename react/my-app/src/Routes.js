@@ -19,93 +19,98 @@ import Sinflar from "./pages/Sinflar";
 import Togaraklar from "./pages/Togaraklar";
 import Oquvchilar from "./pages/Oquvchilar";
 import Murojatlar from "./pages/Murojat";
+import AchieveTeachers from "./pages/AchieveTeachers";
 const routes = [
-  {
-    path: "/login",
-    component: Login,
-  },
-  {
-    path: "/home",
-    component: Home,
-    routes: [
-      {
-        path: "/home/dashboard/uz",
-        component: Dashboard,
-      },
-      {
-        path: "/home/murojaatlar/uz",
-        component: Murojatlar,
-      },
-      {
-        path: "/home/oquvchilar/uz",
-        component: Oquvchilar,
-      },
-      {
-        path: "/home/maktaboshxonasi/uz",
-        component: Maktaboshxonasi,
-      },
-      {
-        path: "/home/oqituvchilar/uz",
-        component: Oqituvchilar,
-      },
-      {
-        path: "/home/darsjadvali/uz",
-        component: DarsJadvali,
-      },
-      {
-        path: "/home/sinflar/uz",
-        component: Sinflar,
-      },
-      // {
-      //   path: "/home/sportmashgulotlari/uz",
-      //   component: Sport,
-      // },
-      {
-        path: "/home/yangiliklar/uz",
-        component: Yangiliklar,
-      },
-      {
-        path: "/home/rahbariyat/uz",
-        component: Rahbariyat,
-      },
-      {
-        path: "/home/admin/uz",
-        component: Admin,
-      },
-      {
-        path: "/home/alochioquvchilar/uz",
-        component: Alochilar,
-      },
-      {
-        path: "/home/yutuqlar/uz",
-        component: Yutuqlar,
-      },
-      {
-        path: "/home/tadbirlar/uz",
-        component: Tadbirlar,
-      },
-      {
-        path: "/home/musiqatogaraklari/uz",
-        component: Musiqa,
-      },
-      {
-        path: "/home/togaraklar/uz",
-        component: Togaraklar,
-      },
-      {
-        path: "/home/axborottexnologiyalari/uz",
-        component: Axborot,
-      },
-      {
-        path: "/home/xavfsizlik/uz",
-        component: Xavfsizlik,
-      },
-      {
-        path: "/home/salomatlik/uz",
-        component: Salomatlik,
-      },
-    ],
-  },
+    {
+        path: "/login",
+        component: Login,
+    },
+    {
+        path: "/home",
+        component: Home,
+        routes: [
+            {
+                path: "/home/dashboard/uz",
+                component: Dashboard,
+            },
+            {
+                path: "/home/murojaatlar/uz",
+                component: Murojatlar,
+            },
+            {
+                path: "/home/oquvchilar/uz",
+                component: Oquvchilar,
+            },
+            {
+                path: "/home/maktaboshxonasi/uz",
+                component: Maktaboshxonasi,
+            },
+            {
+                path: "/home/oqituvchilar/uz",
+                component: Oqituvchilar,
+            },
+            {
+                path: "/home/darsjadvali/uz",
+                component: DarsJadvali,
+            },
+            {
+                path: "/home/sinflar/uz",
+                component: Sinflar,
+            },
+            // {
+            //   path: "/home/sportmashgulotlari/uz",
+            //   component: Sport,
+            // },
+            {
+                path: "/home/yangiliklar/uz",
+                component: Yangiliklar,
+            },
+            {
+                path: "/home/rahbariyat/uz",
+                component: Rahbariyat,
+            },
+            {
+                path: "/home/admin/uz",
+                component: Admin,
+            },
+            {
+                path: "/home/alochioquvchilar/uz",
+                component: Alochilar,
+            },
+            {
+                path: "/home/faolustozlar/uz",
+                component: AchieveTeachers,
+            },
+            {
+                path: "/home/yutuqlar/uz",
+                component: Yutuqlar,
+            },
+            {
+                path: "/home/tadbirlar/uz",
+                component: Tadbirlar,
+            },
+            {
+                path: "/home/musiqatogaraklari/uz",
+                component: Musiqa,
+            },
+            {
+                path: "/home/togaraklar/uz",
+                component: Togaraklar,
+            },
+            {
+                path: "/home/axborottexnologiyalari/uz",
+                component: Axborot,
+            },
+            {
+                path: "/home/xavfsizlik/uz",
+                component: Xavfsizlik,
+            },
+            {
+                path: "/home/salomatlik/uz",
+                component: Salomatlik,
+            },
+        ],
+    },
 ];
 
 export default routes;
