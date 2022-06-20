@@ -79,7 +79,7 @@ export default class Login extends Component {
                             <Form.Label className={style.formLabel}>Parol</Form.Label>
                         </Form.Group>
                         <p>
-                            <Link to="/verify">Emailni tasdiqlash</Link>
+                            <Link to="/verify">Login tasdiqlash</Link>
                         </p>
                         <Button className={style.sub} type="submit">
                             <span></span>
