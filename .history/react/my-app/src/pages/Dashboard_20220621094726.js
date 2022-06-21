@@ -508,7 +508,7 @@ export default class Admin extends Component {
                                                 ? this.state.params
                                                 : [41.79478951067519, 64.27236652149892],
 
-                                        zoom: this.state.params !== null &&  this.state.params.length===2?10:6,
+                                        zoom: this.state.params !== null &&  this.state.params.length===2,
                                     }}
                                 >
                                     {

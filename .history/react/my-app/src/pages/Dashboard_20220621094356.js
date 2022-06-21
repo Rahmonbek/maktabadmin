@@ -42,7 +42,7 @@ export default class Admin extends Component {
             .then((res) => {
                 this.setState({
                     school: res.data,
-                    params: [Number(res.data.params[0]),Number(res.data.params[1])],
+                    params: res.data.params,
                     domain: res.data.domain,
                     loading: false,
                 });
@@ -397,7 +397,6 @@ export default class Admin extends Component {
         this.setState({
             params: coords,
         });
-        console.log(coords)
     };
     addLessonParol = (e) => {
         e.preventDefault();
@@ -504,11 +503,11 @@ export default class Admin extends Component {
                                     height="65vh"
                                     defaultState={{
                                         center:
-                                            this.state.params !== null &&  this.state.params.length===2
+                                            this.state.params !== null &&  this.state.params.length
                                                 ? this.state.params
                                                 : [41.79478951067519, 64.27236652149892],
 
-                                        zoom: this.state.params !== null &&  this.state.params.length===2?10:6,
+                                        zoom: 6,
                                     }}
                                 >
                                     {
@@ -521,7 +520,7 @@ export default class Admin extends Component {
                                             <Placemark
                                                 key={0}
                                                 geometry={
-                                                    this.state.params !== null &&  this.state.params.length===2
+                                                    this.state.params !== null
                                                         ? this.state.params
                                                         : [41.79478951067519, 64.27236652149892]
                                                 }
