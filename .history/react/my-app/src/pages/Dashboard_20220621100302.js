@@ -42,7 +42,7 @@ export default class Admin extends Component {
             .then((res) => {
                 this.setState({
                     school: res.data,
-                    params: res.data.params,
+                    params: res.data.params[0]),Number(res.data.params[1])],
                     domain: res.data.domain,
                     loading: false,
                 });
@@ -505,7 +505,7 @@ export default class Admin extends Component {
                                     defaultState={{
                                         center:
                                             this.state.params !== null &&  this.state.params.length===2
-                                                ? [Number(this.state.params[0]),Number(this.state.params[1])]
+                                                ? this.state.params
                                                 : [41.79478951067519, 64.27236652149892],
 
                                         zoom: this.state.params !== null &&  this.state.params.length===2?10:6,
@@ -522,7 +522,7 @@ export default class Admin extends Component {
                                                 key={0}
                                                 geometry={
                                                     this.state.params !== null &&  this.state.params.length===2
-                                                        ? [Number(this.state.params[0]),Number(this.state.params[1])]
+                                                        ? this.state.params
                                                         : [41.79478951067519, 64.27236652149892]
                                                 }
                                                 properties={{

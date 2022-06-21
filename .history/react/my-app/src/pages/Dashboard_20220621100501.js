@@ -522,7 +522,7 @@ export default class Admin extends Component {
                                                 key={0}
                                                 geometry={
                                                     this.state.params !== null &&  this.state.params.length===2
-                                                        ? [Number(this.state.params[0]),Number(this.state.params[1])]
+                                                        ? this.state.params
                                                         : [41.79478951067519, 64.27236652149892]
                                                 }
                                                 properties={{
